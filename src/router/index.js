@@ -4,14 +4,14 @@ import {
 } from 'vue-router'
 
 import Index from '~/pages/index.vue'
-import About from '~/pages/about.vue'
+import Login from '~/pages/login.vue'
 import NotFound from '~/pages/404.vue'
 const routes = [{
     path: "/",
     component: Index
 },{
-    path: '/about',
-    component:About
+    path: '/login',
+    component:Login
 },{
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
