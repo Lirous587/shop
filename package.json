@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@vueuse/integrations": "^10.7.2",
+    "axios": "^1.6.5",
     "element-plus": "^2.5.1",
+    "universal-cookie": "^7.0.1",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"
   },
