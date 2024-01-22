@@ -27,7 +27,7 @@
             </el-form-item>
 
             <el-form-item prop="password">
-               <el-input  type="password" show-password v-model="form.password" placeholder="请输入密码">
+               <el-input type="password" show-password v-model="form.password" placeholder="请输入密码">
                   <template #prefix>
                      <el-icon class="el-input__icon">
                         <lock />
@@ -46,13 +46,13 @@
 </template>
 
 <script  setup>
-import { ref,reactive } from 'vue'
-import { ElNotification } from 'element-plus'
-import { login,getinfo } from '~/api/manager.js'
+import { ref, reactive,onMounted,onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router';
-import { useCookies } from '@vueuse/integrations/useCookies';
+import { useStore } from 'vuex';
+import { toast } from '~/composables/util'
 
 const router = useRouter()
+const store = useStore()
 
 // do not use same name with ref
 const form = reactive({
@@ -79,37 +79,31 @@ const onSubmit = () => {
          return false
       }
       loading.value = true
-      login(form.username, form.password)
-         .then(res => {
-            //提示成功
-            ElNotification({
-            title: '登录成功',
-            message: '登录成功',
-            type: 'success',
-            duration:1500
-            })
-         
-            //储存token
-            const cookie = useCookies()
-            cookie.set("admin-token", res.token)
-
-
-            //获取用户信息
-            getinfo().then(res2 => {
-               console.log(res2)
-            })
-            //跳转到后台
-            router.push('/')
-         })
-         .finally(() => {
-            loading.value = true
-         })
+      store.dispatch("login", form).then(res => {
+         toast("登录成功", "success")
+         router.push("/")
+      }).finally(() => {
+         loading.value = false
+      })
    })
 }
 
+//监听回车事件
+function onKeyUp(e) {
+   if (e.key == "Enter")  onSubmit()
+}
+
+//添加键盘的监听
+onMounted(() => {
+   document.addEventListener("keyup", onKeyUp)
+})
+
+//移除键盘监听
+onBeforeMount(() => {
+   document.removeEventListener("keyup",onKeyUp)   
+})   
+
 </script>
-
-
 
 
 <style scoped>
