@@ -1,4 +1,4 @@
-import router from "~/router";
+import { router, addRouters } from "~/router";
 import { getToken } from "~/composables/auth"
 import {
     toast,
@@ -25,17 +25,22 @@ router.beforeEach(async (to, from, next) => {
     }
 
     //如果用户登录了,自动获取用户信息,并存储到vuex中
+    let hasNewRoutes = false
     if (token) {
-        await store.dispatch("getinfo")
+        let {menus} = await store.dispatch("getinfo")
+        //动态添加路由
+        hasNewRoutes = addRouters(menus)
+        console.log(hasNewRoutes)  
     }
 
 
     //设置页面标题
     let title = (to.meta.title ? to.meta.title : "商城管理系统") + "-liuzihao.online"
     document.title = title
-
-    next();
+    
+    hasNewRoutes ? next(to.fullPath) : next();
 });
+
 router.afterEach((to, from) => {
     //隐藏loading
     hideFullLoading()
