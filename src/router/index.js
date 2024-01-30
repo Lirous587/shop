@@ -10,9 +10,6 @@ import NotFound from '~/pages/404.vue'
 import GoodList from '~/pages/goods/list.vue'
 import CategoryList from '~/pages/category/list.vue'
 
-
-
-
 //默认路由 所有用户共享
 const routes = [
     {
@@ -57,6 +54,7 @@ const asyncRoutes = [{
         title: "分类列表"
     }
 }]
+
 export const router = createRouter({
     history: createWebHashHistory(),
     routes

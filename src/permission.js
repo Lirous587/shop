@@ -7,6 +7,8 @@ import {
 } from "~/composables/util"
 import store from "./store"
 //全局前置守卫
+let hasGetInfo = false
+
 router.beforeEach(async (to, from, next) => {
     //显示loading
     showFullLoading()
@@ -26,11 +28,12 @@ router.beforeEach(async (to, from, next) => {
 
     //如果用户登录了,自动获取用户信息,并存储到vuex中
     let hasNewRoutes = false
-    if (token) {
+    if (token && !hasGetInfo) {
         let {menus} = await store.dispatch("getinfo")
+        hasGetInfo = true
         //动态添加路由
         hasNewRoutes = addRouters(menus)
-        console.log(hasNewRoutes)  
+        // console.log(hasNewRoutes)  
     }
 
 
