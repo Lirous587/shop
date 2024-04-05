@@ -25,7 +25,7 @@ export function useRepassword() {
         password: [
             { required: true, message: '新密码不能为空', trigger: 'blur' },
         ],
-        password: [
+        repassword: [
             { required: true, message: '确认密码不能为空', trigger: 'blur' },
         ]
     }

@@ -22,9 +22,9 @@
 </template>
 
 <script setup>
-import FMenu from "./components/FMenu.vue"
-import FHeader from "./components/FHeader.vue"
-import FTagList from "./components/FTagList.vue"
+import FMenu from "~/layout/components/FMenu.vue";
+import FHeader from "~/layout/components/FHeader.vue";
+import FTagList from "~/layout/components/FTagList.vue";
 </script>
 
 
@@ -32,29 +32,35 @@ import FTagList from "./components/FTagList.vue"
 .el-aside {
     transition: all 0.2s;
 }
-.fade-enter-from{
+
+.fade-enter-from {
     opacity: 0;
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
 }
-.fade-enter-to{
+
+.fade-enter-to {
     opacity: 1;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
-.fade-leave-from{
+
+.fade-leave-from {
     opacity: 1;
 }
-.fade-leave-to{
+
+.fade-leave-to {
     opacity: 0;
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
 }
+
 .fade-enter-active,
-.fade-leave-active{
+.fade-leave-active {
     transition: all 0.3s;
 }
-.fade-enter-active{
-    transition-delay: 0.3s;
+
+.fade-leave-active {
+    transition-delay: all 0.3s;
 }
 </style>

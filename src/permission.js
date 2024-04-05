@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
         toast("请先登录", "error")
         return next({ path: "/login" })
     }
-    //防止重复登录  //还要加一个条件
+    //防止重复登录 
     if (token && to.path == "/login") {
         toast("请勿重复登录", "warning")
         return next({ path: from.path ? from.path : "/" })  //三元运算 key是path 如果from存在 就直接返回原来的路径 如果不存在 就跳转到 '/'
@@ -29,18 +29,17 @@ router.beforeEach(async (to, from, next) => {
     //如果用户登录了,自动获取用户信息,并存储到vuex中
     let hasNewRoutes = false
     if (token && !hasGetInfo) {
-        let {menus} = await store.dispatch("getinfo")
+        let { menus } = await store.dispatch("getinfo")
         hasGetInfo = true
         //动态添加路由
         hasNewRoutes = addRouters(menus)
         // console.log(hasNewRoutes)  
     }
 
-
     //设置页面标题
     let title = (to.meta.title ? to.meta.title : "商城管理系统") + "-liuzihao.online"
     document.title = title
-    
+
     hasNewRoutes ? next(to.fullPath) : next();
 });
 

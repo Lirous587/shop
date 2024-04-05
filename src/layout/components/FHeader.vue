@@ -5,7 +5,7 @@
             无尽仙码
         </span>
         <el-icon class="icon-btn" @click="$store.commit('handleAsideWidth')">
-            <Fold v-if="$store.state.asideWidth== '250px'" />
+            <Fold v-if="$store.state.asideWidth == '250px'" />
             <Expand v-else />
         </el-icon>
         <el-tooltip effect="dark" content="刷新" placement="bottom">
@@ -66,7 +66,7 @@
 import formDrawer from "~/components/formDrawer.vue";
 import { useFullscreen } from '@vueuse/core'
 import { onMounted, onBeforeMount } from 'vue'
-import { useLogout,useRepassword } from "~/components/useManager"
+import { useLogout, useRepassword } from "~/components/useManager"
 const {
     formDrawerRef,
     form,
@@ -121,6 +121,7 @@ onBeforeMount(() => {
 <style>
 .f-header {
     @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
+    z-index: 1000;
     height: 64px;
 }
 

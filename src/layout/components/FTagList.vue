@@ -9,7 +9,7 @@
 
         <span class="tag-btn">
             <el-dropdown @command="handleClose">
-                <span class="el-dropdown-link">
+                <span>
                     <el-icon>
                         <arrow-down />
                     </el-icon>
@@ -22,6 +22,7 @@
                 </template>
             </el-dropdown>
         </span>
+
     </div>
     <div style="height: 44px;">
     </div>
@@ -37,9 +38,9 @@ const {
     handleClose,
     changeTab
 } = useTabList()
+
+  
 </script>
-
-
 
 
 <style scoped>
@@ -67,7 +68,7 @@ const {
 :deep(.el-tabs__item) {
     @apply bg-white mx-1 rounded;
     height: 32px;
-    line-height: 32px;
+    line-height: 40px;
     border: 0 !important;
 }
 

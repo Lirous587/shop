@@ -1,19 +1,17 @@
 import { createStore } from 'vuex'
 import { login, getinfo } from '~/api/manager'
-import { setToken,removeToken } from '~/composables/auth'
+import { setToken, removeToken } from '~/composables/auth'
 // 创建一个新的 store 实例
 const store = createStore({
     state() {
         return {
             //用户信息
             user: {},
-
             //侧边宽度
             asideWidth: "250px",
-            
             //菜单数组
             menus: [],
-            ruleNames:[],
+            ruleNames: [],
         }
     },
     mutations: {
@@ -45,7 +43,7 @@ const store = createStore({
             //移除cookie里面的token
             removeToken()
             //清除当前用户状态 vuex
-            commit("SET_USERINFO",{})
+            commit("SET_USERINFO", {})
         },
         //获取当前用户登录信息
         getinfo({ commit }) {

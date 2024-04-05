@@ -28,7 +28,6 @@ service.interceptors.response.use(function (response) {
   return response.data.data; //返回数据写起来更加优雅
 }, function (error) {
   const msg = error.response.data.msg || "请求失败"
-  console.log( error.response.data.msg )
   if (msg == "非法token，请先登录！") {
     store.dispatch("logout").catch((err)=>console.log(err)).finally(() => location.reload())
   }

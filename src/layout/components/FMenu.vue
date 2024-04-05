@@ -1,6 +1,6 @@
 <template>
     <div class="f-menu" :style="{ width:$store.state.asideWidth}">
-        <el-menu unique-opened :default-active="defaultActive" default-active="2" class="border-0" @select="handleSelect" :collapse-transition="false" :collapse="isCollapse">
+        <el-menu unique-opened :default-active="defaultActive" class="border-0" @select="handleSelect" :collapse-transition="false" :collapse="isCollapse">
             <template v-for="(item, index) in asideMenus" :key="index">
                 <el-sub-menu v-if="item.child && item.child.length > 0" :index="item.name">
                     <template #title>
@@ -46,10 +46,14 @@ const defaultActive = ref(route.path)
 const isCollapse = computed(()=>!(store.state.asideWidth == '250px'))
 
 
-const asideMenus = computed(()=>store.state.menus)
+const asideMenus = computed(() => store.state.menus)
+
+
 const handleSelect = (e) => {
     router.push(e)
 }
+
+
 </script>
 
 
