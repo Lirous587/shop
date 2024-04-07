@@ -23,5 +23,9 @@ import "./permission"
 
 import "nprogress/nprogress.css"
 
+import permissoin from '~/directives/permissoin'
+
+app.use(permissoin)
+
 
 app.mount('#app')

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-permission="['getStatistics1,GET']">
             <template v-if="panels.length == 0">
                 <el-col :span="6" v-for="i in 4" :key="i">
                     <el-skeleton style="width: 100%" animate loading>
@@ -26,8 +26,6 @@
                     </el-skeleton>
                 </el-col>
             </template>
-
-
             <el-col :span="6" :offset="0" v-for="(item, index) in panels" :key="index">
                 <el-card shadow="hover" :body-style="{ padding: '20px' }">
                     <template #header>
@@ -55,9 +53,11 @@
 
         <el-row :gutter="20" class="mt-5">
             <el-col :span="12" :offset="0">
-                <indexChart></indexChart>
+                <IndexChart v-permission="['getStatistics3,GET']"></IndexChart>
             </el-col>
-            <el-col :span="12" :offset="0">
+            <el-col :span="12" :offset="0" v-permission="['getStatistics2,GET']">
+                <IndexCard title="店铺及商品提示" tip="店铺及商品提示" :btns="goods" class="mb-3"></IndexCard>
+                <IndexCard title="交易提示" tip="需要立即处理的交易订单" :btns="order"></IndexCard>
             </el-col>
         </el-row>
 
@@ -69,12 +69,23 @@ import { ref } from "vue"
 import CountTo from "~/components/CountTo.vue";
 import IndexNavs from "~/components/IndexNavs.vue";
 import IndexChart from "~/components/IndexChart.vue";
+import IndexCard from "~/components/IndexCard.vue";
+import {
+    getstatistics1, getstatistics2
+} from "~/api/index.js"
 
-import { getstatistics1 } from "~/api/index.js"
+const panels = ref([])
+getstatistics1()
+    .then((res) => {
+            panels.value = res.panels
+    })
 
+const goods = ref([])
+const order = ref([])
 
-let panels = ref([])
-
-getstatistics1().then((res) => { panels.value = res.panels })
-
+getstatistics2()
+    .then((res) => {
+        goods.value = res.goods
+        order.value = res.order
+    })
 </script>
