@@ -60,7 +60,6 @@
                 <IndexCard title="交易提示" tip="需要立即处理的交易订单" :btns="order"></IndexCard>
             </el-col>
         </el-row>
-
     </div>
 </template>
 
