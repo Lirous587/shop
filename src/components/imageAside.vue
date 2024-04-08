@@ -1,13 +1,22 @@
 <template>
     <el-aside width="280px" class="image-aside">
         <div class="top">
-            <div v-for="i in 100" :key="i"> {{ i }}</div>
+          <AsideList active>
+            分类标题
+          </AsideList>
+          <AsideList>
+            分类标题
+          </AsideList>
         </div>
         <div class="bottom">
             分页区域
         </div>
     </el-aside>
 </template>
+
+<script setup>
+import AsideList from '~/components/AsideList.vue'
+</script>
 
 <style>
 .image-aside {
@@ -32,4 +41,6 @@
     right: 0;
     @apply flex justify-center justify-center;
 }
+
+
 </style>

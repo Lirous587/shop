@@ -1,4 +1,3 @@
-import { AddLocation } from '@element-plus/icons-vue/dist/types';
 <template>
     <el-row :gutter="20" class="mt-5">
         <el-col :span="3" :offset="0" v-for="(item,index) in iconNavs" :key="index">

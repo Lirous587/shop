@@ -2,7 +2,7 @@
     <div class="f-header">
         <span class="logo">
             <el-icon class="mr-1"><eleme-filled /></el-icon>
-            无尽仙码
+            vue3商城
         </span>
         <el-icon class="icon-btn" @click="$store.commit('handleAsideWidth')">
             <Fold v-if="$store.state.asideWidth == '250px'" />
