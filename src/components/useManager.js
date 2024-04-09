@@ -37,14 +37,14 @@ export function useRepassword() {
             if (!valid) {
                 return false
             }
-            formDrawerRef.value.showloading()
+            formDrawerRef.value.showLoading()
             updatePassword(form)
                 .then((res) => {
                     toast("修改密码成功,请重新登录", "success")
                     store.dispatch("logout")
                     router.push("/login")
                 }).finally(() => {
-                    formDrawerRef.value.hideloading()
+                    formDrawerRef.value.hideLoading()
                 })
         })
     }

@@ -10,13 +10,27 @@
                 :total="total" />
         </div>
     </el-aside>
+    <FormDrawer closeAble="true" title="新增" ref="formDrawerRef"  @submit="handlerSubmit">
+        <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
+            <el-form-item label="分类名称" prop="name">
+                <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="排序" prop="order">
+                <el-input-number v-model="form.order" :min="0" :max="1000" />
+            </el-form-item>
+        </el-form>
+    </FormDrawer>
 </template>
 
 <script setup>
 import AsideList from '~/components/AsideList.vue'
-import { getImageClassList } from "~/api/image_class.js"
-import { ref } from "vue"
-
+import {
+    getImageClassList,
+    createImageClassList
+} from "~/api/image_class.js"
+import { toast } from "~/composables/util.js"
+import { ref, reactive } from "vue"
+import FormDrawer from "~/components/FormDrawer.vue"
 //加载动画
 const loading = ref(false)
 
@@ -28,6 +42,47 @@ const activeId = ref(0)
 const currentPage = ref(1)
 const total = ref(0)
 const limit = ref(10)
+
+//抽屉
+const formDrawerRef = ref(null)
+const handlerCreate = () => formDrawerRef.value.open()
+
+const form = reactive({
+    name: "",
+    order: 50
+
+})
+
+const rules = {
+    name: [{
+        required: true,
+        message: "图库分类名称不能为空",
+        tirgger: "blur"
+    }]
+}
+const formRef = ref(null)
+
+const handlerSubmit = () => {
+    formRef.value.validate((valid) => {
+        if (!valid) return
+        console.log(form)
+        createImageClassList(form)
+            .then(res => {
+                toast("新增成功")
+                getData(1)
+                formDrawerRef.value.close()
+            })
+            .finally(() => {
+                formDrawerRef.value.hideLoading()
+            })
+    })
+}
+
+
+defineExpose({
+    handlerCreate
+})
+
 
 
 //获取数据

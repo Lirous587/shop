@@ -1,10 +1,9 @@
 <template>
-    <el-drawer v-model="showDrawer" :title="title" :size="size" :close-on-click-modal="false"
+    <el-drawer v-model="showDrawer" :title="title" :size="size" :close-on-click-modal=closeAble
         :destroy-on-close="destroyOnClose">
         <div class="formDrawer">
             <div class="body">
                 <slot>
-
                 </slot>
             </div>
 
@@ -27,17 +26,21 @@ const props = defineProps({
     },
     destroyOnClose: {
         type: Boolean,
-        default: "false"
+        default: false
     },
     confirmText: {
         type: String,
         default: "提交"
+    },
+    closeAble: {
+        type: Boolean,
+        default:false
     }
 })
 //加载状态
 const loading = ref(false)
-const showloading = () => loading.value = true
-const hideloading = () => loading.value = false
+const showLoading = () => loading.value = true
+const hideLoading = () => loading.value = false
 
 //打开
 const open = () => showDrawer.value = true
@@ -54,8 +57,8 @@ const submit = () => emit("submit")
 defineExpose({
     open,
     close,
-    showloading,
-    hideloading,
+    showLoading,
+    hideLoading,
 })
 </script>
 

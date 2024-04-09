@@ -1,9 +1,11 @@
 <template>
     <div>
         <el-container class="bg-white rounded" :style="{ height: (h + 'px') }">
-            <el-header class="image-header">Header</el-header>
+            <el-header class="image-header">
+                <el-button type="primary" size="small" @click="handlerOpenCreate">新增图片分类</el-button>
+            </el-header>
             <el-container>
-                <ImageAside></ImageAside>
+                <ImageAside ref="ImageAsideRef"></ImageAside>
                 <ImageMain></ImageMain>
                
             </el-container>
@@ -22,9 +24,14 @@
 
 
 <script setup>
-
+import { ref } from 'vue';
 import ImageAside from '~/components/imageAside.vue';
 import ImageMain from '~/components/imageMain.vue';
 const windowHeight = window.innerHeight || document.body.clientHeight
 const h = windowHeight - 64 - 44 - 40
+
+const ImageAsideRef =  ref(null)
+const handlerOpenCreate = () => ImageAsideRef.value.handlerCreate()
+
+
 </script>
