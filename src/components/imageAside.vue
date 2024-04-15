@@ -1,16 +1,18 @@
-<template>
-    <el-aside width="280px" class="image-aside">
+<template >
+    <el-aside width="280px" class="image-aside" v-loading="loading">
         <div class="top">
-            <AsideList :active="activeId == item.id" v-for="(item, index) in list" :key="index">
+            <AsideList :active="activeId == item.id" v-for="(item, index) in list" :key="index"
+                @edit="handlerEdit(item)" @delete="handlerDelete(item)">
                 {{ item.name }}
             </AsideList>
         </div>
+
         <div class="bottom">
             <el-pagination background layout="prev, next" :current-page="currentPage" @current-change="getData"
                 :total="total" />
         </div>
     </el-aside>
-    <FormDrawer closeAble="true" title="新增" ref="formDrawerRef"  @submit="handlerSubmit">
+    <FormDrawer closeAble="true" :title="drawerTitle" ref="formDrawerRef" @submit="handlerSubmit">
         <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
             <el-form-item label="分类名称" prop="name">
                 <el-input v-model="form.name"></el-input>
@@ -20,16 +22,19 @@
             </el-form-item>
         </el-form>
     </FormDrawer>
+
 </template>
 
 <script setup>
 import AsideList from '~/components/AsideList.vue'
 import {
     getImageClassList,
-    createImageClassList
+    createImageClassList,
+    updateImageClassList,
+    deleteImageClassList
 } from "~/api/image_class.js"
 import { toast } from "~/composables/util.js"
-import { ref, reactive } from "vue"
+import { ref, reactive, computed } from "vue"
 import FormDrawer from "~/components/FormDrawer.vue"
 //加载动画
 const loading = ref(false)
@@ -41,16 +46,14 @@ const activeId = ref(0)
 //分页
 const currentPage = ref(1)
 const total = ref(0)
-const limit = ref(10)
 
 //抽屉
 const formDrawerRef = ref(null)
-const handlerCreate = () => formDrawerRef.value.open()
+
 
 const form = reactive({
     name: "",
     order: 50
-
 })
 
 const rules = {
@@ -62,21 +65,50 @@ const rules = {
 }
 const formRef = ref(null)
 
+//文章id
+const editId = ref(null)
+
+
+//表单title
+const drawerTitle = computed(() => editId.value ? "修改" : "新增")
+
+//新增
+const handlerCreate = () => {
+    form.name = ""
+    form.order = 50
+    form.id = 0
+    formDrawerRef.value.open()
+}
+
+//编辑
 const handlerSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) return
-        console.log(form)
-        createImageClassList(form)
-            .then(res => {
-                toast("新增成功")
-                getData(1)
-                formDrawerRef.value.close()
-            })
+        const fun = editId.value ? updateImageClassList(editId.value, form) : createImageClassList(form)
+        fun.then(res => {
+            toast(drawerTitle.value + "成功")
+            getData(editId.value ? currentPage.value : 1)
+            formDrawerRef.value.close()
+        })
             .finally(() => {
                 formDrawerRef.value.hideLoading()
             })
     })
 }
+
+//删除
+const handlerDelete = (row) => {
+    loading.value = true
+    deleteImageClassList(row.id)
+        .then(res => {
+            getData(currentPage.value)
+            toast("删除成功")
+        })
+        .finally(() => {
+            loading.value = false
+        })
+}
+
 
 
 defineExpose({

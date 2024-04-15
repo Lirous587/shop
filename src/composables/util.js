@@ -1,26 +1,27 @@
 import { ElNotification } from "element-plus";
 import { ElMessageBox } from 'element-plus'
-import  nprogress from "nprogress"
+import nprogress from "nprogress"
 //成功提示
-export function toast(message,type = "success") {
-    ElNotification({
-        message: message,
-        type: type,
-        duration:1500
-        })
+export function toast(message, type = "success", dangerouslyUseHTMLString = true) {
+  ElNotification({
+    message: message,
+    type: type,
+    dangerouslyUseHTMLString,
+    duration: 1500
+  })
 }
 
 //消息弹框
 export function showModal(content = "提示内容", type = "warning", title = "") {
-   return  ElMessageBox.confirm(
-          content,
-          title,
-          {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type,
-          }
-        )
+  return ElMessageBox.confirm(
+    content,
+    title,
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type,
+    }
+  )
 }
 // 显示全局loading
 export function showFullLoading() {
@@ -28,6 +29,6 @@ export function showFullLoading() {
 }
 
 //隐藏全局loading
-export function hideFullLoading() { 
+export function hideFullLoading() {
   nprogress.done();
 }

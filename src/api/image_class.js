@@ -8,3 +8,11 @@ export function createImageClassList(data) {
     return axios.post("/admin/image_class", data)
 }
 
+export function updateImageClassList(id, data) {
+    console.log(data)
+   return axios.post("/admin/image_class/"+id,data) 
+}
+
+export function deleteImageClassList(id) {
+   return axios.post(`/admin/image_class/${id}/delete`) 
+}
