@@ -126,7 +126,6 @@ export function addRouters(menus) {
             let item = asyncRoutes.find(o => o.path == e.frontpath)
             if (item && !router.hasRoute(item.path)) {
                 router.addRoute("admin", item)
-
                 hasNewRoutes = true
             }
             if (e.child && e.child.length > 0) {

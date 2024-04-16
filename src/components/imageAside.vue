@@ -1,18 +1,18 @@
-<template >
+<template>
     <el-aside width="280px" class="image-aside" v-loading="loading">
         <div class="top">
             <AsideList :active="activeId == item.id" v-for="(item, index) in list" :key="index"
-                @edit="handlerEdit(item)" @delete="handlerDelete(item)">
+                @edit="handlerEdit(item)" @delete="handleDelete(item)" @click="handleChangerActiveId(item.id)">
                 {{ item.name }}
             </AsideList>
         </div>
 
         <div class="bottom">
-            <el-pagination background layout="prev, next" :current-page="currentPage" @current-change="getData"
+            <el-pagination background layout="prev,pager, next" :current-page="currentPage" @current-change="getData"
                 :total="total" />
         </div>
     </el-aside>
-    <FormDrawer closeAble="true" :title="drawerTitle" ref="formDrawerRef" @submit="handlerSubmit">
+    <FormDrawer closeAble="true" :title="drawerTitle" ref="formDrawerRef" @submit="handleSubmit">
         <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
             <el-form-item label="分类名称" prop="name">
                 <el-input v-model="form.name"></el-input>
@@ -41,7 +41,6 @@ const loading = ref(false)
 
 //默认激活
 const list = ref([])
-const activeId = ref(0)
 
 //分页
 const currentPage = ref(1)
@@ -73,7 +72,7 @@ const editId = ref(null)
 const drawerTitle = computed(() => editId.value ? "修改" : "新增")
 
 //新增
-const handlerCreate = () => {
+const handleCreate = () => {
     form.name = ""
     form.order = 50
     form.id = 0
@@ -81,7 +80,7 @@ const handlerCreate = () => {
 }
 
 //编辑
-const handlerSubmit = () => {
+const handleSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) return
         const fun = editId.value ? updateImageClassList(editId.value, form) : createImageClassList(form)
@@ -97,7 +96,7 @@ const handlerSubmit = () => {
 }
 
 //删除
-const handlerDelete = (row) => {
+const handleDelete = (row) => {
     loading.value = true
     deleteImageClassList(row.id)
         .then(res => {
@@ -112,8 +111,18 @@ const handlerDelete = (row) => {
 
 
 defineExpose({
-    handlerCreate
+    handleCreate
 })
+
+//选中图库分类
+const activeId = ref(0)
+const emit = defineEmits(["change"])
+
+function handleChangerActiveId(id) {
+    activeId.value = id
+    emit("change", id)
+}
+
 
 
 
@@ -125,13 +134,12 @@ function getData(p = null) {
     loading.value = true
     getImageClassList(currentPage.value)
         .then(res => {
+            total.value = res.totalCount
             list.value = res.list
             let item = list.value[0]
             if (item) {
-                activeId.value = item.id
-                total.value = res.totalCount
+                handleChangerActiveId(item.id)
             }
-
         })
         .finally(() => {
             loading.value = false

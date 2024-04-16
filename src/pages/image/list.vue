@@ -2,12 +2,11 @@
     <div>
         <el-container class="bg-white rounded" :style="{ height: (h + 'px') }">
             <el-header class="image-header">
-                <el-button type="primary" size="small" @click="handlerOpenCreate">新增图片分类</el-button>
+                <el-button type="primary" size="small" @click="handleOpenCreate">新增图片分类</el-button>
             </el-header>
             <el-container>
-                <ImageAside ref="ImageAsideRef"></ImageAside>
-                <ImageMain></ImageMain>
-               
+                <ImageAside ref="ImageAsideRef" @change="handeleAsideChange"></ImageAside>
+                <ImageMain ref="ImageMainRef"></ImageMain>
             </el-container>
         </el-container>
     </div>
@@ -18,10 +17,7 @@
     border-bottom: 1px solid #eeeeee;
     @apply flex items-center;
 }
-
-
 </style>
-
 
 <script setup>
 import { ref } from 'vue';
@@ -30,8 +26,11 @@ import ImageMain from '~/components/imageMain.vue';
 const windowHeight = window.innerHeight || document.body.clientHeight
 const h = windowHeight - 64 - 44 - 40
 
-const ImageAsideRef =  ref(null)
-const handlerOpenCreate = () => ImageAsideRef.value.handlerCreate()
+const ImageAsideRef = ref(null)
+const ImageMainRef = ref(null)
+const handleOpenCreate = () => ImageAsideRef.value.handleCreate()
 
-
+const handeleAsideChange = (imageClassID) => {
+    ImageMainRef.value.loadData(imageClassID)
+}
 </script>
