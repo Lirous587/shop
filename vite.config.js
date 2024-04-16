@@ -16,8 +16,13 @@ export default defineConfig({
       '/api': {
         target: 'http://ceshi13.dishait.cn',
         changeOrigin: true,
-       rewrite:(path)=>path.replace(/^\/api/,'')
+        rewrite: (path) => path.replace(/^\/api/, '')
       },
+      '/public': {
+        target: 'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/public/, '')
+      }
     }
   },
   plugins: [
