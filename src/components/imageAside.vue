@@ -1,8 +1,8 @@
 <template>
     <el-aside width="280px" class="image-aside" v-loading="loading">
         <div class="top">
-            <AsideList :active="activeId == item.id" v-for="(item, index) in list" :key="index"
-                @edit="handlerEdit(item)" @delete="handleDelete(item)" @click="handleChangerActiveId(item.id)">
+            <AsideList :active="activeId == item.id" v-for="(item, index) in list" :key="index" @edit="handleEdit(item)"
+                @delete="handleDelete(item)" @click="handleChangerActiveId(item.id)">
                 {{ item.name }}
             </AsideList>
         </div>
@@ -22,7 +22,6 @@
             </el-form-item>
         </el-form>
     </FormDrawer>
-
 </template>
 
 <script setup>
@@ -79,6 +78,13 @@ const handleCreate = () => {
     formDrawerRef.value.open()
 }
 
+//
+const handleEdit = (item) => {
+    formDrawerRef.value.open()
+    form.name = item.name
+    editId.value = item.id
+}
+
 //编辑
 const handleSubmit = () => {
     formRef.value.validate((valid) => {
@@ -124,8 +130,6 @@ function handleChangerActiveId(id) {
 }
 
 
-
-
 //获取数据
 function getData(p = null) {
     if (typeof p == "number") {
@@ -146,7 +150,6 @@ function getData(p = null) {
         })
 }
 getData()
-
 </script>
 
 <style>
