@@ -31,6 +31,11 @@
                 :total="total" />
         </div>
     </el-main>
+
+    <el-drawer v-model="drawer" title="上传图片" :direction="direction" :before-close="handleClose">
+        <UploadFile :data="{ 'image_class_id':imageClassID }" @success="handelUploadSuccess"></UploadFile>
+    </el-drawer>
+
 </template>
 
 
@@ -45,10 +50,17 @@ import {
     showPrompt,
     toast
 } from "~/composables/util";
+import UploadFile from "~/components/UploadFile.vue";
 
+// 上传图片
+const drawer = ref(false)
+const openUploadFile = () => {
+    drawer.value = true
+}
 
 
 const loading = ref(false)
+
 //分页
 const currentPage = ref(1)
 const total = ref(0)
@@ -109,13 +121,19 @@ const handleDelete = (id) => {
 
 }
 
+//上传成功
+const handelUploadSuccess = () => {
+    getData(1)
+}
+
 
 defineExpose({
-    loadData
+    loadData,
+    openUploadFile
 })
 </script>
 
-<style>
+<style scoped>
 .image-main {
     border-right: 1px solid #eeeeee;
     position: relative;
