@@ -1,7 +1,7 @@
 <template>
     <el-card shadow="always" :body-style="{ padding: '20px' }">
         <div class="flex items-center  justify-between mb-4">
-            <el-button type="primary" size="default" @click="">新增</el-button>
+            <el-button type="primary" size="default" @click="handelCreate">新增</el-button>
 
             <el-tooltip class="box-item" effect="dark" content="Top Right prompts info" placement="top-end">
                 <el-button text @click="getData">
@@ -30,23 +30,34 @@
             </el-table-column>
 
         </el-table>
+
+        <div class="flex justify-center items-center mt-4">
+            <el-pagination background layout="prev, pager,next" :current-page="currentPage" @current-change="getData"
+                :total="total" />
+        </div>
+
+        <FormDrawer ref="formDrawerRef" title="新增" @submit="handelSubmit">
+            <el-form :model="form" ref="formRef" :rules="rules">
+                <el-form-item label="公告标题" prop="title">
+                    <el-input v-model="form.title" placeholder="公告标题"></el-input>
+                </el-form-item>
+                <el-form-item label="公告内容" prop="content">
+                    <el-input v-model="form.content" placeholder="公告内容" type="textarea" :rows="5"></el-input>
+                </el-form-item>
+            </el-form>
+        </FormDrawer>
     </el-card>
-
-
-    <div class="flex justify-center items-center mt-4">
-        <el-pagination background layout="prev, pager,next" :current-page="currentPage" @current-change="getData"
-            :total="total" />
-    </div>
-
 
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import {
-    getNoticeList
+    getNoticeList,
+    createNotice
 } from "~/api/notice";
-
+import { toast } from "~/composables/util.js"
+import FormDrawer from "~/components/FormDrawer.vue"
 
 const tableData = ref([])
 
@@ -55,8 +66,6 @@ const loading = ref(false)
 //分页
 const currentPage = ref(1)
 const total = ref(0)
-const list = ref([])
-
 
 function getData(p = null) {
     if (typeof p == Number) {
@@ -75,7 +84,48 @@ function getData(p = null) {
 
 getData()
 
-const handelDelete = (id) => {
-    console.log(id)
+
+// 表单部分
+const formDrawerRef = ref(false)
+const formRef = ref(null)
+const form = reactive({
+    title: "",
+    content: ""
+})
+
+const rules = {
+    title: [{
+        required: true,
+        message: "公告标题不能为空",
+        tirgger: "blur"
+    }],
+    content: [{
+        required: true,
+        message: "公告内容不能为空",
+        tirgger: "blur"
+    }]
 }
+
+
+const handelSubmit = () => {
+    formRef.value.validate((valid) => {
+        if (!valid) {
+            return
+        }
+        formDrawerRef.value.showLoading()
+        createNotice(form)
+            .then(res => {
+                toast("添加公告成功")
+            })
+            .finally(() => {
+                formDrawerRef.value.hideLoading()
+            })
+    })
+}
+
+// 新增
+const handelCreate = () => {
+    formDrawerRef.value.open()
+}
+
 </script>
