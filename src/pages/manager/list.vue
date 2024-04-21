@@ -1,5 +1,25 @@
 <template>
     <el-card shadow="always" :body-style="{ padding: '20px' }">
+        <el-form :model="searchForm" label-width="80px" class="mb-3">
+            <el-row :gutter="20">
+                <el-col :span="8" :offset="0">
+                    <el-form-item label="">
+                        <el-input placeholder="管理员名称" v-model="searchForm.keyword" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+
+                <el-col :span="8" :offset="8">
+                    <div class="flex items-center justify-end">
+                        <el-form-item size="small">
+                            <el-button type="primary" @click="getData">搜索</el-button>
+                            <el-button @click="resetSearchForm">重置</el-button>
+                        </el-form-item>
+                    </div>
+
+                </el-col>
+            </el-row>
+        </el-form>
+
         <div class="flex items-center  justify-between mb-4">
             <el-button type="primary" size="default" @click="handelCreate">新增</el-button>
 
@@ -38,7 +58,7 @@
                 <template #default="{ row }">
                     <div>
                         <el-switch :modelValue="row.status" :active-value="1" :inactive-value="0">
-                                
+
                         </el-switch>
                     </div>
                 </template>
@@ -81,7 +101,6 @@
 <script setup>
 import { ref, reactive, computed } from "vue";
 import {
-    getNoticeList,
     createNotice,
     updateNotice,
     deleteNotice
@@ -90,7 +109,10 @@ import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
 import { getManagerList } from "~/api/manager";
 
-
+const searchForm = reactive({
+    limit: 10,
+    keyword: ""
+})
 const tableData = ref([])
 
 const loading = ref(false)
@@ -104,10 +126,7 @@ function getData(p = null) {
         currentPage.value = p
     }
     loading.value = true
-    getManagerList(currentPage.value, {
-        limit: 10,
-        keyWord: "ceshi"
-    })
+    getManagerList(currentPage.value, searchForm)
         .then(res => {
             tableData.value = res.list
             total.value = res.totalCount
@@ -202,4 +221,10 @@ const handelDelete = (id) => {
             loading.value = false
         })
 }
+
+// 
+const resetSearchForm = (() => {
+    searchForm.keyword = ""
+    getData()
+})
 </script>
