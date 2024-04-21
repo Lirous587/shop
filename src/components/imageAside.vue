@@ -12,7 +12,7 @@
                 :total="total" />
         </div>
     </el-aside>
-    <FormDrawer closeAble="true" :title="drawerTitle" ref="formDrawerRef" @submit="handleSubmit">
+    <FormDrawer :closeAble="true" :title="drawerTitle" ref="formDrawerRef" @submit="handleSubmit">
         <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
             <el-form-item label="分类名称" prop="name">
                 <el-input v-model="form.name"></el-input>
@@ -23,7 +23,6 @@
         </el-form>
     </FormDrawer>
 </template>
-
 <script setup>
 import AsideList from '~/components/AsideList.vue'
 import {

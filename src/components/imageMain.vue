@@ -32,12 +32,11 @@
         </div>
     </el-main>
 
-    <el-drawer v-model="drawer" title="上传图片" :direction="direction" :before-close="handleClose">
-        <UploadFile :data="{ 'image_class_id':imageClassID }" @success="handelUploadSuccess"></UploadFile>
+    <el-drawer v-model="drawer" title="上传图片">
+        <UploadFile :data="{ 'image_class_id': imageClassID }" @success="handelUploadSuccess"></UploadFile>
     </el-drawer>
 
 </template>
-
 
 <script setup>
 import { ref } from "vue"

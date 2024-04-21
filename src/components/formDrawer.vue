@@ -1,12 +1,11 @@
 <template>
     <el-drawer v-model="showDrawer" :title="title" :size="size" :close-on-click-modal=closeAble
-        :destroy-on-close="destroyOnClose">
+        :destroy-on-close="destroyOnClose" :append-to-body="true">
         <div class="formDrawer">
             <div class="body">
                 <slot>
                 </slot>
             </div>
-
             <div class="actions">
                 <el-button type="primary" :loading="loading" @click="submit"> {{ confirmText }}</el-button>
                 <el-button type="defalut" @click="close">取 消</el-button>
@@ -14,7 +13,7 @@
         </div>
     </el-drawer>
 </template>
-
+ 
 <script setup>
 import { ref } from "vue"
 const showDrawer = ref(false)
@@ -34,7 +33,7 @@ const props = defineProps({
     },
     closeAble: {
         type: Boolean,
-        default:false
+        default: false
     }
 })
 //加载状态
@@ -51,7 +50,6 @@ const close = () => showDrawer.value = false
 //提交
 const emit = defineEmits(["submit"])
 const submit = () => emit("submit")
-
 
 //向父组件暴露以下方式
 defineExpose({
