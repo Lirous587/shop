@@ -68,8 +68,8 @@ const loading = ref(false)
 const currentPage = ref(1)
 const total = ref(0)
 
-function getData(p = null) {
-    if (typeof p == Number) {
+const getData = (p) => {
+    if (typeof p === 'number') {
         currentPage.value = p
     }
     loading.value = true
@@ -109,7 +109,6 @@ const rules = {
 
 const editId = ref(0)
 const drawerTitle = computed(() => editId.value ? "修改" : "新增")
-
 
 
 const handelSubmit = () => {

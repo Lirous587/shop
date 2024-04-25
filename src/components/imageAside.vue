@@ -74,6 +74,7 @@ const handleCreate = () => {
     form.name = ""
     form.order = 50
     form.id = 0
+    editId.value = null
     formDrawerRef.value.open()
 }
 

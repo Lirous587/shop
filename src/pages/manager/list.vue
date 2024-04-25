@@ -36,7 +36,7 @@
             <el-table-column label="管理员">
                 <template #default="{ row }">
                     <div class="flex items-center">
-                        <el-avatar :size="40" :src="row.avatar" @error="errorHandler">
+                        <el-avatar :size="40" :src="row.avatar">
                             <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
                         </el-avatar>
                         <div class="ml-3">
@@ -57,8 +57,8 @@
             <el-table-column label="状态">
                 <template #default="{ row }">
                     <div>
-                        <el-switch :modelValue="row.status" :active-value="1" :inactive-value="0">
-
+                        <el-switch v-loading="row.statusLoading" :modelValue="row.status" :active-value="1"
+                            :inactive-value="0" :disabled="row.super == 1" @change="handelStatusChange($event, row)">
                         </el-switch>
                     </div>
                 </template>
@@ -107,7 +107,10 @@ import {
 } from "~/api/notice";
 import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
-import { getManagerList } from "~/api/manager";
+import {
+    getManagerList,
+    updateManagerStatus
+} from "~/api/manager";
 
 const searchForm = reactive({
     limit: 10,
@@ -122,12 +125,15 @@ const currentPage = ref(1)
 const total = ref(0)
 
 function getData(p = null) {
-    if (typeof p == Number) {
+    if (typeof p == 'number') {
         currentPage.value = p
     }
     loading.value = true
     getManagerList(currentPage.value, searchForm)
         .then(res => {
+            tableData.value = res.list.map(o => {
+                o.statusLoading = false
+            })
             tableData.value = res.list
             total.value = res.totalCount
         })
@@ -222,9 +228,22 @@ const handelDelete = (id) => {
         })
 }
 
-// 
+// 重置搜索
 const resetSearchForm = (() => {
     searchForm.keyword = ""
     getData()
 })
+
+//修改状态
+const handelStatusChange = (status, row) => {
+    row.statusLoading = true
+    updateManagerStatus(row.id, status)
+        .then(res => {
+            toast("修改状态成功")
+            row.status = status
+        })
+        .finally(() => {
+            row.statusLoading = false
+        })
+}
 </script>
