@@ -6,14 +6,14 @@
                 <el-button type="warning" size="small" @click="handleOpenUpload">上传图片</el-button>
             </el-header>
             <el-container>
-                <ImageAside ref="ImageAsideRef" @change="handeleAsideChange"></ImageAside>
+                <ImageAside ref="ImageAsideRef" @change="handelAsideChange"></ImageAside>
                 <ImageMain ref="ImageMainRef"></ImageMain>
             </el-container>
         </el-container>
     </div>
 </template>
 
-<style>
+<style scope>
 .image-header {
     border-bottom: 1px solid #eeeeee;
     @apply flex items-center;
@@ -32,7 +32,7 @@ const ImageMainRef = ref(null)
 const handleOpenCreate = () => ImageAsideRef.value.handleCreate()
 const handleOpenUpload = () => ImageMainRef.value.openUploadFile()
 
-const handeleAsideChange = (imageClassID) => {
+const handelAsideChange = (imageClassID) => {
     ImageMainRef.value.loadData(imageClassID)
 }
 </script>

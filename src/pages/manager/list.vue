@@ -85,7 +85,7 @@
         </div>
 
         <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
-            <el-form :model="form" ref="formRef" :rules="rules">
+            <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
                 <el-form-item label="用户名" prop="username">
                     <el-input v-model="form.username" placeholder="用户名"></el-input>
                 </el-form-item>
@@ -95,7 +95,7 @@
                 </el-form-item>
 
                 <el-form-item label="头像" prop="avatar">
-                    <el-input v-model="form.avatar" placeholder="头像"></el-input>
+                    <ChooseImage></ChooseImage>
                 </el-form-item>
 
                 <el-form-item label="所属角色" prop="role_id">
@@ -119,6 +119,7 @@
 import { ref, reactive, computed } from "vue";
 import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
+import ChooseImage from "~/components/ChooseImage.vue"
 import {
     getManagerList,
     updateManagerStatus,
@@ -126,6 +127,7 @@ import {
     updateManager,
     deleteManager
 } from "~/api/manager";
+
 
 const searchForm = reactive({
     limit: 10,

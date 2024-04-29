@@ -45,7 +45,7 @@
    </el-row>
 </template>
 
-<script  setup>
+<script setup>
 import { ref, reactive,onMounted,onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
