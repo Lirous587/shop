@@ -6,12 +6,15 @@ export function login(username, password) {
         password
     })
 }
+
 export function getinfo() {
     return axios.post("/admin/getinfo")
 }
+
 export function logout() {
     return axios.post("/admin/logout")
 }
+
 export function updatePassword(data) {
     return axios.post("/admin/updatepassword", data)
 }
@@ -35,4 +38,17 @@ export function updateManagerStatus(id,status) {
     return axios.post(`/admin/manager/${id}/update_status`, {
         status
     })
+}
+
+export function createManager(data) {
+    return axios.post(`/admin/manager`,data)
+}
+
+export function updateManager(id,data) {
+    return axios.post(`/admin/manager/${id}`,data)
+    
+}
+
+export function deleteManager(id) {
+    return axios.post(`/admin/manager/${id}/delete`)
 }

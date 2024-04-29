@@ -47,7 +47,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="所属管理员" width="380">
+            <el-table-column label="所属角色" width="380">
                 <template #default="{ row }">
                     <!-- {{ row.role ? row.role.name : ""}} -->
                     {{ row.role?.name || "-" }}
@@ -86,11 +86,28 @@
 
         <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
             <el-form :model="form" ref="formRef" :rules="rules">
-                <el-form-item label="公告标题" prop="title">
-                    <el-input v-model="form.title" placeholder="公告标题"></el-input>
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="form.username" placeholder="用户名"></el-input>
                 </el-form-item>
-                <el-form-item label="公告内容" prop="content">
-                    <el-input v-model="form.content" placeholder="公告内容" type="textarea" :rows="5"></el-input>
+
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="form.password" placeholder="密码"></el-input>
+                </el-form-item>
+
+                <el-form-item label="头像" prop="avatar">
+                    <el-input v-model="form.avatar" placeholder="头像"></el-input>
+                </el-form-item>
+
+                <el-form-item label="所属角色" prop="role_id">
+                    <el-select v-model="form.role_id" placeholder="选择所属角色">
+                        <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="状态" prop="status">
+                    <el-switch v-model="form.status" :active-value="1" :inactive-value="0" @change="">
+                    </el-switch>
                 </el-form-item>
             </el-form>
         </FormDrawer>
@@ -100,16 +117,14 @@
 
 <script setup>
 import { ref, reactive, computed } from "vue";
-import {
-    createNotice,
-    updateNotice,
-    deleteNotice
-} from "~/api/notice";
 import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
 import {
     getManagerList,
-    updateManagerStatus
+    updateManagerStatus,
+    createManager,
+    updateManager,
+    deleteManager
 } from "~/api/manager";
 
 const searchForm = reactive({
@@ -124,6 +139,9 @@ const loading = ref(false)
 const currentPage = ref(1)
 const total = ref(0)
 
+const roles = ref([])
+
+// 获取数据
 function getData(p = null) {
     if (typeof p == 'number') {
         currentPage.value = p
@@ -136,6 +154,7 @@ function getData(p = null) {
             })
             tableData.value = res.list
             total.value = res.totalCount
+            roles.value = res.roles
         })
         .finally(() => {
             loading.value = false
@@ -149,22 +168,15 @@ getData()
 const formDrawerRef = ref(false)
 const formRef = ref(null)
 const form = reactive({
-    title: "",
-    content: ""
+    username: "",
+    password: "",
+    role_id: "",
+    status: 1,
+    avatar: ""
 })
+
 // 表单验证
-const rules = {
-    title: [{
-        required: true,
-        message: "公告标题不能为空",
-        tirgger: "blur"
-    }],
-    content: [{
-        required: true,
-        message: "公告内容不能为空",
-        tirgger: "blur"
-    }]
-}
+const rules = {}
 
 const editId = ref(0)
 const drawerTitle = computed(() => editId.value ? "修改" : "新增")
@@ -175,7 +187,7 @@ const handelSubmit = () => {
     formRef.value.validate((valid) => {
         if (!valid) return
 
-        const fun = editId.value ? updateNotice(editId.value, form) : createNotice(form)
+        const fun = editId.value ? updateManager(editId.value, form) : createManager(form)
 
         formDrawerRef.value.showLoading()
 
@@ -188,6 +200,7 @@ const handelSubmit = () => {
             })
     })
 }
+
 // 重置表单
 function resetForm(row) {
     if (formRef.value) {
@@ -204,21 +217,26 @@ function resetForm(row) {
 const handelCreate = () => {
     editId.value = 0
     resetForm({
-        title: "",
-        content: ""
+        username: "",
+        password: "",
+        role_id: "",
+        status: 1,
+        avatar: ""
     })
     formDrawerRef.value.open()
 }
+
 // 更新
 const handelEdit = (row) => {
     editId.value = row.id
     resetForm(row)
     formDrawerRef.value.open()
 }
+
 // 删除
 const handelDelete = (id) => {
     loading.value = true
-    deleteNotice(id)
+    deleteManager(id)
         .then(() => {
             toast("删除成功")
             getData()
