@@ -9,7 +9,7 @@
                             class="w-full h-[150px]"></el-image>
                         <div class="image-title">{{ item.name }}</div>
                         <div class="flex justify-center items-center py-2">
-                            <el-checkbox v-model="item.checked" @change="handelChooseChange(item)">
+                            <el-checkbox v-if="openChoose" v-model="item.checked" @change="handelChooseChange(item)">
                             </el-checkbox>
                             <el-button type="primary" size="small" text @click="handleEdit(item)">
                                 重命名
@@ -131,6 +131,8 @@ const handelUploadSuccess = () => {
     getData(1)
 }
 
+
+
 // 选中的图片
 const emit = defineEmits(["choose"])
 const checkedImage = computed(() => {
@@ -143,8 +145,15 @@ const handelChooseChange = (item) => {
         item.checked = false
         return toast("最多只能选中一张", "error")
     }
-    emit("choose",checkedImage.value)
+    emit("choose", checkedImage.value)
 }
+
+defineProps({
+    openChoose:{
+        type: Boolean,
+        default:false
+    }
+})
 
 defineExpose({
     loadData,
@@ -153,34 +162,34 @@ defineExpose({
 </script>
 
 <style scoped>
-    .image-main {
-        border-right: 1px solid #eeeeee;
-        position: relative;
-    }
+.image-main {
+    border-right: 1px solid #eeeeee;
+    position: relative;
+}
 
-    .image-main .top {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        bottom: 50px;
-        overflow-y: auto;
-    }
+.image-main .top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 50px;
+    overflow-y: auto;
+}
 
-    .image-main .bottom {
-        position: absolute;
-        bottom: 0;
-        height: 50px;
-        left: 0;
-        right: 0;
-        @apply flex justify-center justify-center;
-    }
+.image-main .bottom {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    right: 0;
+    @apply flex justify-center justify-center;
+}
 
-    .image-title {
-        position: absolute;
-        top: 125px;
-        left: -1px;
-        right: -1px;
-        @apply text-sm truncate text-gray-100 bg-opacity-50 bg-gray-800 px-2 py-1;
-    }
+.image-title {
+    position: absolute;
+    top: 125px;
+    left: -1px;
+    right: -1px;
+    @apply text-sm truncate text-gray-100 bg-opacity-50 bg-gray-800 px-2 py-1;
+}
 </style>

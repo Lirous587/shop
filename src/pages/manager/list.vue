@@ -37,7 +37,6 @@
                 <template #default="{ row }">
                     <div class="flex items-center">
                         <el-avatar :size="40" :src="row.avatar">
-                            <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
                         </el-avatar>
                         <div class="ml-3">
                             <h6> {{ row.username }}</h6>
@@ -95,7 +94,7 @@
                 </el-form-item>
 
                 <el-form-item label="头像" prop="avatar">
-                    <ChooseImage></ChooseImage>
+                    <ChooseImage v-model="form.avatar"/>
                 </el-form-item>
 
                 <el-form-item label="所属角色" prop="role_id">
