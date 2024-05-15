@@ -132,7 +132,6 @@ const handelUploadSuccess = () => {
 }
 
 
-
 // 选中的图片
 const emit = defineEmits(["choose"])
 const checkedImage = computed(() => {

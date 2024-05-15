@@ -1,13 +1,23 @@
 <template>
-    <li v-for="n in evenNumbers">{{ n }}</li>
-    <el-button type="primary" size="small" class="mt-4" @click="changeArrHandel">修改</el-button>
+  <button @click="show = !show">Toggle</button>
+  <transition>
+    <p v-if="show">hello</p>
+  </transition>
 </template>
-
 <script setup>
-import { ref } from "vue"
-const numbers = ref([1, 2, 3, 4, 5])
+import { ref } from 'vue';
+const show = ref(false)
 
-const evenNumbers = computed(() => {
-  return numbers.value.filter((n) => n % 2 === 0)
-})
 </script>
+
+<style>
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+</style>

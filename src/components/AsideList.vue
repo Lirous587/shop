@@ -33,8 +33,9 @@ defineProps({
     }
 });
 
-defineEmits(["edit", "delete"]);
+defineEmits(["edit", "delete"])
 </script>
+
 <style>
 .aside-list {
     border-bottom: 1px solid #f4f4f4;

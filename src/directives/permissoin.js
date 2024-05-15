@@ -15,7 +15,7 @@ export default {
     install(app) {
         app.directive("permission", {
             mounted(el, binding) {
-                hasPermission(binding.value,el)
+                hasPermission(binding.value, el)
             },
         })
     }
