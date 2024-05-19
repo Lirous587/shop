@@ -26,7 +26,7 @@ import FTagList from "~/layout/components/FTagList.vue";
 </script>
 
 
-<style>
+<style scoped>
 .el-aside {
     transition: all 0.2s;
 }

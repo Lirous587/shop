@@ -94,7 +94,7 @@
                 </el-form-item>
 
                 <el-form-item label="头像" prop="avatar">
-                    <ChooseImage v-model="form.avatar"/>
+                    <ChooseImage v-model="form.avatar" />
                 </el-form-item>
 
                 <el-form-item label="所属角色" prop="role_id">
@@ -127,42 +127,35 @@ import {
     deleteManager
 } from "~/api/manager";
 
-
-const searchForm = reactive({
-    limit: 10,
-    keyword: ""
-})
-const tableData = ref([])
-
-const loading = ref(false)
-
-//分页
-const currentPage = ref(1)
-const total = ref(0)
+import {
+    useInitTable
+} from "~/composables/useCommon.js"
 
 const roles = ref([])
 
-// 获取数据
-function getData(p = null) {
-    if (typeof p == 'number') {
-        currentPage.value = p
+const {
+    searchForm,
+    resetSearchForm,
+    tableData,
+    loading,
+    currentPage,
+    total,
+    limit,
+    getData
+} = useInitTable({
+    getList: getManagerList,
+    onGetListSuccess: (res) => {
+        tableData.value = res.list.map(o => {
+            o.statusLoading = false
+            return o
+        })
+        total.value = res.totalCount
+        roles.value = res.roles
+    },
+    searchForm: {
+        keyword:""
     }
-    loading.value = true
-    getManagerList(currentPage.value, searchForm)
-        .then(res => {
-            tableData.value = res.list.map(o => {
-                o.statusLoading = false
-            })
-            tableData.value = res.list
-            total.value = res.totalCount
-            roles.value = res.roles
-        })
-        .finally(() => {
-            loading.value = false
-        })
-}
-
-getData()
+})
 
 
 // 表单部分
@@ -246,12 +239,6 @@ const handelDelete = (id) => {
             loading.value = false
         })
 }
-
-// 重置搜索
-const resetSearchForm = (() => {
-    searchForm.keyword = ""
-    getData()
-})
 
 //修改状态
 const handelStatusChange = (status, row) => {

@@ -60,30 +60,25 @@ import {
 import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
 
-const tableData = ref([])
+import {
+    useInitTable
+} from "~/composables/useCommon.js"
 
-const loading = ref(false)
+const roles = ref([])
 
-//分页
-const currentPage = ref(1)
-const total = ref(0)
+const {
+    searchForm,
+    resetSearchForm,
+    tableData,
+    loading,
+    currentPage,
+    total,
+    limit,
+    getData
+} = useInitTable({
+    getList: getNoticeList,
+})
 
-const getData = (p) => {
-    if (typeof p === 'number') {
-        currentPage.value = p
-    }
-    loading.value = true
-    getNoticeList(currentPage.value)
-        .then(res => {
-            tableData.value = res.list
-            total.value = res.totalCount
-        })
-        .finally(() => {
-            loading.value = false
-        })
-}
-
-getData()
 
 
 // 表单部分
@@ -93,6 +88,7 @@ const form = reactive({
     title: "",
     content: ""
 })
+
 // 表单验证
 const rules = {
     title: [{

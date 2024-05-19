@@ -20,7 +20,7 @@ export function updatePassword(data) {
 }
 
 export function getManagerList(page, query = {
-    limit: 10,
+    limit,
     keyword
 }) {
     let q = []
@@ -34,19 +34,19 @@ export function getManagerList(page, query = {
     return axios.get(`/admin/manager/${page}${r}`)
 }
 
-export function updateManagerStatus(id,status) {
+export function updateManagerStatus(id, status) {
     return axios.post(`/admin/manager/${id}/update_status`, {
         status
     })
 }
 
 export function createManager(data) {
-    return axios.post(`/admin/manager`,data)
+    return axios.post(`/admin/manager`, data)
 }
 
-export function updateManager(id,data) {
-    return axios.post(`/admin/manager/${id}`,data)
-    
+export function updateManager(id, data) {
+    return axios.post(`/admin/manager/${id}`, data)
+
 }
 
 export function deleteManager(id) {
