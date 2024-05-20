@@ -113,8 +113,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
-import { toast } from "~/composables/util.js"
+import { ref, reactive } from "vue";
 import FormDrawer from "~/components/FormDrawer.vue"
 import ChooseImage from "~/components/ChooseImage.vue"
 import {
@@ -141,9 +140,13 @@ const {
     loading,
     currentPage,
     total,
-    getData
+    getData,
+    handelDelete,
+    handelStatusChange
 } = useInitTable({
     getList: getManagerList,
+    updateStatus: updateManagerStatus,
+    delete: deleteManager,
     onGetListSuccess: (res) => {
         tableData.value = res.list.map(o => {
             o.statusLoading = false
@@ -180,29 +183,4 @@ const {
     update: updateManager,
 })
 
-// 删除
-const handelDelete = (id) => {
-    loading.value = true
-    deleteManager(id)
-        .then(() => {
-            toast("删除成功")
-            getData()
-        })
-        .finally(() => {
-            loading.value = false
-        })
-}
-
-//修改状态
-const handelStatusChange = (status, row) => {
-    row.statusLoading = true
-    updateManagerStatus(row.id, status)
-        .then(res => {
-            toast("修改状态成功")
-            row.status = status
-        })
-        .finally(() => {
-            row.statusLoading = false
-        })
-}
 </script>

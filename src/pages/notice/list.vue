@@ -57,7 +57,6 @@ import {
     updateNotice,
     deleteNotice
 } from "~/api/notice";
-import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
 
 import {
@@ -71,11 +70,12 @@ const {
     loading,
     currentPage,
     total,
-    getData
+    getData,
+    handelDelete
 } = useInitTable({
     getList: getNoticeList,
+    delete: deleteNotice
 })
-
 
 // form
 const {
@@ -108,17 +108,4 @@ const {
         }]
     }
 })
-
-// 删除
-const handelDelete = (id) => {
-    loading.value = true
-    deleteNotice(id)
-        .then(() => {
-            toast("删除成功")
-            getData()
-        })
-        .finally(() => {
-            loading.value = false
-        })
-}
 </script>
