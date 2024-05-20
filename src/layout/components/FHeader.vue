@@ -16,7 +16,6 @@
 
 
         <div class="ml-auto flex items-center">
-
             <el-tooltip effect="dark" content="全屏" placement="bottom">
                 <el-icon class="icon-btn" @click="toggle">
                     <FullScreen v-if="!isFullscreen" />
@@ -65,6 +64,7 @@
 <script setup>
 import formDrawer from "~/components/formDrawer.vue";
 import { useFullscreen } from '@vueuse/core'
+import { useStore } from 'vuex';
 import { onMounted, onBeforeMount } from 'vue'
 import { useLogout, useRepassword } from "~/components/useManager"
 const {
@@ -75,6 +75,7 @@ const {
     onSubmit,
     updatePasswordForm,
 } = useRepassword()
+const store = useStore()
 
 const {
     //是否全屏
@@ -116,34 +117,36 @@ onMounted(() => {
 onBeforeMount(() => {
     document.removeEventListener("keyup", onKeyUp)
 })
-
+onBeforeMount(() => {
+    store.commit('handleAsideWidth')
+})
 </script>
 <style>
-.f-header {
-    @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
-    z-index: 1000;
-    height: 64px;
-}
+    .f-header {
+        @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
+        z-index: 1000;
+        height: 64px;
+    }
 
-.logo {
-    width: 250px;
-    @apply flex justify-center items-center text-xl font-thin;
-}
+    .logo {
+        width: 250px;
+        @apply flex justify-center items-center text-xl font-thin;
+    }
 
-.icon-btn {
-    @apply flex justify-center items-center;
-    width: 42px;
-    height: 64px;
-    cursor: pointer;
-}
+    .icon-btn {
+        @apply flex justify-center items-center;
+        width: 42px;
+        height: 64px;
+        cursor: pointer;
+    }
 
-.icon-btn:hover {
-    @apply bg-indigo-600;
-}
+    .icon-btn:hover {
+        @apply bg-indigo-600;
+    }
 
-.f-header .drop-dowm {
-    height: 64px;
-    cursor: pointer;
-    @apply flex justify-center items-center mx-5;
-}
+    .f-header .drop-dowm {
+        height: 64px;
+        cursor: pointer;
+        @apply flex justify-center items-center mx-5;
+    }
 </style>

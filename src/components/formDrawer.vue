@@ -8,12 +8,12 @@
             </div>
             <div class="actions">
                 <el-button type="primary" :loading="loading" @click="submit"> {{ confirmText }}</el-button>
-                <el-button type="defalut" @click="close">取 消</el-button>
+                <el-button type="default" @click="close">取 消</el-button>
             </div>
         </div>
     </el-drawer>
 </template>
- 
+
 <script setup>
 import { ref } from "vue"
 const showDrawer = ref(false)
@@ -61,21 +61,21 @@ defineExpose({
 </script>
 
 <style>
-.formDrawer {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    @apply flex flex-col;
-}
+    .formDrawer {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        @apply flex flex-col;
+    }
 
-.formDrawer .body {
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-}
+    .formDrawer .body {
+        flex: 1;
+        height: 100%;
+        overflow-y: auto;
+    }
 
-.formDrawer .actions {
-    height: 50px;
-    @apply mt-auto flex items-center;
-}
+    .formDrawer .actions {
+        height: 50px;
+        @apply mt-auto flex items-center;
+    }
 </style>

@@ -53,11 +53,7 @@ const handleSelect = (e) => {
     router.push(e)
 }
 
-
 </script>
-
-
-
 
 <style scoped>
 .f-menu {

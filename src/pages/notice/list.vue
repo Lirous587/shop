@@ -46,11 +46,10 @@
             </el-form>
         </FormDrawer>
     </el-card>
-
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted, watch } from "vue";
 import {
     getNoticeList,
     createNotice,
@@ -64,21 +63,16 @@ import {
     useInitTable
 } from "~/composables/useCommon.js"
 
-const roles = ref([])
 
 const {
-    searchForm,
-    resetSearchForm,
     tableData,
     loading,
     currentPage,
     total,
-    limit,
     getData
 } = useInitTable({
     getList: getNoticeList,
 })
-
 
 
 // 表单部分

@@ -33,12 +33,6 @@ export function useInitTable(opt) {
                 if (opt.onGetListSuccess && typeof opt.onGetListSuccess == "function") {
                     opt.onGetListSuccess(res)
                 } else {
-                    // tableData.value = res.list.map(o => {
-                    //     o.statusLoading = false
-                    //     return o
-                    // })
-                    // total.value = res.totalCount
-                    // roles.value = res.roles
                     tableData.value = res.list
                     total.value = res.totalCount
                 }
