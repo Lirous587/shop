@@ -14,7 +14,8 @@
 
         <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="title" label="公告标题" />
-            <el-table-column prop="create_time" label="发布时间" width="380" />
+            <el-table-column prop="content" label="发布内容" show-overflow-tooltip />
+            <el-table-column prop="create_time" label="发布时间" />
             <el-table-column label="操作" width="150" align="center">
                 <template #default="scope">
                     <el-button type="primary" size="small" text @click="handelEdit(scope.row)">修改</el-button>
@@ -49,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from "vue";
+import { reactive } from "vue";
 import {
     getNoticeList,
     createNotice,
@@ -60,10 +61,11 @@ import { toast } from "~/composables/util.js"
 import FormDrawer from "~/components/FormDrawer.vue"
 
 import {
-    useInitTable
+    useInitTable,
+    useInitForm
 } from "~/composables/useCommon.js"
 
-
+// table
 const {
     tableData,
     loading,
@@ -75,76 +77,38 @@ const {
 })
 
 
-// 表单部分
-const formDrawerRef = ref(false)
-const formRef = ref(null)
-const form = reactive({
-    title: "",
-    content: ""
-})
-
-// 表单验证
-const rules = {
-    title: [{
-        required: true,
-        message: "公告标题不能为空",
-        tirgger: "blur"
-    }],
-    content: [{
-        required: true,
-        message: "公告内容不能为空",
-        tirgger: "blur"
-    }]
-}
-
-const editId = ref(0)
-const drawerTitle = computed(() => editId.value ? "修改" : "新增")
-
-
-const handelSubmit = () => {
-    formRef.value.validate((valid) => {
-        if (!valid) return
-
-        const fun = editId.value ? updateNotice(editId.value, form) : createNotice(form)
-
-        formDrawerRef.value.showLoading()
-
-        fun.then(res => {
-            toast(drawerTitle.value + "成功")
-            getData(editId ? null : 1)
-        })
-            .finally(() => {
-                formDrawerRef.value.hideLoading()
-            })
-    })
-}
-// 重置表单
-function resetForm(row) {
-    if (formRef.value) {
-        formRef.value.clearValidate()
-    }
-    if (row) {
-        for (const key in row) {
-            form[key] = row[key]
-        }
-    }
-}
-
-// 新增
-const handelCreate = () => {
-    editId.value = 0
-    resetForm({
+// form
+const {
+    formDrawerRef,
+    formRef,
+    form,
+    rules,
+    drawerTitle,
+    handelSubmit,
+    handelCreate,
+    handelEdit,
+} = useInitForm({
+    form: reactive({
         title: "",
         content: ""
-    })
-    formDrawerRef.value.open()
-}
-// 更新
-const handelEdit = (row) => {
-    editId.value = row.id
-    resetForm(row)
-    formDrawerRef.value.open()
-}
+    }),
+    getData,
+    create: createNotice,
+    update: updateNotice,
+    rules: {
+        title: [{
+            required: true,
+            message: "公告标题不能为空",
+            tirgger: "blur"
+        }],
+        content: [{
+            required: true,
+            message: "公告内容不能为空",
+            tirgger: "blur"
+        }]
+    }
+})
+
 // 删除
 const handelDelete = (id) => {
     loading.value = true

@@ -7,7 +7,6 @@
                         <el-input placeholder="管理员名称" v-model="searchForm.keyword" clearable></el-input>
                     </el-form-item>
                 </el-col>
-
                 <el-col :span="8" :offset="8">
                     <div class="flex items-center justify-end">
                         <el-form-item size="small">
@@ -15,7 +14,6 @@
                             <el-button @click="resetSearchForm">重置</el-button>
                         </el-form-item>
                     </div>
-
                 </el-col>
             </el-row>
         </el-form>
@@ -124,15 +122,18 @@ import {
     updateManagerStatus,
     createManager,
     updateManager,
-    deleteManager
+    deleteManager,
 } from "~/api/manager";
 
 import {
-    useInitTable
+    useInitTable,
+    useInitForm
 } from "~/composables/useCommon.js"
+
 
 const roles = ref([])
 
+// table
 const {
     searchForm,
     resetSearchForm,
@@ -140,7 +141,6 @@ const {
     loading,
     currentPage,
     total,
-    limit,
     getData
 } = useInitTable({
     getList: getManagerList,
@@ -153,79 +153,32 @@ const {
         roles.value = res.roles
     },
     searchForm: {
-        keyword: ""
+        keyword: "",
     }
 })
 
-
-// 表单部分
-const formDrawerRef = ref(false)
-const formRef = ref(null)
-const form = reactive({
-    username: "",
-    password: "",
-    role_id: "",
-    status: 1,
-    avatar: ""
-})
-
-// 表单验证
-const rules = {}
-
-const editId = ref(0)
-const drawerTitle = computed(() => editId.value ? "修改" : "新增")
-
-
-
-const handelSubmit = () => {
-    formRef.value.validate((valid) => {
-        if (!valid) return
-
-        const fun = editId.value ? updateManager(editId.value, form) : createManager(form)
-
-        formDrawerRef.value.showLoading()
-
-        fun.then(res => {
-            toast(drawerTitle.value + "成功")
-            getData(editId ? null : 1)
-        })
-            .finally(() => {
-                formDrawerRef.value.hideLoading()
-            })
-    })
-}
-
-// 重置表单
-function resetForm(row) {
-    if (formRef.value) {
-        formRef.value.clearValidate()
-    }
-    if (row) {
-        for (const key in row) {
-            form[key] = row[key]
-        }
-    }
-}
-
-// 新增
-const handelCreate = () => {
-    editId.value = 0
-    resetForm({
+// form
+const {
+    formDrawerRef,
+    formRef,
+    form,
+    rules,
+    drawerTitle,
+    handelSubmit,
+    handelCreate,
+    handelEdit,
+} = useInitForm({
+    form: reactive({
         username: "",
         password: "",
         role_id: "",
         status: 1,
         avatar: ""
-    })
-    formDrawerRef.value.open()
-}
-
-// 更新
-const handelEdit = (row) => {
-    editId.value = row.id
-    resetForm(row)
-    formDrawerRef.value.open()
-}
+    }),
+    getData,
+    create: createManager,
+    update: updateManager,
+})
 
 // 删除
 const handelDelete = (id) => {

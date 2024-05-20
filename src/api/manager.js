@@ -23,6 +23,7 @@ export function getManagerList(page, query = {
     limit,
     keyword
 }) {
+    console.log(query.keyword)
     let q = []
     for (const key in query) {
         if (query[key]) {
