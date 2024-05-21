@@ -1,16 +1,8 @@
 <template>
     <el-card shadow="always" :body-style="{ padding: '20px' }">
-        <div class="flex items-center  justify-between mb-4">
-            <el-button type="primary" size="default" @click="handelCreate">新增</el-button>
 
-            <el-tooltip class="box-item" effect="dark" content="Top Right prompts info" placement="top-end">
-                <el-button text @click="getData">
-                    <el-icon :size="20">
-                        <Refresh />
-                    </el-icon>
-                </el-button>
-            </el-tooltip>
-        </div>
+        <!-- 新增 | 刷新 -->
+        <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
 
         <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="title" label="公告标题" />
@@ -58,6 +50,7 @@ import {
     deleteNotice
 } from "~/api/notice";
 import FormDrawer from "~/components/FormDrawer.vue"
+import ListHeader from "~/components/ListHeader.vue";
 
 import {
     useInitTable,
