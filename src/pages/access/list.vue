@@ -8,7 +8,7 @@
             <template #default="{ node, data }">
                 <div class="flex flex-1">
                     <div class="flex items-center">
-                        <el-tag size="normal" :type="data.menu ? '' : 'info'">{{ data.menu ? "菜单" : "权限" }}</el-tag>
+                        <el-tag  :type="data.menu ? '' : 'info'">{{ data.menu ? "菜单" : "权限" }}</el-tag>
                     </div>
                     <div class="flex items-center ml-3">
                         <el-icon v-if="data.icon" :size="16">
@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="ml-auto space-x-3">
-                        <el-switch :modelValue="status" :active-value="1" :inactive-value="0" @change="">
+                        <el-switch :modelValue="data.status" :active-value="1" :inactive-value="0" @change="">
                         </el-switch>
                         <el-button type="primary" text size="small" @click="">修改</el-button>
                         <el-button type="primary" text size="small" @click="">增加</el-button>
