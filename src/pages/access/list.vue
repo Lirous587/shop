@@ -48,8 +48,8 @@
             <el-form-item label="名称" prop="name">
                 <el-input v-model="form.name" style="width: 30%;" placeholder="名称"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.menu == 1" label="菜单图标" prop="icon">
-                <el-input v-model="form.icon" placeholder="菜单图标"></el-input>
+            <el-form-item v-if="form.menu == 1"  label="菜单图标" prop="icon">
+                <IconSelect @update:modelValue="iconSelectHandel" :modelValue="form.icon"></IconSelect>
             </el-form-item>
             <el-form-item v-if="form.menu == 1 && form.rule_id > 0" label="前端路由" prop="frontpath">
                 <el-input v-model="form.frontpath" placeholder="前端路由"></el-input>
@@ -75,6 +75,8 @@
 <script setup>
 import ListHeader from "~/components/ListHeader.vue";
 import FormDrawer from "~/components/FormDrawer.vue"
+import IconSelect from "~/components/IconSelect.vue"
+
 import {
     getRuleList,
     createRule,
@@ -97,7 +99,6 @@ const {
 } = useInitTable({
     getList: getRuleList,
     onGetListSuccess: (res) => {
-        console.log(res)
         options.value = res.rules
         tableData.value = res.list
         defaultExpandedKeys.value = res.list.map(o => o.id)
@@ -132,6 +133,10 @@ const {
     update: updateRule,
     rules: {}
 })
+
+const iconSelectHandel = (icon) => {
+    form.icon = icon
+}
 
 
 </script>
