@@ -21,11 +21,22 @@
                     </div>
 
                     <div class="ml-auto space-x-3">
-                        <el-switch :modelValue="data.status" :active-value="1" :inactive-value="0" @change="">
-                        </el-switch>
+                        <span @click.stop="() => { }">
+                            <el-switch :modelValue="data.status" :active-value="1" :inactive-value="0"
+                                @change="handelStatusChange($event, data)">
+                            </el-switch>
+                        </span>
+
                         <el-button type="primary" text size="small" @click.stop="handelEdit(data)">修改</el-button>
-                        <el-button type="primary" text size="small" @click="">增加</el-button>
-                        <el-button type="primary" text size="small" @click="">删除</el-button>
+                        <el-button type="primary" text size="small" @click.stop="addChild(data.id)">增加</el-button>
+                        <span @click.stop="() => { }">
+                            <el-popconfirm title="是否要删除该菜单?" confirm-button-text="确定" cancel-button-text="取消"
+                                @confirm="handelDelete(data.id)">
+                                <template #reference>
+                                    <el-button type="default" size="small" text>删除</el-button>
+                                </template>
+                            </el-popconfirm>
+                        </span>
                     </div>
                 </div>
             </template>
@@ -46,9 +57,9 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="名称" prop="name">
-                <el-input v-model="form.name" style="width: 30%;" placeholder="名称"></el-input>
+                <el-input v-model="form.name" style="width: 40%;" placeholder="名称"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.menu == 1"  label="菜单图标" prop="icon">
+            <el-form-item v-if="form.menu == 1" label="菜单图标" prop="icon">
                 <IconSelect @update:modelValue="iconSelectHandel" :modelValue="form.icon"></IconSelect>
             </el-form-item>
             <el-form-item v-if="form.menu == 1 && form.rule_id > 0" label="前端路由" prop="frontpath">
@@ -80,7 +91,9 @@ import IconSelect from "~/components/IconSelect.vue"
 import {
     getRuleList,
     createRule,
-    updateRule
+    updateRuleStatus,
+    updateRule,
+    deleteRule,
 } from "~/api/rule.js";
 import {
     useInitTable,
@@ -96,8 +109,12 @@ const {
     tableData,
     loading,
     getData,
+    handelDelete,
+    handelStatusChange
 } = useInitTable({
     getList: getRuleList,
+    updateStatus: updateRuleStatus,
+    delete: deleteRule,
     onGetListSuccess: (res) => {
         options.value = res.rules
         tableData.value = res.list
@@ -119,7 +136,7 @@ const {
 } = useInitForm({
     form: reactive({
         rule_id: 0,
-        menu: 0,
+        menu: 1,
         name: "",
         condition: "",
         method: "",
@@ -134,10 +151,16 @@ const {
     rules: {}
 })
 
+
 const iconSelectHandel = (icon) => {
     form.icon = icon
 }
 
+const addChild = (id) => {
+    handelCreate()
+    form.rule_id = id
+    form.status = 1
+}
 
 </script>
 

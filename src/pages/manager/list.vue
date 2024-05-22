@@ -94,7 +94,7 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                    <el-switch v-model="form.status" :active-value="1" :inactive-value="0" @change="">
+                    <el-switch v-model="form.status" :active-value="1" :inactive-value="0">
                     </el-switch>
                 </el-form-item>
             </el-form>
