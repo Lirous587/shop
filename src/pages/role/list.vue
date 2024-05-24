@@ -58,7 +58,8 @@
             <!-- node-key是节点标识=> id  default-expanded-keys是节点标识数组 => 用来指定 哪些节点被展开  -->
             <el-tree-v2 v-loading="treeLoading" ref="elTreeRef" node-key="id"
                 :default-expanded-keys="defaultExpandedKeys" :data="ruleList"
-                :props="{ label: 'name', children: 'child' }" show-checkbox :height="treeHeight">
+                :props="{ label: 'name', children: 'child' }" show-checkbox :height="treeHeight" @check="handelCheck"
+                :checkStrictly>
                 <template #default="{ node, data }">
                     <div class="flex items-center">
                         <el-tag :type="data.menu ? 'primary' : 'info'" size="small">
@@ -87,11 +88,12 @@ import {
 
 import FormDrawer from "~/components/FormDrawer.vue"
 import ListHeader from "~/components/ListHeader.vue";
-
+import { toast } from "~/composables/util.js"
 import {
     useInitTable,
     useInitForm
 } from "~/composables/useCommon.js"
+import { setRoleRules } from "~/api/role";
 
 // table
 const {
@@ -145,27 +147,44 @@ const defaultExpandedKeys = ref([])
 // 获取当前角色拥有的权限id
 const ruleIds = ref([])
 const treeLoading = ref(true)
+const checkStrictly = ref(false)
 
 const openSetRole = (row) => {
     ruleIds.value = []
     treeLoading.value = true
     roleId.value = row.id
     treeHeight.value = window.innerHeight - 190
+    checkStrictly.value = true
     getRuleList(1).then((res) => {
         defaultExpandedKeys.value = res.list.map(o => o.id)
         ruleList.value = res.list
         setRoleformDrawerRef.value.open()
+
         // 获取当前角色拥有的权限id
         ruleIds.value = row.rules.map(o => o.id)
         setTimeout(() => {
             elTreeRef.value.setCheckedKeys(ruleIds.value)
+            checkStrictly.value = false
             treeLoading.value = false
-        }, 1500);
+        }, 500);
     })
 }
 
 const handelSetRoleSubmit = () => {
-
+    setRoleformDrawerRef.value.showLoading()
+    setRoleRules(roleId.value, ruleIds.value)
+        .then((res) => {
+            toast("配置成功")
+            getData()
+            setRoleformDrawerRef.value.close()
+        })
+        .finally(() => {
+            setRoleformDrawerRef.value.hideLoading()
+        })
 }
 
+const handelCheck = (...e) => {
+    const { checkedKeys, halfCheckedKeys } = e[1]
+    ruleIds.value = [...checkedKeys, ...halfCheckedKeys]
+}
 </script>

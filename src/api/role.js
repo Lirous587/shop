@@ -22,8 +22,9 @@ export function updateRoleStatus(id, status) {
     })
 }
 
-export function updateRoleConfig(id, status) {
+export function setRoleRules(id, rule_ids) {
     return axios.post(`/admin/role/set_rules`, {
-        status
+        id,
+        rule_ids
     })
 }
