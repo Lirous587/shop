@@ -54,8 +54,9 @@
 
 
         <!-- 权限配置 -->
-        <FormDrawer ref="setRoleformDrawerRef" :closeAble="true" title="权限配置" @submit="handelSetSubmit">
-
+        <FormDrawer ref="setRoleformDrawerRef" :closeAble="true" title="权限配置" @submit="handelSetRoleSubmit">
+            <el-tree-v2 style="max-width: 600px" :data="roleList" :props="{ label: 'name', children: 'child' }"
+                show-checkbox :height="treeHeight" />
         </FormDrawer>
     </el-card>
 </template>
@@ -69,6 +70,9 @@ import {
     deleteRole,
     updateRoleStatus
 } from "~/api/role";
+import {
+    getRuleList
+} from "~/api/rule.js"
 
 import FormDrawer from "~/components/FormDrawer.vue"
 import ListHeader from "~/components/ListHeader.vue";
@@ -122,14 +126,21 @@ const {
 })
 
 const setRoleformDrawerRef = ref(null)
-
-const openSetRole = () => {
-    setRoleformDrawerRef.value.open()   
+const roleList = ref([])
+const treeHeight = ref(0)
+const roleId = ref(0)
+const openSetRole = (row) => {
+    roleId.value = row.id
+    treeHeight.value = window.innerHeight - 170
+    getRuleList(1).then((res) => {
+        roleList.value = res.list
+        setRoleformDrawerRef.value.open()
+    })
 }
 
-const handelSetSubmit = () => {
+
+const handelSetRoleSubmit = () => {
 
 }
-
 
 </script>
