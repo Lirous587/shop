@@ -4,7 +4,6 @@ export function getstatistics1() {
     return axios.get("/admin/statistics1")
 }
 
-
 export function getstatistics2() {
     return axios.get("/admin/statistics2")
 }

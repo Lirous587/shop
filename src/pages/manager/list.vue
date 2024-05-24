@@ -17,7 +17,7 @@
                 </el-col>
             </el-row>
         </el-form>
-        
+
         <!-- 新增 | 刷新 -->
         <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
 
@@ -44,11 +44,9 @@
 
             <el-table-column label="状态">
                 <template #default="{ row }">
-                    <div>
-                        <el-switch v-loading="row.statusLoading" :modelValue="row.status" :active-value="1"
-                            :inactive-value="0" :disabled="row.super == 1" @change="handelStatusChange($event, row)">
-                        </el-switch>
-                    </div>
+                    <el-switch v-loading="row.statusLoading" :modelValue="row.status" :active-value="1"
+                        :inactive-value="0" :disabled="row.super == 1" @change="handelStatusChange($event, row)">
+                    </el-switch>
                 </template>
             </el-table-column>
 

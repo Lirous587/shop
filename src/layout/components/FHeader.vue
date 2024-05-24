@@ -123,8 +123,9 @@ onBeforeMount(() => {
 </script>
 <style>
     .f-header {
-        @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
+        @apply flex items-center text-light-50 fixed top-0 left-0 right-0;
         z-index: 1000;
+        background-color: rgba(91, 141, 162, 0.868);
         height: 64px;
     }
 
