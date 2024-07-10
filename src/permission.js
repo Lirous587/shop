@@ -33,11 +33,10 @@ router.beforeEach(async (to, from, next) => {
         hasGetInfo = true
         //动态添加路由
         hasNewRoutes = addRouters(menus)
-        // console.log(hasNewRoutes)  
     }
 
     //设置页面标题
-    let title = (to.meta.title ? to.meta.title : "商城管理系统") + "-liuzihao.online"
+    let title = (to.meta.title ? to.meta.title : "商城管理系统") + " —— 罹景偓佺"
     document.title = title
 
     hasNewRoutes ? next(to.fullPath) : next();

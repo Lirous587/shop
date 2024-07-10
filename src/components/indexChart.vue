@@ -12,7 +12,7 @@
             </div>
         </template>
 
-        <div ref="el" id="chart" style="height: 300px; width: 100%;" class="">
+        <div ref="el" id="chart" style="height: 300px; width: 100%;">
 
         </div>
     </el-card>
@@ -44,6 +44,8 @@ const handerlChose = (type) => {
     getData()
 }
 
+const el = ref(null)
+
 let myChart = null
 
 onMounted(() => {
@@ -55,34 +57,32 @@ onMounted(() => {
 })
 
 function getData() {
-    let option = {
-        xAxis: {
-            type: 'category',
-            data: []
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                data: [],
-                type: 'bar',
-                showBackground: true,
-                backgroundStyle: {
-                    color: 'rgba(180, 180, 180, 0.2)'
-                }
-            }
-        ]
-    };
-
-    myChart.showLoading();
-    getstatistics3(current.value).then((res) => {
-        option.xAxis.date = res.x
-        option.series[0].data = res.y
-        myChart.setOption(option)
-    }).finally(() => {
-        myChart.hideLoading();
-    })
+    myChart.showLoading()
+    getstatistics3(current.value)
+        .then((res) => {
+            let option = {
+                xAxis: {
+                    type: 'category',
+                    data: res.x,
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: res.y,
+                        type: 'bar',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        }
+                    }
+                ]
+            };
+            myChart.setOption(option)
+        }).finally(() => {
+            myChart.hideLoading();
+        })
 
 }
 
@@ -92,7 +92,6 @@ onBeforeMount(() => {
     }
 })
 
-const el = ref(null)
 useResizeObserver(el, (entries) => {
     myChart.resize()
 })

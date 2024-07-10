@@ -19,6 +19,7 @@ import CouponList from '~/pages/coupon/list.vue'
 import ManagerList from '~/pages/manager/list.vue'
 import AccessList from '~/pages/access/list.vue'
 import RoleList from '~/pages/role/list.vue'
+import SkusList from '~/pages/skus/list.vue'
 
 //默认路由 所有用户共享
 const routes = [
@@ -133,6 +134,13 @@ const asyncRoutes = [{
     component: RoleList,
     meta: {
         title: "角色管理"
+    }
+}, {
+    path: "/skus/list",
+    name: "/skus/list",
+    component: SkusList,
+    meta: {
+        title: "规格管理"
     }
 }]
 
