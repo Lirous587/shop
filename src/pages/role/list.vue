@@ -39,7 +39,7 @@
 
         <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
             <el-form :model="form" ref="formRef" :rules="rules">
-                <el-form-item label="角色名称" prop="title">
+                <el-form-item label="角色名称" prop="name">
                     <el-input v-model="form.name" placeholder="角色名称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色描述" prop="desc">
