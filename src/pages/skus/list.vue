@@ -1,9 +1,12 @@
 <template>
     <el-card shadow="always" :body-style="{ padding: '20px' }">
         <!-- 新增 | 刷新 -->
-        <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
+        <ListHeader @create="handelCreate" @refresh="getData" @delete="handelMultipleDelete"
+            layout="create,delete,refresh"></ListHeader>
 
-        <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+        <el-table ref="multipleTableRef" @selection-change="handleSelectionChange" :data="tableData" stripe
+            style="width: 100%" v-loading="loading">
+            <el-table-column type="selection" width="55" />
             <el-table-column prop="name" label="规格名称" />
             <el-table-column prop="default" label="规格值" />
             <el-table-column prop="order" label="排序" />
@@ -36,8 +39,8 @@
                 :total="total" />
         </div>
 
-        <FormDrawer ref="formDrawerRef" destroyOnClose :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
-            <el-form :model="form" ref="formRef" :rules="rules">
+        <FormDrawer ref="formDrawerRef" :closeAble="true" destroyOnClose :title="drawerTitle" @submit="handelSubmit">
+            <el-form :model="form" ref="formRef" :rules="rules" label-position="right" label-width="auto">
                 <el-form-item label="规格名称" prop="name">
                     <el-input v-model="form.name" placeholder="规格名称"></el-input>
                 </el-form-item>
@@ -51,11 +54,10 @@
                     </el-switch>
                 </el-form-item>
                 <el-form-item label="规格值" prop="default">
-                    <div class="flex flex-col justify-center">
+                    <div class="flex flex-col justify-center gap-2">
                         {{ form.default }}
                         <TagInput v-model="form.default" @update="(value) => form.default = value"></TagInput>
                     </div>
-
                 </el-form-item>
             </el-form>
         </FormDrawer>
@@ -111,7 +113,7 @@ const {
         name: "",
         order: 52,
         status: 1,
-        default: [],
+        default: "",
     }),
     getData,
     create: createSkus,
@@ -119,39 +121,41 @@ const {
     rules: {
         name: [{
             required: true,
-            message: "角色名称不能为空",
+            message: "规格名称不能为空",
+            tirgger: "blur"
+        }],
+        default: [{
+            required: true,
+            message: "规格值不能为空",
             tirgger: "blur"
         }],
     }
 })
 
-const setSkusformDrawerRef = ref(null)
-const elTreeRef = ref(null)
-const ruleList = ref([])
-const treeHeight = ref(0)
-const roleId = ref(0)
-const defaultExpandedKeys = ref([])
-// 获取当前角色拥有的权限id
-const ruleIds = ref([])
-const treeLoading = ref(true)
-const checkStrictly = ref(false)
-
-
-const handelSetSkusSubmit = () => {
-    setSkusformDrawerRef.value.showLoading()
-    setSkusRules(roleId.value, ruleIds.value)
-        .then((res) => {
-            toast("配置成功")
-            getData()
-            setSkusformDrawerRef.value.close()
-        })
-        .finally(() => {
-            setSkusformDrawerRef.value.hideLoading()
-        })
+// 表格多选
+const multipleTableRef = ref(null)
+const multipleSelection = ref([])
+const handleSelectionChange = (e) => {
+    multipleSelection.value = e.map(o => o.id)
+}
+const handelMultipleDelete = () => {
+    if (multipleSelection.value.length > 0) {
+        loading.value = true
+        deleteSkus(multipleSelection.value)
+            .then(res => {
+                toast("删除成功")
+                getData()
+            })
+            .finally(() => {
+                loading.value = false
+                // 清空选中
+                if (multipleTableRef.value) {
+                    multipleTableRef.value.clearSelection()
+                }
+            })
+    } else {
+        toast("请选择删除规则", "warning")
+    }
 }
 
-const handelCheck = (...e) => {
-    const { checkedKeys, halfCheckedKeys } = e[1]
-    ruleIds.value = [...checkedKeys, ...halfCheckedKeys]
-}
 </script>

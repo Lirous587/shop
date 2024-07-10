@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-2 flex-wrap mt-3">
+    <div class="flex gap-2 flex-wrap ">
         <el-tag v-for="tag in dynamicTags" :key="tag" closable :disable-transitions="false" @close="handleClose(tag)">
             {{ tag }}
         </el-tag>
@@ -16,7 +16,8 @@ import { nextTick, ref } from 'vue'
 import { ElInput } from 'element-plus'
 
 const props = defineProps({
-    modelValue: String
+    modelValue: String,
+    require: true
 })
 const emits = defineEmits(["update"])
 
