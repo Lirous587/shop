@@ -7,7 +7,6 @@ import {
     setExpendAside,
 } from "~/composables/auth.js"
 
-const ifExpendAside = ref(!getExpendAside())
 
 // 创建一个新的 store 实例
 const store = createStore({
@@ -29,17 +28,23 @@ const store = createStore({
         },
         //展开|缩起侧边
         handleAsideWidth(state) {
+            const ifExpendAside = ref(getExpendAside())
             if (!ifExpendAside.value) {
                 state.asideWidth = "250px"
                 setExpendAside(1)
-                ifExpendAside.value = getExpendAside()
             } else {
                 state.asideWidth = "60px"
                 setExpendAside(0)
-                ifExpendAside.value = getExpendAside()
             }
         },
-
+        initAsideWidth(state) {
+            const ifExpendAside = ref(getExpendAside())
+            if (ifExpendAside.value) {
+                state.asideWidth = "250px"
+            } else {
+                state.asideWidth = "60px"
+            }
+        },
         SET_MENUS(state, menus) {
             state.menus = menus
         },

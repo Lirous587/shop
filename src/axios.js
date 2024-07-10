@@ -29,7 +29,7 @@ service.interceptors.response.use(function (response) {
 }, function (error) {
   const msg = error.response.data.msg || "请求失败"
   if (msg == "非法token，请先登录！") {
-    store.dispatch("logout").catch((err)=>console.log(err)).finally(() => location.reload())
+    store.dispatch("logout").catch((err) => console.log(err)).finally(() => location.reload())
   }
   toast(msg, "error")
   return Promise.reject(error);

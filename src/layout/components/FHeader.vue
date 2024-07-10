@@ -111,16 +111,15 @@ function onKeyUp(e) {
 //添加键盘的监听
 onMounted(() => {
     document.addEventListener("keyup", onKeyUp)
+    store.commit('initAsideWidth')
 })
 
 //移除键盘监听
 onBeforeMount(() => {
     document.removeEventListener("keyup", onKeyUp)
 })
-onBeforeMount(() => {
-    store.commit('handleAsideWidth')
-})
 </script>
+
 <style>
     .f-header {
         @apply flex items-center text-light-50 fixed top-0 left-0 right-0;
