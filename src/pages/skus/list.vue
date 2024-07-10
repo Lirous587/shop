@@ -91,7 +91,10 @@ const {
     total,
     getData,
     handelDelete,
-    handelStatusChange
+    handelStatusChange,
+    multipleTableRef,
+    handleSelectionChange,
+    handelMultipleDelete
 } = useInitTable({
     getList: getSkusList,
     delete: deleteSkus,
@@ -132,30 +135,6 @@ const {
     }
 })
 
-// 表格多选
-const multipleTableRef = ref(null)
-const multipleSelection = ref([])
-const handleSelectionChange = (e) => {
-    multipleSelection.value = e.map(o => o.id)
-}
-const handelMultipleDelete = () => {
-    if (multipleSelection.value.length > 0) {
-        loading.value = true
-        deleteSkus(multipleSelection.value)
-            .then(res => {
-                toast("删除成功")
-                getData()
-            })
-            .finally(() => {
-                loading.value = false
-                // 清空选中
-                if (multipleTableRef.value) {
-                    multipleTableRef.value.clearSelection()
-                }
-            })
-    } else {
-        toast("请选择删除规则", "warning")
-    }
-}
+
 
 </script>

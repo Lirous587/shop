@@ -72,6 +72,34 @@ export function useInitTable(opt = {}) {
             })
     }
 
+
+    // 表格多选
+    const multipleTableRef = ref(null)
+    const multipleSelection = ref([])
+    const handleSelectionChange = (e) => {
+        multipleSelection.value = e.map(o => o.id)
+    }
+    const handelMultipleDelete = () => {
+        if (multipleSelection.value.length > 0) {
+            loading.value = true
+            opt.delete(multipleSelection.value)
+                .then(res => {
+                    toast("删除成功")
+                    getData()
+                })
+                .finally(() => {
+                    loading.value = false
+                    // 清空选中
+                    if (multipleTableRef.value) {
+                        multipleTableRef.value.clearSelection()
+                    }
+                })
+        } else {
+            toast("请先选择", "warning")
+        }
+    }
+
+
     return {
         searchForm,
         resetSearchForm,
@@ -81,7 +109,10 @@ export function useInitTable(opt = {}) {
         total,
         getData,
         handelDelete,
-        handelStatusChange
+        handelStatusChange,
+        multipleTableRef,
+        handleSelectionChange,
+        handelMultipleDelete
     }
 }
 
@@ -106,6 +137,8 @@ export function useInitForm(opt = {}) {
             if (!valid) return
 
             const fun = editId.value ? opt.update(editId.value, form) : opt.create(form)
+
+            formDrawerRef.value.close()
 
             formDrawerRef.value.showLoading()
 
