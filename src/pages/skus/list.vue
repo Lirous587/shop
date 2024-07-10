@@ -1,6 +1,5 @@
 <template>
     <el-card shadow="always" :body-style="{ padding: '20px' }">
-
         <!-- 新增 | 刷新 -->
         <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
 
@@ -37,7 +36,7 @@
                 :total="total" />
         </div>
 
-        <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
+        <FormDrawer ref="formDrawerRef" destroyOnClose :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
             <el-form :model="form" ref="formRef" :rules="rules">
                 <el-form-item label="规格名称" prop="name">
                     <el-input v-model="form.name" placeholder="规格名称"></el-input>
@@ -52,7 +51,11 @@
                     </el-switch>
                 </el-form-item>
                 <el-form-item label="规格值" prop="default">
-                    <el-input v-model="form.default" placeholder="规格值"></el-input>
+                    <div class="flex flex-col justify-center">
+                        {{ form.default }}
+                        <TagInput v-model="form.default" @update="(value) => form.default = value"></TagInput>
+                    </div>
+
                 </el-form-item>
             </el-form>
         </FormDrawer>
@@ -68,9 +71,7 @@ import {
     deleteSkus,
     updateSkusStatus
 } from "~/api/skus";
-import {
-    getRuleList
-} from "~/api/rule.js"
+import TagInput from "~/components/TagInput.vue"
 
 import FormDrawer from "~/components/FormDrawer.vue"
 import ListHeader from "~/components/ListHeader.vue";
