@@ -136,15 +136,24 @@ export function useInitForm(opt = {}) {
         formRef.value.validate((valid) => {
             if (!valid) return
 
-            const fun = editId.value ? opt.update(editId.value, form) : opt.create(form)
-
-            formDrawerRef.value.close()
 
             formDrawerRef.value.showLoading()
+
+            let body = {}
+
+            if (opt.beforSumbit && typeof opt.beforSumbit === "function") {
+                body = opt.beforSumbit({ ...form })
+            } else {
+                body = form
+            }
+
+            const fun = editId.value ? opt.update(editId.value, body) : opt.create(body)
 
             fun.then(res => {
                 toast(drawerTitle.value + "成功")
                 opt.getData(editId ? null : 1)
+                formDrawerRef.value.close()
+
             })
                 .finally(() => {
                     formDrawerRef.value.hideLoading()

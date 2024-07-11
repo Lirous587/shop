@@ -7,16 +7,17 @@
         <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
             <el-table-column prop="name" label="优惠卷名称" width="400">
                 <template #default="{ row }">
-                    <div class="border-dashed  border-2 px-2 py-4">
+                    <div class="border-dashed  border px-2 py-4"
+                        :class="row.statusText === '领取中' ? 'active' : 'inactive'">
                         <h5 class="font-bold text-md"> {{ row.name }}</h5>
                         <small> {{ row.start_time }} ~ {{ row.end_time }}</small>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column prop="statusText" label="状态" />
-            <el-table-column label="优惠">
+            <el-table-column label="优惠" width="150">
                 <template #default="{ row }">
-                    {{ row.type ? "优惠" : "满减" }}
+                    {{ row.type ? "折扣" : "满减" }}
                     {{ row.type ? (row.value + "折") : ("￥" + row.value) }}
                 </template>
             </el-table-column>
@@ -44,11 +45,39 @@
 
         <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
             <el-form :model="form" ref="formRef" :rules="rules" label-position="right" label-width="auto">
-                <el-form-item label="公告标题" prop="title">
-                    <el-input v-model="form.title" placeholder="公告标题"></el-input>
+                <el-form-item label="优惠券名称" prop="name">
+                    <el-input v-model="form.name" placeholder="优惠券名称"></el-input>
                 </el-form-item>
-                <el-form-item label="公告内容" prop="content">
-                    <el-input v-model="form.content" placeholder="公告内容" type="textarea" :rows="5"></el-input>
+                <el-form-item label="类型" prop="type">
+                    <el-radio-group v-model="form.type">
+                        <el-radio :label="0" :value="0">满减</el-radio>
+                        <el-radio :label="1" :value="1">折扣</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="面值" prop="value">
+                    <el-input v-model="form.value" placeholder="面值">
+                        <template #append>
+                            {{ form.type ? "折" : "元" }}
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="发行量" prop="total">
+                    <el-input-number v-model="form.total" :min="1" :max="9999" />
+                </el-form-item>
+                <el-form-item label="最低使用" prop="min_price">
+                    <el-input-number v-model="form.min_price" :min="0" />
+                </el-form-item>
+                <el-form-item label="排序" prop="order">
+                    <el-input-number v-model="form.order" :min="50" :max="1000" />
+                </el-form-item>
+
+                <el-form-item label="活动时间" prop="order">
+                    <el-date-picker v-model="timeRange" type="datetimerange" range-separator="到"
+                        start-placeholder="开始时间" format="YYYY-MM-DD HH:mm:ss" />
+                </el-form-item>
+
+                <el-form-item label="描述" prop="desc">
+                    <el-input v-model="form.desc" placeholder="描述" />
                 </el-form-item>
             </el-form>
         </FormDrawer>
@@ -56,7 +85,7 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import {
     getCouponList,
     createCoupon,
@@ -103,20 +132,35 @@ const {
     handelEdit,
 } = useInitForm({
     form: reactive({
-        title: "",
-        content: ""
+        name: "",
+        type: 0,
+        value: 0,
+        total: 100,
+        min_price: 1,
+        start_time: null,
+        end_time: null,
+        order: 50,
+        desc: ""
     }),
     getData,
     create: createCoupon,
     update: updateCoupon,
+    beforSumbit: (f) => {
+        if (f.start_time && typeof f.start_time != "number") {
+            f.start_time = (new Date(f.start_time).getTime())
+        }
+        if (f.end_time && typeof f.end_time != "number") {
+            f.end_time = (new Date(f.end_time).getTime())
+        }
+        return f
+    }
 })
-
 
 const formatStatus = (row) => {
     let text = "领取中"
-    let now_time = new Date().getTime()
-    let start_time = new Date(row.start_time).getTime()
-    let end_time = new Date(row.end_time).getTime()
+    let now_time = (new Date()).getTime()
+    let start_time = (new Date(row.start_time)).getTime()
+    let end_time = (new Date(row.end_time)).getTime()
 
     if (end_time < now_time) {
         text = "已结束"
@@ -127,4 +171,25 @@ const formatStatus = (row) => {
     }
     return text
 }
+
+
+const timeRange = computed({
+    get() {
+        return form.start_time && form.end_time ? [form.start_time, form.start_time] : []
+    },
+    set(value) {
+        form.start_time = value[0]
+        form.end_time = value[1]
+    }
+})
 </script>
+
+<style scoped>
+    .active {
+        @apply border-rose-300 text-rose-500 bg-rose-200;
+    }
+
+    .inactive {
+        @apply border-gray-300 text-gray-400 bg-gray-100;
+    }
+</style>
