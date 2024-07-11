@@ -60,9 +60,9 @@ export function useInitTable(opt = {}) {
     }
 
     //修改状态
-    const handelStatusChange = (status, row) => {
+    const handelStatusChange = async (status, row) => {
         row.statusLoading = true
-        opt.updateStatus(row.id, status)
+        await opt.updateStatus(row.id, status)
             .then(res => {
                 toast("修改状态成功")
                 row.status = status
@@ -70,6 +70,7 @@ export function useInitTable(opt = {}) {
             .finally(() => {
                 row.statusLoading = false
             })
+        return status
     }
 
 
@@ -84,7 +85,7 @@ export function useInitTable(opt = {}) {
             loading.value = true
             opt.delete(multipleSelection.value)
                 .then(res => {
-                    toast("删除成功")
+                    toast("批量删除成功")
                     getData()
                 })
                 .finally(() => {
@@ -153,7 +154,6 @@ export function useInitForm(opt = {}) {
                 toast(drawerTitle.value + "成功")
                 opt.getData(editId ? null : 1)
                 formDrawerRef.value.close()
-
             })
                 .finally(() => {
                     formDrawerRef.value.hideLoading()

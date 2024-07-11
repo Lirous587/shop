@@ -25,12 +25,23 @@
             <el-table-column prop="used" label="已使用" />
             <el-table-column label="操作" width="150" align="center">
                 <template #default="scope">
-                    <el-button type="primary" size="small" text @click="handelEdit(scope.row)">修改</el-button>
+                    <el-button v-if="scope.row.statusText === '未开始'" type="primary" size="small" text
+                        @click="handelEdit(scope.row)">
+                        修改
+                    </el-button>
+
                     <span @click.stop="() => { }">
-                        <el-popconfirm title="是否要删除该公告?" confirm-button-text="确定" cancel-button-text="取消"
-                            @confirm="handelDelete(scope.row.id)">
+                        <el-popconfirm v-if="scope.row.statusText !== '领取中'" title="是否要删除该优惠券?" confirm-button-text="删除"
+                            cancel-button-text="取消" @confirm="handelDelete(scope.row.id)">
                             <template #reference>
                                 <el-button type="default" size="small" text>删除</el-button>
+                            </template>
+                        </el-popconfirm>
+
+                        <el-popconfirm v-if="scope.row.statusText === '领取中'" title="是否让该优惠券失效？" confirm-button-text="失效"
+                            cancel-button-text="取消" @confirm="handelStatus(0, scope.row)">
+                            <template #reference>
+                                <el-button type="danger" size="small" danger>失效</el-button>
                             </template>
                         </el-popconfirm>
                     </span>
@@ -90,7 +101,8 @@ import {
     getCouponList,
     createCoupon,
     updateCoupon,
-    deleteCoupon
+    deleteCoupon,
+    updateCouponStatus
 } from "~/api/coupon.js";
 import FormDrawer from "~/components/FormDrawer.vue"
 import ListHeader from "~/components/ListHeader.vue";
@@ -107,10 +119,12 @@ const {
     currentPage,
     total,
     getData,
-    handelDelete
+    handelDelete,
+    handelStatusChange
 } = useInitTable({
     getList: getCouponList,
     delete: deleteCoupon,
+    updateStatus: updateCouponStatus,
     onGetListSuccess: (res) => {
         tableData.value = res.list.map(o => {
             o.statusText = formatStatus(o)
@@ -134,7 +148,7 @@ const {
     form: reactive({
         name: "",
         type: 0,
-        value: 0,
+        value: 5,
         total: 100,
         min_price: 1,
         start_time: null,
@@ -152,6 +166,7 @@ const {
         if (f.end_time && typeof f.end_time != "number") {
             f.end_time = (new Date(f.end_time).getTime())
         }
+        console.log(f)
         return f
     }
 })
@@ -172,16 +187,23 @@ const formatStatus = (row) => {
     return text
 }
 
-
 const timeRange = computed({
     get() {
-        return form.start_time && form.end_time ? [form.start_time, form.start_time] : []
+        return form.start_time && form.end_time ? [form.start_time, form.end_time] : []
     },
     set(value) {
         form.start_time = value[0]
         form.end_time = value[1]
     }
 })
+
+const handelStatus = async(status, row) => {
+    let callback = await handelStatusChange(status, row)
+    if (callback === 0) {
+        getData()
+    }
+}
+
 </script>
 
 <style scoped>
