@@ -5,7 +5,7 @@
         <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
 
         <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
-            <el-table-column prop="name" label="优惠卷名称" width="350">
+            <el-table-column prop="name" label="优惠卷名称" width="400">
                 <template #default="{ row }">
                     <div class="border-dashed  border-2 px-2 py-4">
                         <h5 class="font-bold text-md"> {{ row.name }}</h5>
@@ -13,7 +13,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="content" label="状态" />
+            <el-table-column prop="statusText" label="状态" />
             <el-table-column label="优惠">
                 <template #default="{ row }">
                     {{ row.type ? "优惠" : "满减" }}
@@ -43,7 +43,7 @@
         </div>
 
         <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
-            <el-form :model="form" ref="formRef" :rules="rules">
+            <el-form :model="form" ref="formRef" :rules="rules" label-position="right" label-width="auto">
                 <el-form-item label="公告标题" prop="title">
                     <el-input v-model="form.title" placeholder="公告标题"></el-input>
                 </el-form-item>
@@ -81,7 +81,14 @@ const {
     handelDelete
 } = useInitTable({
     getList: getCouponList,
-    delete: deleteCoupon
+    delete: deleteCoupon,
+    onGetListSuccess: (res) => {
+        tableData.value = res.list.map(o => {
+            o.statusText = formatStatus(o)
+            return o
+        })
+        total.value = res.totalCount
+    }
 })
 
 // form
@@ -102,17 +109,22 @@ const {
     getData,
     create: createCoupon,
     update: updateCoupon,
-    rules: {
-        title: [{
-            required: true,
-            message: "公告标题不能为空",
-            tirgger: "blur"
-        }],
-        content: [{
-            required: true,
-            message: "公告内容不能为空",
-            tirgger: "blur"
-        }]
-    }
 })
+
+
+const formatStatus = (row) => {
+    let text = "领取中"
+    let now_time = new Date().getTime()
+    let start_time = new Date(row.start_time).getTime()
+    let end_time = new Date(row.end_time).getTime()
+
+    if (end_time < now_time) {
+        text = "已结束"
+    } else if (start_time > now_time) {
+        text = "未开始"
+    } else if (row.status === 0) {
+        text = "已失效"
+    }
+    return text
+}
 </script>

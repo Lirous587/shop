@@ -29,7 +29,7 @@
         </div>
 
         <FormDrawer ref="formDrawerRef" :closeAble="true" :title="drawerTitle" @submit="handelSubmit">
-            <el-form :model="form" ref="formRef" :rules="rules">
+            <el-form :model="form" ref="formRef" :rules="rules" label-position="right" label-width="auto">
                 <el-form-item label="公告标题" prop="title">
                     <el-input v-model="form.title" placeholder="公告标题"></el-input>
                 </el-form-item>
