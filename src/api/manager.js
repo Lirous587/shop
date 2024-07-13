@@ -1,4 +1,6 @@
 import axios from "~/axios";
+import { queryToUrl } from "~/composables/util";
+
 
 export function login(username, password) {
     return axios.post("/admin/login", {
@@ -23,14 +25,7 @@ export function getManagerList(page, query = {
     limit,
     keyword
 }) {
-    let q = []
-    for (const key in query) {
-        if (query[key]) {
-            q.push(`${key}=${encodeURIComponent(query[key])}`)
-        }
-    }
-    let r = q.join("&")
-    r = r ? ("?" + r) : ""
+    let r = queryToUrl(query)
     return axios.get(`/admin/manager/${page}${r}`)
 }
 

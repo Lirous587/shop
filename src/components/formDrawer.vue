@@ -60,7 +60,7 @@ defineExpose({
 })
 </script>
 
-<style>
+<style scoped>
     .formDrawer {
         width: 100%;
         height: 100%;

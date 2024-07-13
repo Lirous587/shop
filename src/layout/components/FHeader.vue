@@ -41,9 +41,7 @@
         </div>
     </div>
 
-    <!-- <el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal=false>
-      
-    </el-drawer> -->
+
     <form-drawer ref="formDrawerRef" title="修改密码" destroyOnClose @submit="onSubmit">
         <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
             <el-form-item label="旧密码">
@@ -65,7 +63,7 @@
 import formDrawer from "~/components/formDrawer.vue";
 import { useFullscreen } from '@vueuse/core'
 import { useStore } from 'vuex';
-import { onMounted, onBeforeMount } from 'vue'
+import { onMounted } from 'vue'
 import { useLogout, useRepassword } from "~/components/useManager"
 const {
     formDrawerRef,
@@ -110,17 +108,11 @@ function onKeyUp(e) {
 
 //添加键盘的监听
 onMounted(() => {
-    document.addEventListener("keyup", onKeyUp)
     store.commit('initAsideWidth')
-})
-
-//移除键盘监听
-onBeforeMount(() => {
-    document.removeEventListener("keyup", onKeyUp)
 })
 </script>
 
-<style>
+<style scope>
     .f-header {
         @apply flex items-center text-light-50 fixed top-0 left-0 right-0;
         z-index: 1000;
