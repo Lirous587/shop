@@ -30,37 +30,69 @@
       <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
 
       <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
-        <el-table-column label="管理员">
+        <el-table-column type="selection" width="55" />
+        <el-table-column label="商品" width="300">
           <template #default="{ row }">
-            <div class="flex items-center">
-              <el-avatar :size="40" :src="row.avatar">
-              </el-avatar>
-              <div class="ml-3">
-                <h6> {{ row.username }}</h6>
-                <small>ID :{{ row.id }}</small>
+            <div class="flex justify-center items-center">
+              <el-image v-if="row.cover" :src="'/public/' + row.cover.split('/')[4]" fit="contain" :lazy="false"
+                loading="eager" style="width: 50px ; height: 50px;"></el-image>
+              <el-image v-else></el-image>
+              <div class="flex-1 flex flex-col ml-2">
+                <h5>{{ row.title }}</h5>
+                <div>
+                  <span class="text-rose-500">￥ {{ row.min_oprice }}</span>
+                  <el-divider direction="vertical" />
+                  <span>￥{{ row.min_oprice }}</span>
+                </div>
+                <small class="text-gray-400">分类: {{ row.category ? row.category.name : "未分类" }}</small>
+                <small class="text-gray-400">创建时间:{{ row.create_time }}</small>
               </div>
             </div>
+
           </template>
         </el-table-column>
 
-        <el-table-column label="所属角色" width="380">
+        <el-table-column label="实际销量" align="center">
           <template #default="{ row }">
-            <!-- {{ row.role ? row.role.name : ""}} -->
-            {{ row.role?.name || "-" }}
+            {{ row.sale_count }}
           </template>
         </el-table-column>
 
-        <el-table-column label="状态">
+        <el-table-column label="商品状态" align="center">
           <template #default="{ row }">
-            <el-switch v-loading="row.statusLoading" :modelValue="row.status" :active-value="1" :inactive-value="0"
-              :disabled="row.super == 1" @change="handelStatusChange($event, row)">
-            </el-switch>
+            <el-tag :type="row.status ? 'success' : 'danger'">
+              {{ row.status ? "上架" : "仓库" }}
+            </el-tag>
+
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="150" align="center">
+
+        <el-table-column label="审核状态" width="120" align="center">
+          <template #default="{ row }">
+            <div v-if="row.ischeck === 0" class="flex flex-col">
+              <el-button type="primary" size="success" plain>审核通过</el-button>
+              <el-button type="primary" size="danger" class="mt-1 !ml-0" plain>审核拒绝</el-button>
+            </div>
+            <span v-else>
+              {{ row.ischeck === 1 ? "通过" : "拒绝" }}
+            </span>
+          </template>
+        </el-table-column>
+
+
+        <el-table-column label="总库存" align="center">
+          <template #default="{ row }">
+            {{ row.stock }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="350" align="center">
           <template #default="scope">
-            <el-button type="primary" size="small" text @click="handelEdit(scope.row)">修改</el-button>
+            <el-button class="px-1" type="primary" size="small" text>修改</el-button>
+            <el-button class="px-1" type="primary" size="small" text>商品规格</el-button>
+            <el-button class="px-1" type="primary" size="small"> 设置轮播图</el-button>
+            <el-button class="px-1" type="primary" size="small" text>商品详细</el-button>
             <span @click.stop="() => { }">
               <el-popconfirm title="是否要删除该管理员?" confirm-button-text="确定" cancel-button-text="取消"
                 @confirm="handelDelete(scope.row.id)">
@@ -157,7 +189,7 @@ const {
   searchForm: {
     title: "",
     tab: "all",
-    category_id: "",
+    category_id: null,
   }
 })
 

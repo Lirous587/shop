@@ -12,6 +12,10 @@ export default defineConfig({
     }
   },
   server: {
+    cors: {
+      origin: 'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com',
+      methods: ['GET'],
+    },
     proxy: {
       '/api': {
         target: 'http://ceshi13.dishait.cn',
@@ -22,7 +26,7 @@ export default defineConfig({
         target: 'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/public/, '')
-      }
+      },
     }
   },
   plugins: [
