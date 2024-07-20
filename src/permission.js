@@ -45,4 +45,4 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from) => {
     //隐藏loading
     hideFullLoading()
-});
+})
