@@ -1,9 +1,3 @@
-<template>
-    订单列表
-</template>
+<template>订单列表</template>
 
-
-<script setup>
-
-
-</script>
+<script setup></script>

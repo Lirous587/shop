@@ -94,9 +94,9 @@
         <template #default="{ row }">
           <div v-if="row.ischeck === 0" class="flex flex-col">
             <el-button type="success" plain>审核通过</el-button>
-            <el-button type="danger" class="mt-2 !ml-0" plain
-              >审核拒绝</el-button
-            >
+            <el-button type="danger" class="mt-2 !ml-0" plain>
+              审核拒绝
+            </el-button>
           </div>
           <span v-else>
             {{ row.ischeck === 1 ? "通过" : "拒绝" }}
@@ -113,7 +113,12 @@
       <el-table-column label="操作" width="350" align="center">
         <template #default="scope">
           <div v-if="searchForm.tab != 'delete'">
-            <el-button class="px-1" type="primary" size="small" text
+            <el-button
+              class="px-1"
+              type="primary"
+              size="small"
+              text
+              @click="handelEdit(scope.row)"
               >修改</el-button
             >
             <el-button class="px-1" type="primary" size="small" text
@@ -158,23 +163,23 @@
       @submit="handelSubmit"
     >
       <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="用户名"></el-input>
+        <el-form-item label="商品名称" prop="title">
+          <el-input v-model="form.title" placeholder="商品名称"></el-input>
         </el-form-item>
 
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="密码"></el-input>
+        <el-form-item label="封面" prop="cover">
+          <ChooseImage v-model="form.cover" />
         </el-form-item>
 
-        <el-form-item label="头像" prop="avatar">
-          <ChooseImage v-model="form.avatar" />
-        </el-form-item>
-
-        <el-form-item label="所属角色" prop="role_id">
-          <el-select v-model="form.role_id" placeholder="选择所属角色">
+        <el-form-item label="商品分类" prop="category_id">
+          <el-select
+            v-model="form.category_id"
+            placeholder="商品分类"
+            clearable
+            filterable
+          >
             <el-option
-              v-for="item in roles"
-              :key="item.id"
+              v-for="item in categoryList"
               :label="item.name"
               :value="item.id"
             >
@@ -182,13 +187,58 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="状态" prop="status">
-          <el-switch
-            v-model="form.status"
-            :active-value="1"
-            :inactive-value="0"
-          >
-          </el-switch>
+        <el-form-item label="商品描述" prop="desc">
+          <el-input
+            type="textarea"
+            v-model="form.desc"
+            placeholder="商品描述"
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item label="单位" prop="unit">
+          <el-input v-model="form.unit" placeholder="单位"></el-input>
+        </el-form-item>
+
+        <el-form-item label="总库存" prop="stock">
+          <el-input style="width: 50%" type="number" v-model="form.stock">
+            <template #append>
+              {{ form.unit }}
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="库存预警" prop="min_stock">
+          <el-input style="width: 50%" type="number" v-model="form.min_stock">
+            <template #append>
+              {{ form.unit }}
+            </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="最低销售价" prop="min_price">
+          <el-input style="width: 50%" type="number" v-model="form.min_price">
+            <template #append> 元 </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="最低原价" prop="min_oprice">
+          <el-input style="width: 50%" type="number" v-model="form.min_oprice">
+            <template #append> 元 </template>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="库存显示" prop="stock_display">
+          <el-radio-group v-model="form.stock_display" class="ml-4">
+            <el-radio :value="0" size="large">隐藏</el-radio>
+            <el-radio :value="1" size="large">显示</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="是否上架" prop="status">
+          <el-radio-group v-model="form.status" class="ml-4">
+            <el-radio :value="0" size="large">放入仓库</el-radio>
+            <el-radio :value="1" size="large">立即上架</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
     </FormDrawer>
@@ -215,8 +265,6 @@ import {
 
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
 
-const roles = ref([]);
-
 // table
 const {
   searchForm,
@@ -238,7 +286,6 @@ const {
       return o;
     });
     total.value = res.totalCount;
-    roles.value = res.roles;
   },
   searchForm: {
     title: "",
@@ -258,7 +305,19 @@ const {
   handelCreate,
   handelEdit,
 } = useInitForm({
-  form: reactive({}),
+  form: reactive({
+    title: null,
+    category_id: null,
+    cover: null,
+    desc: null,
+    unit: "件",
+    stock: 200,
+    min_stock: 10,
+    status: 1,
+    stock_display: 1,
+    min_price: 1.0,
+    min_oprice: 100.0,
+  }),
   getData,
   create: createGoods,
   update: updateGoods,

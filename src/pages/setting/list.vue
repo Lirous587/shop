@@ -1,6 +1,3 @@
 <template>
-    <div>
-        配置列表
-    </div>
-
+  <div>配置列表</div>
 </template>

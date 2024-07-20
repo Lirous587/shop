@@ -1,36 +1,33 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import WindiCSS from 'vite-plugin-windicss'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import WindiCSS from "vite-plugin-windicss";
 
-import path from 'path'
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "src")
-    }
+      "~": path.resolve(__dirname, "src"),
+    },
   },
   server: {
     cors: {
-      origin: 'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com',
-      methods: ['GET'],
+      origin: "http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com",
+      methods: ["GET"],
     },
     proxy: {
-      '/api': {
-        target: 'http://ceshi13.dishait.cn',
+      "/api": {
+        target: "http://ceshi13.dishait.cn",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      '/public': {
-        target: 'http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public',
+      "/public": {
+        target: "http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/public/, '')
+        rewrite: (path) => path.replace(/^\/public/, ""),
       },
-    }
+    },
   },
-  plugins: [
-    vue(),
-    WindiCSS(),
-  ],
-})
+  plugins: [vue(), WindiCSS()],
+});
