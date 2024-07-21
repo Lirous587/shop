@@ -2,26 +2,27 @@ import axios from "~/axios";
 import { queryToUrl } from "~/composables/util";
 
 export function getGoodsList(page, query = {}) {
-    let r = queryToUrl(query)
-    return axios.get(`/admin/goods/${page}${r}`)
+  let r = queryToUrl(query);
+  return axios.get(`/admin/goods/${page}${r}`);
 }
 
 export function updateGoodsStatus(ids, status) {
-    return axios.post(`/admin/goods/changestatus`, {
-        ids,
-        status
-    })
+  return axios.post(`/admin/goods/changestatus`, {
+    ids,
+    status,
+  });
 }
 
 export function createGoods(data) {
-    return axios.post(`/admin/goods`, data)
+  return axios.post(`/admin/goods`, data);
 }
 
 export function updateGoods(id, data) {
-    return axios.post(`/admin/goods/${id}`, data)
-
+  return axios.post(`/admin/goods/${id}`, data);
 }
 
-export function deleteGoods(id) {
-    return axios.post(`/admin/goods/${id}/delete`)
+export function deleteGoods(ids) {
+  return axios.post(`/admin/goods/delete_all`, {
+    ids,
+  });
 }

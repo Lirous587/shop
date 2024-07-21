@@ -2,7 +2,7 @@
   <el-card shadow="always" :body-style="{ padding: '20px' }">
     <Search @search="getData" @reset="resetSearchForm">
       <template #default>
-        <SearchItem>
+        <SearchItem label="名称">
           <el-input
             placeholder="管理员名称"
             v-model="searchForm.keyword"

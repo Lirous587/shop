@@ -77,17 +77,39 @@ export function useInitTable(opt = {}) {
 
   // 表格多选
   const multipleTableRef = ref(null);
-  const multipleSelection = ref([]);
+  const multipleSelectionIds = ref([]);
   const handleSelectionChange = (e) => {
-    multipleSelection.value = e.map((o) => o.id);
+    multipleSelectionIds.value = e.map((o) => o.id);
   };
   const handelMultipleDelete = () => {
-    if (multipleSelection.value.length > 0) {
+    if (multipleSelectionIds.value.length > 0) {
       loading.value = true;
       opt
-        .delete(multipleSelection.value)
+        .delete(multipleSelectionIds.value)
         .then((res) => {
           toast("批量删除成功");
+          getData();
+        })
+        .finally(() => {
+          loading.value = false;
+          // 清空选中
+          if (multipleTableRef.value) {
+            multipleTableRef.value.clearSelection();
+          }
+        });
+    } else {
+      toast("请先选择", "warning");
+    }
+  };
+
+  // 批量修改状态
+  const handelMultipleStatusChange = (status) => {
+    if (multipleSelectionIds.value.length > 0) {
+      loading.value = true;
+      opt
+        .updateStatus(multipleSelectionIds.value,status)
+        .then((res) => {
+          toast("批量修改状态成功");
           getData();
         })
         .finally(() => {
@@ -115,6 +137,7 @@ export function useInitTable(opt = {}) {
     multipleTableRef,
     handleSelectionChange,
     handelMultipleDelete,
+    handelMultipleStatusChange
   };
 }
 

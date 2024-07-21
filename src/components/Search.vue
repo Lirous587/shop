@@ -1,5 +1,5 @@
 <template>
-  <el-form label-width="80px" class="mb-3">
+  <el-form class="mb-3">
     <el-row :gutter="20">
       <!-- 默认 -->
 
@@ -12,8 +12,10 @@
 
       <el-col :span="8" :offset="catagerySearchForm ? 0 : 8">
         <div class="flex items-center justify-end">
-          <el-button type="primary" @click="$emit('search')">搜索</el-button>
-          <el-button @click="$emit('reset')">重置</el-button>
+          <el-button type="primary" size="default" @click="$emit('search')"
+            >搜索</el-button
+          >
+          <el-button size="default" @click="$emit('reset')">重置</el-button>
           <el-button
             v-if="hasShow"
             type="primary"

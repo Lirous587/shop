@@ -3,7 +3,14 @@
     <!-- 新增 | 刷新 -->
     <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
 
-    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+    <el-table
+      ref="multipleTableRef"
+      @selection-change="handleSelectionChange"
+      :data="tableData"
+      stripe
+      style="width: 100%"
+      v-loading="loading"
+    >
       <el-table-column prop="name" label="角色名称" />
       <el-table-column prop="desc" label="角色描述" />
 
@@ -151,6 +158,9 @@ const {
   getData,
   handelDelete,
   handelStatusChange,
+  multipleTableRef,
+  handleSelectionChange,
+  handelMultipleDelete,
 } = useInitTable({
   getList: getRoleList,
   delete: deleteRole,

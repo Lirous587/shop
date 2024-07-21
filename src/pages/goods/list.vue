@@ -42,9 +42,37 @@
     </Search>
 
     <!-- 新增 | 刷新 -->
-    <ListHeader @create="handelCreate" @refresh="getData"></ListHeader>
+    <ListHeader
+      layout="create,refresh,delete"
+      @create="handelCreate"
+      @refresh="getData"
+      @delete="handelMultipleDelete"
+    >
+      <el-button
+        v-if="searchForm.tab == 'all' || searchForm.tab == 'off'"
+        size="small"
+        @click="handelMultipleStatusChange(1)"
+      >
+        上架
+      </el-button>
 
-    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+      <el-button
+        size="small"
+        @click="handelMultipleStatusChange(0)"
+        v-if="searchForm.tab == 'all' ||  searchForm.tab =='saling'"
+      >
+        下架
+      </el-button>
+    </ListHeader>
+
+    <el-table
+      ref="multipleTableRef"
+      @selection-change="handleSelectionChange"
+      :data="tableData"
+      stripe
+      style="width: 100%"
+      v-loading="loading"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column label="商品" width="300">
         <template #default="{ row }">
@@ -119,17 +147,18 @@
               size="small"
               text
               @click="handelEdit(scope.row)"
-              >修改</el-button
             >
-            <el-button class="px-1" type="primary" size="small" text
-              >商品规格</el-button
-            >
+              修改
+            </el-button>
+            <el-button class="px-1" type="primary" size="small" text>
+              商品规格
+            </el-button>
             <el-button class="px-1" type="primary" size="small">
-              设置轮播图</el-button
-            >
-            <el-button class="px-1" type="primary" size="small" text
-              >商品详细</el-button
-            >
+              设置轮播图
+            </el-button>
+            <el-button class="px-1" type="primary" size="small" text>
+              商品详细
+            </el-button>
             <el-popconfirm
               title="是否要删除该管理员?"
               confirm-button-text="确定"
@@ -275,7 +304,9 @@ const {
   total,
   getData,
   handelDelete,
-  handelStatusChange,
+  handleSelectionChange,
+  handelMultipleDelete,
+  handelMultipleStatusChange,
 } = useInitTable({
   getList: getGoodsList,
   updateStatus: updateGoodsStatus,

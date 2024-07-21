@@ -4,7 +4,7 @@
       <el-button
         v-if="btns.includes('create')"
         type="primary"
-        size="default"
+        size="small"
         @click="$emit('create')"
         >新增</el-button
       >
@@ -16,14 +16,12 @@
         @confirm="$emit('delete')"
       >
         <template #reference>
-          <el-button
-            v-if="btns.includes('delete')"
-            type="warning"
-            size="default"
+          <el-button v-if="btns.includes('delete')" type="danger" size="small"
             >批量删除</el-button
           >
         </template>
       </el-popconfirm>
+      <slot/>
     </div>
 
     <el-tooltip
