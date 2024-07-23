@@ -26,3 +26,13 @@ export function deleteGoods(ids) {
     ids,
   });
 }
+
+export function readGoods(id) {
+  return axios.get(`/admin/goods/read/${id}`);
+}
+
+export function setGoodsBanner(id, banners) {
+  return axios.get(`/admin/goods/banners/${id}`, {
+    banners,
+  });
+}

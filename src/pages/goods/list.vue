@@ -59,7 +59,7 @@
       <el-button
         size="small"
         @click="handelMultipleStatusChange(0)"
-        v-if="searchForm.tab == 'all' ||  searchForm.tab =='saling'"
+        v-if="searchForm.tab == 'all' || searchForm.tab == 'saling'"
       >
         下架
       </el-button>
@@ -153,7 +153,12 @@
             <el-button class="px-1" type="primary" size="small" text>
               商品规格
             </el-button>
-            <el-button class="px-1" type="primary" size="small">
+            <el-button
+              class="px-1"
+              type="primary"
+              size="small"
+              @click="handelSetGoodsBanner(scope.row)"
+            >
               设置轮播图
             </el-button>
             <el-button class="px-1" type="primary" size="small" text>
@@ -272,6 +277,7 @@
       </el-form>
     </FormDrawer>
   </el-card>
+  <banner ref="bannerRef"> </banner>
 </template>
 
 <script setup>
@@ -281,7 +287,7 @@ import ChooseImage from "~/components/ChooseImage.vue";
 import ListHeader from "~/components/ListHeader.vue";
 import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
-
+import banner from "./banner.vue";
 import { getCategoryList } from "~/api/category";
 
 import {
@@ -384,4 +390,10 @@ const tabsBar = [
 // 高级搜索
 const categoryList = ref([]);
 getCategoryList().then((res) => (categoryList.value = res));
+
+// 轮播图
+const bannerRef = ref(null);
+const handelSetGoodsBanner = (row) => {
+  bannerRef.value.open(row);
+};
 </script>
