@@ -160,17 +160,20 @@ const checkedImage = computed(() => {
 
 // 选中图片
 const handelChooseChange = (item) => {
-  if (item.checked && checkedImage.value.length > 1) {
+  if (item.checked && checkedImage.value.length > props.limit) {
     item.checked = false;
-    return toast("最多只能选中一张", "error");
+    return toast(`最多只能选中${props.limit}张`, "error");
   }
   emit("choose", checkedImage.value);
 };
 
-defineProps({
+const props = defineProps({
   openChoose: {
     type: Boolean,
     default: false,
+  },
+  limit: {
+    type: Number,
   },
 });
 

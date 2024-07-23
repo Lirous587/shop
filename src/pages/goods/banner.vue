@@ -10,6 +10,7 @@
         <ChooseImage
           @update:modelValue="handleUpdateBanner"
           :modelValue="form.banners"
+          :limit="9"
         ></ChooseImage>
       </el-form-item>
       <el-form-item>

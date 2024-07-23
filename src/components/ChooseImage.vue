@@ -8,7 +8,7 @@
     >
     </el-avatar>
 
-    <div class="flex flex-wrap">
+    <div v-else class="flex flex-wrap">
       <div
         class="relative w-[100px] h-[100px] rounded border mr-2"
         v-for="(url, index) in modelValue"
@@ -53,6 +53,7 @@
           @change="handelAsideChange"
         ></ImageAside>
         <ImageMain
+          :limit="props.limit"
           :openChoose="true"
           ref="ImageMainRef"
           @choose="handleChoose"
@@ -70,8 +71,8 @@
 </template>
 
 <script setup>
-import { CircleClose } from "@element-plus/icons-vue";
 import { ref } from "vue";
+import { toast } from "~/composables/util.js";
 import ImageAside from "~/components/imageAside.vue";
 import ImageMain from "~/components/imageMain.vue";
 const dialogVisable = ref(false);
@@ -85,6 +86,10 @@ const handelAsideChange = (imageClassID) => {
 
 const props = defineProps({
   modelValue: [String, Array],
+  limit: {
+    type: Number,
+    default: 1,
+  },
 });
 const emit = defineEmits(["update:modelValue"]);
 
@@ -92,8 +97,19 @@ const open = () => (dialogVisable.value = true);
 const close = () => (dialogVisable.value = false);
 
 const submit = () => {
+  let value = null;
+  if (props.limit == 1) {
+    value = urls[0];
+  } else {
+    value = [...props.modelValue, ...urls];
+    if (value.length > props.limit) {
+      let leftNumber = props.limit - props.modelValue.length;
+      toast(`最多还能选择${leftNumber}张图片`, "warning");
+      return;
+    }
+  }
   if (urls.length) {
-    emit("update:modelValue", urls[0]);
+    emit("update:modelValue", value);
     close();
   }
 };
