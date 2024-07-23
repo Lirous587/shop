@@ -155,9 +155,11 @@
             </el-button>
             <el-button
               class="px-1"
-              type="primary"
+              :type="scope.row.goods_banner.length > 0 ? 'primary' : 'danger'"
               size="small"
+              text
               @click="handelSetGoodsBanner(scope.row)"
+              :loading="scope.row.bannnersLoading"
             >
               设置轮播图
             </el-button>
@@ -277,7 +279,7 @@
       </el-form>
     </FormDrawer>
   </el-card>
-  <banner ref="bannerRef"> </banner>
+  <banner ref="bannerRef" @reload="getData"> </banner>
 </template>
 
 <script setup>
@@ -319,7 +321,7 @@ const {
   delete: deleteGoods,
   onGetListSuccess: (res) => {
     tableData.value = res.list.map((o) => {
-      o.statusLoading = false;
+      o.bannnersLoading = false;
       return o;
     });
     total.value = res.totalCount;
@@ -394,6 +396,7 @@ getCategoryList().then((res) => (categoryList.value = res));
 // 轮播图
 const bannerRef = ref(null);
 const handelSetGoodsBanner = (row) => {
+  row.bannnersLoading = true;
   bannerRef.value.open(row);
 };
 </script>

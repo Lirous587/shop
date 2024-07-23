@@ -14,7 +14,12 @@
         ></ChooseImage>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="default" @click="submit">
+        <el-button
+          type="primary"
+          size="default"
+          @click="submit"
+          :loading="loading"
+        >
           提交
         </el-button>
       </el-form-item>
@@ -32,12 +37,16 @@ const form = reactive({
   banners: [],
 });
 
+const emits = defineEmits(["reload"]);
+
+const loading = ref(false);
 const goodsId = ref(0);
 const open = (row) => {
   goodsId.value = row.id;
   dialoVisable.value = true;
   readGoods(goodsId.value).then((res) => {
     form.banners = res.goodsBanner.map((o) => o.url);
+    row.bannnersLoading = false;
   });
 };
 
@@ -46,10 +55,15 @@ const handleUpdateBanner = (banners) => {
 };
 
 const submit = () => {
+  loading.value = true;
   setGoodsBanner(goodsId.value, form.banners)
-    .then(() => toast("修改成功"))
-    .finally(() => {
+    .then(() => {
+      toast("设置轮播图成功");
       dialoVisable.value = false;
+      emits("reload");
+    })
+    .finally(() => {
+      loading.value = false;
     });
 };
 
