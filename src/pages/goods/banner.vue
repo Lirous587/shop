@@ -5,9 +5,12 @@
     :destroy-on-close="true"
     size="50%"
   >
-    <el-form :model="form" :inline="false" size="normal" label-width="80px">
+    <el-form :model="form" :inline="false" label-width="80px">
       <el-form-item label="轮播图">
-        <ChooseImage v-model="form.banners"></ChooseImage>
+        <ChooseImage
+          @update:modelValue="handleUpdateBanner"
+          :modelValue="form.banners"
+        ></ChooseImage>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="default" @click="submit">
@@ -21,6 +24,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import ChooseImage from "~/components/ChooseImage.vue";
+import { toast } from "~/composables/util.js";
 import { readGoods, setGoodsBanner } from "~/api/goods.js";
 const dialoVisable = ref(false);
 const form = reactive({
@@ -36,7 +40,17 @@ const open = (row) => {
   });
 };
 
-const submit = () => {};
+const handleUpdateBanner = (banners) => {
+  form.banners = banners;
+};
+
+const submit = () => {
+  setGoodsBanner(goodsId.value, form.banners)
+    .then(() => toast("修改成功"))
+    .finally(() => {
+      dialoVisable.value = false;
+    });
+};
 
 defineExpose({
   open,

@@ -32,7 +32,7 @@ export function readGoods(id) {
 }
 
 export function setGoodsBanner(id, banners) {
-  return axios.get(`/admin/goods/banners/${id}`, {
+  return axios.post(`/admin/goods/banners/${id}`, {
     banners,
   });
 }

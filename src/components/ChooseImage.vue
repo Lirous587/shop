@@ -1,11 +1,36 @@
 <template>
   <div v-if="modelValue">
     <el-avatar
+      v-if="typeof modelValue == 'string'"
       :src="modelValue"
       fit="cover"
       class="w-[100px] h-[100px] rounded border mr-2"
-    ></el-avatar>
+    >
+    </el-avatar>
+
+    <div class="flex flex-wrap">
+      <div
+        class="relative w-[100px] h-[100px] rounded border mr-2"
+        v-for="(url, index) in modelValue"
+        :key="index"
+      >
+        <el-icon
+          @click="removeImage(url)"
+          :size="18"
+          class="absolute z-10 top-[5px] right-[5px] cursor-pointer bg-white rounded-full"
+        >
+          <CircleClose />
+        </el-icon>
+        <el-avatar
+          :src="url"
+          fit="cover"
+          class="w-[100px] h-[100px] rounded border mr-2"
+        >
+        </el-avatar>
+      </div>
+    </div>
   </div>
+
   <div class="choose-image-btn" @click="open">
     <el-icon :size="25" class="text-gray-500">
       <Plus />
@@ -45,6 +70,7 @@
 </template>
 
 <script setup>
+import { CircleClose } from "@element-plus/icons-vue";
 import { ref } from "vue";
 import ImageAside from "~/components/imageAside.vue";
 import ImageMain from "~/components/imageMain.vue";
@@ -80,6 +106,12 @@ let urls = [];
 const handleChoose = (e) => {
   urls = e.map((o) => o.url);
 };
+
+const removeImage = (url) =>
+  emit(
+    "update:modelValue",
+    props.modelValue.filter((o) => o != url)
+  );
 </script>
 
 <style scoped>
