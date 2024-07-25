@@ -163,7 +163,14 @@
             >
               设置轮播图
             </el-button>
-            <el-button class="px-1" type="primary" size="small" text>
+            <el-button
+              class="px-1"
+              :type="scope.row.content ? 'primary' : 'danger'"
+              size="small"
+              text
+              @click="handelSetGoodsContent(scope.row)"
+              :loading="scope.row.contentLoading"
+            >
               商品详细
             </el-button>
             <el-popconfirm
@@ -280,6 +287,7 @@
     </FormDrawer>
   </el-card>
   <banner ref="bannerRef" @reload="getData"> </banner>
+  <content ref="contentRef"></content>
 </template>
 
 <script setup>
@@ -290,6 +298,8 @@ import ListHeader from "~/components/ListHeader.vue";
 import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
 import banner from "./banner.vue";
+import content from "./content.vue";
+
 import { getCategoryList } from "~/api/category";
 
 import {
@@ -322,6 +332,7 @@ const {
   onGetListSuccess: (res) => {
     tableData.value = res.list.map((o) => {
       o.bannnersLoading = false;
+      o.contentLoading = false;
       return o;
     });
     total.value = res.totalCount;
@@ -398,5 +409,12 @@ const bannerRef = ref(null);
 const handelSetGoodsBanner = (row) => {
   row.bannnersLoading = true;
   bannerRef.value.open(row);
+};
+
+// 商品内容
+const contentRef = ref(null);
+const handelSetGoodsContent = (row) => {
+  row.contentLoading = true;
+  contentRef.value.open(row);
 };
 </script>
