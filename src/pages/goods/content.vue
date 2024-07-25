@@ -15,10 +15,7 @@ import Editor from "~/components/Editor.vue";
 import formDrawer from "~/components/formDrawer.vue";
 import { toast } from "~/composables/util.js";
 
-import {
-  readGoods,
-  updateGoods,
-} from "~/api/goods";
+import { readGoods, updateGoods } from "~/api/goods";
 
 const formDrawerRef = ref(null);
 
@@ -27,13 +24,18 @@ const form = reactive({
 });
 
 const goodsId = ref(0);
+
 const open = (row) => {
   goodsId.value = row.id;
-  formDrawerRef.value.open();
-  readGoods(goodsId.value).then((res) => {
-    form.content = res.content;
-    row.contentLoading = false;
-  });
+  row.contentLoading = true;
+  readGoods(goodsId.value)
+    .then((res) => {
+      form.content = res.content;
+      formDrawerRef.value.open();
+    })
+    .finally(() => {
+      row.contentLoading = false;
+    });
 };
 
 const submit = () => {

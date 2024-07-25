@@ -1,5 +1,5 @@
 <template>
-  <div v-if="modelValue">
+  <div v-if="modelValue && preview">
     <el-avatar
       v-if="typeof modelValue == 'string'"
       :src="modelValue"
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="choose-image-btn" @click="open">
+  <div v-if="preview" class="choose-image-btn" @click="open">
     <el-icon :size="25" class="text-gray-500">
       <Plus />
     </el-icon>
@@ -90,28 +90,41 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  preview: {
+    type: Boolean,
+    default: true,
+  },
 });
 const emit = defineEmits(["update:modelValue"]);
 
-const open = () => (dialogVisable.value = true);
-const close = () => (dialogVisable.value = false);
+const callbackFuction = ref(null);
+const open = (callback) => {
+  callbackFuction.value = callback;
+  dialogVisable.value = true;
+};
+const close = (callFunc) => (dialogVisable.value = false);
 
 const submit = () => {
   let value = null;
   if (props.limit == 1) {
     value = urls[0];
   } else {
-    value = [...props.modelValue, ...urls];
+    value = props.preview ? [...props.modelValue, ...urls] : [...urls];
     if (value.length > props.limit) {
-      let leftNumber = props.limit - props.modelValue.length;
+      let leftNumber = props.preview
+        ? props.limit - props.modelValue.length
+        : props.limit;
       toast(`最多还能选择${leftNumber}张图片`, "warning");
       return;
     }
   }
-  if (urls.length) {
+  if (value && props.preview) {
     emit("update:modelValue", value);
-    close();
   }
+  if (!props.preview && typeof callbackFuction.value === "function") {
+    callbackFuction.value(value);
+  }
+  close();
 };
 
 const cancel = () => {
@@ -128,6 +141,10 @@ const removeImage = (url) =>
     "update:modelValue",
     props.modelValue.filter((o) => o != url)
   );
+
+defineExpose({
+  open,
+});
 </script>
 
 <style scoped>
