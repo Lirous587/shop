@@ -153,10 +153,11 @@
 
             <el-button
               class="px-1"
-              type="primary"
               size="small"
               text
               @click="handelSetGoodsSkus(scope.row)"
+              :type="scope.row.sku_value ? 'primary' : 'danger'"
+              :loading="scope.row.skusLoading"
             >
               商品规格
             </el-button>
@@ -171,7 +172,7 @@
             >
               设置轮播图
             </el-button>
-            
+
             <el-button
               class="px-1"
               :type="scope.row.content ? 'primary' : 'danger'"

@@ -2,12 +2,12 @@
   <formDrawer
     @submit="submit"
     ref="formDrawerRef"
-    title="修改商品规格"
+    title="设置商品规格"
     destroy-on-close
     size="70%"
   >
     <el-form :model="form" label-width="80px" :inline="false" size="normal">
-      <el-form-item label="">
+      <el-form-item label="规格类型">
         <el-radio-group v-model="form.sku_type">
           <el-radio label="单规格" :value="0"> 单规格 </el-radio>
           <el-radio label="多规格" :value="1"> 多规格 </el-radio>
@@ -40,7 +40,9 @@
           </el-input>
         </el-form-item>
       </template>
-      <template v-else> 多规格 </template>
+      <template v-else>
+        <SkuCard></SkuCard>
+      </template>
     </el-form>
   </formDrawer>
 </template>
@@ -48,6 +50,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import formDrawer from "~/components/formDrawer.vue";
+import SkuCard from "./components/SkuCard.vue";
 import { toast } from "~/composables/util.js";
 import { readGoods, setGoodsSkus } from "~/api/goods";
 
@@ -64,7 +67,7 @@ const form = reactive({
   },
 });
 
-const goodsId = ref(0);
+import { goodsId, initSkuCardList } from "~/composables/useSku.js";
 
 const open = (row) => {
   goodsId.value = row.id;
@@ -75,6 +78,7 @@ const open = (row) => {
         form.sku_value = res.sku_value;
       }
       formDrawerRef.value.open();
+      initSkuCardList(res);
     })
     .finally(() => {
       row.skusLoading = false;
