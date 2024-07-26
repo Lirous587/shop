@@ -50,8 +50,8 @@ const ChooseImageRef = ref(null);
 const init = {
   language_url: "/tinymce/langs/zh-Hans.js", // 中文语言包路径
   language: "zh-Hans",
-  skin_url: "/tinymce/skins/ui/oxide", // 编辑器皮肤样式
-  content_css: "/tinymce/skins/content/default/content.min.css",
+  skin_url: "node_modules/tinymce/skins/ui/oxide", // 编辑器皮肤样式
+  content_css: "node_modules/tinymce/skins/content/default/content.min.css",
   menubar: false, // 隐藏菜单栏
   autoresize_bottom_margin: 50,
   max_height: 1000,

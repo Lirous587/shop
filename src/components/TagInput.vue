@@ -19,7 +19,7 @@
       @blur="handleInputConfirm"
     />
     <el-button v-else class="button-new-tag" size="small" @click="showInput">
-      + New Tag
+      添加值
     </el-button>
   </div>
 </template>

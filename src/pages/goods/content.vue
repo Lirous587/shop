@@ -4,6 +4,7 @@
     ref="formDrawerRef"
     title="修改商品内容"
     destroy-on-close
+    size="70%"
   >
     <Editor v-model="form.content"></Editor>
   </formDrawer>
