@@ -150,9 +150,17 @@
             >
               修改
             </el-button>
-            <el-button class="px-1" type="primary" size="small" text>
+
+            <el-button
+              class="px-1"
+              type="primary"
+              size="small"
+              text
+              @click="handelSetGoodsSkus(scope.row)"
+            >
               商品规格
             </el-button>
+
             <el-button
               class="px-1"
               :type="scope.row.goods_banner.length > 0 ? 'primary' : 'danger'"
@@ -163,6 +171,7 @@
             >
               设置轮播图
             </el-button>
+            
             <el-button
               class="px-1"
               :type="scope.row.content ? 'primary' : 'danger'"
@@ -173,6 +182,7 @@
             >
               商品详细
             </el-button>
+
             <el-popconfirm
               title="是否要删除该管理员?"
               confirm-button-text="确定"
@@ -288,6 +298,7 @@
   </el-card>
   <banner ref="bannerRef" @reload="getData"> </banner>
   <content ref="contentRef"></content>
+  <skus ref="skusRef"></skus>
 </template>
 
 <script setup>
@@ -299,6 +310,7 @@ import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
 import banner from "./banner.vue";
 import content from "./content.vue";
+import skus from "./skus.vue";
 
 import { getCategoryList } from "~/api/category";
 
@@ -416,5 +428,12 @@ const contentRef = ref(null);
 const handelSetGoodsContent = (row) => {
   row.contentLoading = true;
   contentRef.value.open(row);
+};
+
+// 商品规格
+const skusRef = ref(null);
+const handelSetGoodsSkus = (row) => {
+  row.skusLoading = true;
+  skusRef.value.open(row);
 };
 </script>

@@ -36,3 +36,10 @@ export function setGoodsBanner(id, banners) {
     banners,
   });
 }
+
+export function setGoodsSkus(id, sku_type, sku_value) {
+  return axios.post(`/admin/goods/updateskus/${id}`, {
+    sku_type,
+    sku_value,
+  });
+}
