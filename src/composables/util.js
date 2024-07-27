@@ -54,3 +54,19 @@ export function queryToUrl(query) {
   r = r ? "?" + r : "";
   return r;
 }
+
+export function useArrMoveUp(arr, index) {
+  swapArry(arr, index, index - 1);
+}
+
+export function useArrMoveDown(arr, index) {
+  swapArry(arr, index, index + 1);
+}
+
+export function swapArry(arr, index1, index2) {
+  // 先保留index2
+  const lastItem = arr[index2];
+  // 将index1于index2交换
+  arr.splice(index2, 1, arr[index1]);
+  arr[index1] = lastItem;
+}

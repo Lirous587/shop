@@ -3,9 +3,10 @@ import {
   addGoodsSkuCard,
   updateGoodsSkuCard,
   deleteGoodsSkuCard,
+  sortGoodsSkuCard,
 } from "~/api/goods.js";
 
-import { toast } from "~/composables/util.js";
+import { toast, useArrMoveUp, useArrMoveDown } from "~/composables/util.js";
 
 export const goodsId = ref(0);
 
@@ -25,7 +26,7 @@ export function initSkuCardList(data) {
 
 export function initSkuCardItem(id) {
   const item = sku_cart_list.value.find((o) => o.id == id);
-  return { item };
+  return item;
 }
 
 export const btnLoading = ref(false);
@@ -72,13 +73,38 @@ export function updateGoodsSkuCardEvent(item) {
 
 export function deleteGoodsSkuCardEvent(item) {
   item.loading = true;
+
   deleteGoodsSkuCard(item.id)
     .then(() => {
-      const i = sku_cart_list.value.find((o) => o.id == item.id);
-      sku_cart_list.value.splice(i, 1);
-      toast("删除商品该规格成功");
+      const i = sku_cart_list.value.findIndex((o) => o.id === item.id);
+      if (i != -1) {
+        sku_cart_list.value.splice(i, 1);
+        toast("删除商品该规格成功");
+      }
     })
     .finally(() => {
       item.loading = false;
+    });
+}
+
+export const bodyLoading = ref(false);
+export function sortCard(index, action) {
+  bodyLoading.value = true;
+  const func = action === "up" ? useArrMoveUp : useArrMoveDown;
+  const oList = JSON.parse(JSON.stringify(sku_cart_list.value));
+  func(oList, index);
+  const sortData = oList.map((o, i) => {
+    return {
+      id: o.id,
+      order: i + 1,
+    };
+  });
+
+  sortGoodsSkuCard(sortData)
+    .then(() => {
+      func(sku_cart_list.value, index);
+    })
+    .finally(() => {
+      bodyLoading.value = false;
     });
 }

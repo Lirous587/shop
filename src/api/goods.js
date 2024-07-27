@@ -55,3 +55,9 @@ export function updateGoodsSkuCard(id, data) {
 export function deleteGoodsSkuCard(id) {
   return axios.post(`/admin/goods_skus_card/${id}/delete`);
 }
+
+export function sortGoodsSkuCard(sortdata) {
+  return axios.post("/admin/goods_skus_card/sort", {
+    sortdata,
+  });
+}

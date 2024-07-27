@@ -1,11 +1,12 @@
 <template>
-  <el-form-item label="规格选项" size="normal">
+  <el-form-item label="规格选项" size="normal" v-loading="bodyLoading">
     <el-card
       v-for="(item, index) in sku_cart_list"
       :key="index"
       shadow="never"
       class="w-full mb-4"
       :body-style="{ padding: '20px' }"
+      v-loading="item.loading"
     >
       <template #header>
         <div class="flex items-center">
@@ -22,10 +23,18 @@
             </template>
           </el-input>
           <div class="ml-auto">
-            <el-button size="small">
+            <el-button
+              :disabled="index == 0"
+              @click="sortCard(index, 'up')"
+              size="small"
+            >
               <el-icon><Top /></el-icon>
             </el-button>
-            <el-button size="small">
+            <el-button
+              :disabled="index === sku_cart_list.length - 1"
+              @click="sortCard(index, 'down')"
+              size="small"
+            >
               <el-icon><Bottom /></el-icon>
             </el-button>
 
@@ -47,6 +56,7 @@
       <!-- card body -->
       <SkuCardItem :skuCardId="item.id"></SkuCardItem>
     </el-card>
+
     <el-button
       type="success"
       :loading="btnLoading"
@@ -65,6 +75,8 @@ import {
   addGoodsSkuCardEvent,
   updateGoodsSkuCardEvent,
   deleteGoodsSkuCardEvent,
+  sortCard,
+  bodyLoading,
 } from "~/composables/useSku.js";
 </script>
 
@@ -73,3 +85,6 @@ import {
   @apply !p-2 bg-gray-100;
 }
 </style>
+<!-- 
+防止引用传值 
+-->

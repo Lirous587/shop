@@ -5,10 +5,24 @@
 </template>
 
 <script setup>
+import { reactive, watch } from "vue";
 import { initSkuCardItem } from "~/composables/useSku.js";
 
 const props = defineProps({
-  skuCardId: [Number, String],
+  skuCardId: {
+    type: Number || String,
+    required: true,
+  },
 });
-const { item } = initSkuCardItem(props.skuCardId);
+
+let item = reactive({});
+
+item = initSkuCardItem(props.skuCardId);
+
+watch(
+  () => props.skuCardId,
+  () => {
+    item = initSkuCardItem(props.skuCardId);
+  }
+);
 </script>
