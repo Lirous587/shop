@@ -15,7 +15,11 @@
             placeholder="规格选项"
             size="normal"
             clearable
-          ></el-input>
+          >
+            <template #append>
+              <el-icon class="hover:cursor-pointer"><More /></el-icon>
+            </template>
+          </el-input>
           <div class="ml-auto">
             <el-button size="small">
               <el-icon><Top /></el-icon>
@@ -32,14 +36,23 @@
       <!-- card body -->
       <SkuCardItem :skuCardId="item.id"></SkuCardItem>
     </el-card>
-    <el-button type="success" @click=""> 添加规格 </el-button>
+    <el-button
+      type="success"
+      :loading="btnLoading"
+      @click="addGoodsSkuCardEvent"
+    >
+      添加规格
+    </el-button>
   </el-form-item>
 </template>
 
 <script setup>
 import SkuCardItem from "./SkuCardItem.vue";
-
-import { sku_cart_list } from "~/composables/useSku.js";
+import {
+  sku_cart_list,
+  btnLoading,
+  addGoodsSkuCardEvent,
+} from "~/composables/useSku.js";
 </script>
 
 <style>

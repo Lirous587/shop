@@ -43,3 +43,7 @@ export function setGoodsSkus(id, sku_type, sku_value) {
     sku_value,
   });
 }
+
+export function addGoodsSkuCard(data) {
+  return axios.post("/admin/goods_skus_card", data);
+}
