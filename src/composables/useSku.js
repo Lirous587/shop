@@ -1,5 +1,11 @@
 import { ref } from "vue";
-import { addGoodsSkuCard, updateGoodsSkuCard } from "~/api/goods.js";
+import {
+  addGoodsSkuCard,
+  updateGoodsSkuCard,
+  deleteGoodsSkuCard,
+} from "~/api/goods.js";
+
+import { toast } from "~/composables/util.js";
 
 export const goodsId = ref(0);
 
@@ -45,21 +51,34 @@ export function addGoodsSkuCardEvent() {
     });
 }
 
-export function updateSkuCardEvent(row) {
-  row.loading = true;
-  updateGoodsSkuCard(row.id, {
-    goods_id: row.goods_id,
-    name: row.text,
-    order: row.order,
-    type: row.type,
+export function updateGoodsSkuCardEvent(item) {
+  item.loading = true;
+  updateGoodsSkuCard(item.id, {
+    goods_id: item.goods_id,
+    name: item.text,
+    order: item.order,
+    type: item.type,
   })
     .then((res) => {
-      row.name = row.text;
+      item.name = item.text;
     })
     .catch(() => {
-      row.text = row.name;
+      item.text = item.name;
     })
     .finally(() => {
-      row.loading = false;
+      item.loading = false;
+    });
+}
+
+export function deleteGoodsSkuCardEvent(item) {
+  item.loading = true;
+  deleteGoodsSkuCard(item.id)
+    .then(() => {
+      const i = sku_cart_list.value.find((o) => o.id == item.id);
+      sku_cart_list.value.splice(i, 1);
+      toast("删除商品该规格成功");
+    })
+    .finally(() => {
+      item.loading = false;
     });
 }

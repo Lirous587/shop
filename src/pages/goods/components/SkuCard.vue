@@ -15,7 +15,7 @@
             placeholder="规格选项"
             size="normal"
             clearable
-            @change="updateSkuCardEvent(item)"
+            @change="updateGoodsSkuCardEvent(item)"
           >
             <template #append>
               <el-icon class="hover:cursor-pointer"><More /></el-icon>
@@ -28,9 +28,19 @@
             <el-button size="small">
               <el-icon><Bottom /></el-icon>
             </el-button>
-            <el-button size="small">
-              <el-icon><Delete /></el-icon>
-            </el-button>
+
+            <el-popconfirm
+              title="是否要删除该商品规格?"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              @confirm="deleteGoodsSkuCardEvent(item)"
+            >
+              <template #reference>
+                <el-button size="small">
+                  <el-icon><Delete /></el-icon>
+                </el-button>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
       </template>
@@ -53,7 +63,8 @@ import {
   sku_cart_list,
   btnLoading,
   addGoodsSkuCardEvent,
-  updateSkuCardEvent,
+  updateGoodsSkuCardEvent,
+  deleteGoodsSkuCardEvent,
 } from "~/composables/useSku.js";
 </script>
 
