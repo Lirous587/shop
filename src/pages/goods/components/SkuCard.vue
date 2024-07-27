@@ -10,11 +10,12 @@
       <template #header>
         <div class="flex items-center">
           <el-input
-            v-model="item.name"
+            v-model="item.text"
             style="width: 200px"
             placeholder="规格选项"
             size="normal"
             clearable
+            @change="updateSkuCardEvent(item)"
           >
             <template #append>
               <el-icon class="hover:cursor-pointer"><More /></el-icon>
@@ -52,6 +53,7 @@ import {
   sku_cart_list,
   btnLoading,
   addGoodsSkuCardEvent,
+  updateSkuCardEvent,
 } from "~/composables/useSku.js";
 </script>
 

@@ -52,7 +52,7 @@ import { ref, reactive } from "vue";
 import formDrawer from "~/components/formDrawer.vue";
 import SkuCard from "./components/SkuCard.vue";
 import { toast } from "~/composables/util.js";
-import { readGoods, setGoodsSkus } from "~/api/goods";
+import { readGoods, setGoodsSku } from "~/api/goods";
 
 const formDrawerRef = ref(null);
 
@@ -87,7 +87,7 @@ const open = (row) => {
 
 const submit = () => {
   formDrawerRef.value.showLoading();
-  setGoodsSkus(goodsId.value, form.sku_type, form.sku_value)
+  setGoodsSku(goodsId.value, form.sku_type, form.sku_value)
     .then(() => {
       toast("设置商品规格成功");
       formDrawerRef.value.close();

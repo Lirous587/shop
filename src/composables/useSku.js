@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { addGoodsSkuCard } from "~/api/goods.js";
+import { addGoodsSkuCard, updateGoodsSkuCard } from "~/api/goods.js";
 
 export const goodsId = ref(0);
 
@@ -42,5 +42,24 @@ export function addGoodsSkuCardEvent() {
     })
     .finally(() => {
       btnLoading.value = false;
+    });
+}
+
+export function updateSkuCardEvent(row) {
+  row.loading = true;
+  updateGoodsSkuCard(row.id, {
+    goods_id: row.goods_id,
+    name: row.text,
+    order: row.order,
+    type: row.type,
+  })
+    .then((res) => {
+      row.name = row.text;
+    })
+    .catch(() => {
+      row.text = row.name;
+    })
+    .finally(() => {
+      row.loading = false;
     });
 }
