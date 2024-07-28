@@ -30,6 +30,7 @@
       + 新增规格
     </el-button>
   </div>
+  {{ props.skuCardId }}
 </template>
 
 <script setup>
@@ -43,7 +44,7 @@ const props = defineProps({
   },
 });
 
-let {
+const {
   item,
   inputValue,
   inputVisible,
@@ -54,11 +55,4 @@ let {
   loading,
   handelChange,
 } = initSkuCardItem(props.skuCardId);
-
-watch(
-  () => props.skuCardId,
-  () => {
-    item = initSkuCardItem(props.skuCardId).item;
-  }
-);
 </script>

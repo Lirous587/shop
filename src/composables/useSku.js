@@ -29,17 +29,19 @@ export function initSkuCardList(data) {
 
 export function initSkuCardItem(id) {
   const item = sku_cart_list.value.find((o) => o.id == id);
-
+  const loading = ref(false);
   const inputValue = ref("");
   const inputVisible = ref(false);
   const InputRef = ref(null);
 
   const handleClose = (tag) => {
     loading.value = true;
-
     deleteGoodsSkuCardValue(tag.id)
       .then(() => {
-        item.goodsSkusCardValue.splice(item.goodsSkusCardValue.indexOf(tag), 1);
+        let i = item.goodsSkusCardValue.findIndex((o) => o.id === tag.id);
+        if (i != -1) {
+          item.goodsSkusCardValue.splice(i, 1);
+        }
       })
       .finally(() => {
         loading.value = false;
@@ -53,31 +55,30 @@ export function initSkuCardItem(id) {
     });
   };
 
-  const loading = ref(false);
   const handleInputConfirm = () => {
     if (!inputValue.value) {
       inputVisible.value = false;
       return;
-    } else {
-      loading.value = true;
-      addGoodsSkuCardValue({
-        goods_skus_card_id: id,
-        name: item.name,
-        order: 50,
-        value: inputValue.value,
-      })
-        .then((res) => {
-          item.goodsSkusCardValue.push({
-            ...res,
-            text: res.value,
-          });
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-      inputValue.value = "";
     }
-    inputVisible.value = false;
+
+    loading.value = true;
+    addGoodsSkuCardValue({
+      goods_skus_card_id: id,
+      name: item.name,
+      order: 50,
+      value: inputValue.value,
+    })
+      .then((res) => {
+        item.goodsSkusCardValue.push({
+          ...res,
+          text: res.value,
+        });
+      })
+      .finally(() => {
+        inputValue.value = "";
+        inputVisible.value = false;
+        loading.value = false;
+      });
   };
 
   const handelChange = (value, tag) => {
@@ -93,7 +94,7 @@ export function initSkuCardItem(id) {
         tag.value = value;
       })
       .catch(() => {
-        value = tag.value;
+        tag.text = tag.value;
       })
       .finally(() => {
         loading.value = false;
@@ -174,7 +175,6 @@ export function deleteGoodsSkuCardEvent(item) {
 export const bodyLoading = ref(false);
 
 export function sortCard(index, action) {
-  bodyLoading.value = true;
   const func = action === "up" ? useArrMoveUp : useArrMoveDown;
   const oList = JSON.parse(JSON.stringify(sku_cart_list.value));
   func(oList, index);
@@ -185,6 +185,7 @@ export function sortCard(index, action) {
     };
   });
 
+  bodyLoading.value = true;
   sortGoodsSkuCard(sortData)
     .then(() => {
       func(sku_cart_list.value, index);

@@ -2,7 +2,7 @@
   <el-form-item label="规格选项" size="normal" v-loading="bodyLoading">
     <el-card
       v-for="(item, index) in sku_cart_list"
-      :key="index"
+      :key="item.id"
       shadow="never"
       class="w-full mb-4"
       :body-style="{ padding: '20px' }"
