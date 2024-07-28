@@ -65,3 +65,7 @@ export function sortGoodsSkuCard(sortdata) {
 export function addGoodsSkuCardValue(data) {
   return axios.post("/admin/goods_skus_card_value", data);
 }
+
+export function updateGoodsSkuCardValue(id, data) {
+  return axios.post(`/admin/goods_skus_card_value/${id}`, data);
+}

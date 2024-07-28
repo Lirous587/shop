@@ -5,6 +5,7 @@ import {
   deleteGoodsSkuCard,
   sortGoodsSkuCard,
   addGoodsSkuCardValue,
+  updateGoodsSkuCardValue,
 } from "~/api/goods.js";
 
 import { toast, useArrMoveUp, useArrMoveDown } from "~/composables/util.js";
@@ -70,6 +71,26 @@ export function initSkuCardItem(id) {
     inputVisible.value = false;
   };
 
+  const handelChange = (value, tag) => {
+    loading.value = true;
+
+    updateGoodsSkuCardValue(tag.id, {
+      goods_skus_card_id: id,
+      name: item.name,
+      order: item.order,
+      value: value,
+    })
+      .then((res) => {
+        tag.value = value;
+      })
+      .catch(() => {
+        value = tag.value;
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  };
+
   return {
     item,
     inputValue,
@@ -79,6 +100,7 @@ export function initSkuCardItem(id) {
     showInput,
     handleInputConfirm,
     loading,
+    handelChange,
   };
 }
 

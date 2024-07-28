@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="flex gap-2 flex-wrap">
+  <div v-loading="loading" class="flex flex-wrap">
     <el-tag
       v-for="(tag, index) in item.goodsSkusCardValue"
       :key="index"
@@ -7,8 +7,15 @@
       :disable-transitions="false"
       @close="handleClose(tag)"
       effect="plain"
+      class="mr-3"
     >
-      {{ tag.text }}
+      <el-input
+        v-model="tag.text"
+        placeholder=""
+        size="small"
+        @change="handelChange($event,tag)"
+        class="w-20 ml-[-10px]"
+      ></el-input>
     </el-tag>
     <el-input
       v-if="inputVisible"
@@ -45,6 +52,7 @@ let {
   showInput,
   handleInputConfirm,
   loading,
+  handelChange
 } = initSkuCardItem(props.skuCardId);
 
 watch(
