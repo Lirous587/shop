@@ -13,7 +13,7 @@
         v-model="tag.text"
         placeholder=""
         size="small"
-        @change="handelChange($event,tag)"
+        @change="handelChange($event, tag)"
         class="w-20 ml-[-10px]"
       ></el-input>
     </el-tag>
@@ -52,7 +52,7 @@ let {
   showInput,
   handleInputConfirm,
   loading,
-  handelChange
+  handelChange,
 } = initSkuCardItem(props.skuCardId);
 
 watch(

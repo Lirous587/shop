@@ -6,6 +6,7 @@ import {
   sortGoodsSkuCard,
   addGoodsSkuCardValue,
   updateGoodsSkuCardValue,
+  deleteGoodsSkuCardValue,
 } from "~/api/goods.js";
 
 import { toast, useArrMoveUp, useArrMoveDown } from "~/composables/util.js";
@@ -34,7 +35,15 @@ export function initSkuCardItem(id) {
   const InputRef = ref(null);
 
   const handleClose = (tag) => {
-    // item.goodsSkusCardValue.splice(item.goodsSkusCardValue.indexOf(tag), 1);
+    loading.value = true;
+
+    deleteGoodsSkuCardValue(tag.id)
+      .then(() => {
+        item.goodsSkusCardValue.splice(item.goodsSkusCardValue.indexOf(tag), 1);
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   };
 
   const showInput = () => {
