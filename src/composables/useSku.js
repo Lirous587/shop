@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import {
   addGoodsSkuCard,
   updateGoodsSkuCard,
@@ -26,7 +26,39 @@ export function initSkuCardList(data) {
 
 export function initSkuCardItem(id) {
   const item = sku_cart_list.value.find((o) => o.id == id);
-  return item;
+
+  const inputValue = ref("");
+  const inputVisible = ref(false);
+  const InputRef = ref(null);
+
+  const handleClose = (tag) => {
+    // dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1);
+  };
+
+  const showInput = () => {
+    inputVisible.value = true;
+    nextTick(() => {
+      InputRef.value.input.focus();
+    });
+  };
+
+  const handleInputConfirm = () => {
+    if (inputValue.value) {
+      // dynamicTags.value.push(inputValue.value);
+    }
+    inputVisible.value = false;
+    inputValue.value = "";
+  };
+
+  return {
+    item,
+    inputValue,
+    inputVisible,
+    InputRef,
+    handleClose,
+    showInput,
+    handleInputConfirm,
+  };
 }
 
 export const btnLoading = ref(false);
