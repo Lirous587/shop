@@ -1,11 +1,12 @@
 <template>
-  <div class="flex gap-2">
+  <div v-loading="loading" class="flex gap-2 flex-wrap">
     <el-tag
       v-for="(tag, index) in item.goodsSkusCardValue"
       :key="index"
       closable
       :disable-transitions="false"
       @close="handleClose(tag)"
+      effect="plain"
     >
       {{ tag.text }}
     </el-tag>
@@ -25,7 +26,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from "vue";
+import { watch } from "vue";
 import { initSkuCardItem } from "~/composables/useSku.js";
 
 const props = defineProps({
@@ -43,6 +44,7 @@ let {
   handleClose,
   showInput,
   handleInputConfirm,
+  loading,
 } = initSkuCardItem(props.skuCardId);
 
 watch(

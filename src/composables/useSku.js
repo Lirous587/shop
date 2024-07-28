@@ -4,6 +4,7 @@ import {
   updateGoodsSkuCard,
   deleteGoodsSkuCard,
   sortGoodsSkuCard,
+  addGoodsSkuCardValue,
 } from "~/api/goods.js";
 
 import { toast, useArrMoveUp, useArrMoveDown } from "~/composables/util.js";
@@ -32,7 +33,7 @@ export function initSkuCardItem(id) {
   const InputRef = ref(null);
 
   const handleClose = (tag) => {
-    // dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1);
+    // item.goodsSkusCardValue.splice(item.goodsSkusCardValue.indexOf(tag), 1);
   };
 
   const showInput = () => {
@@ -42,12 +43,31 @@ export function initSkuCardItem(id) {
     });
   };
 
+  const loading = ref(false);
   const handleInputConfirm = () => {
-    if (inputValue.value) {
-      // dynamicTags.value.push(inputValue.value);
+    if (!inputValue.value) {
+      inputVisible.value = false;
+      return;
+    } else {
+      loading.value = true;
+      addGoodsSkuCardValue({
+        goods_skus_card_id: id,
+        name: item.name,
+        order: 50,
+        value: inputValue.value,
+      })
+        .then((res) => {
+          item.goodsSkusCardValue.push({
+            ...res,
+            text: res.value,
+          });
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+      inputValue.value = "";
     }
     inputVisible.value = false;
-    inputValue.value = "";
   };
 
   return {
@@ -58,6 +78,7 @@ export function initSkuCardItem(id) {
     handleClose,
     showInput,
     handleInputConfirm,
+    loading,
   };
 }
 
@@ -120,6 +141,7 @@ export function deleteGoodsSkuCardEvent(item) {
 }
 
 export const bodyLoading = ref(false);
+
 export function sortCard(index, action) {
   bodyLoading.value = true;
   const func = action === "up" ? useArrMoveUp : useArrMoveDown;
