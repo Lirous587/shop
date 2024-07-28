@@ -13,6 +13,12 @@ export function updateGoodsStatus(ids, status) {
   });
 }
 
+export function ifCheckGoods(id, status) {
+  return axios.post(`/admin/goods/${id}/check`, {
+    ischeck: status,
+  });
+}
+
 export function createGoods(data) {
   return axios.post(`/admin/goods`, data);
 }

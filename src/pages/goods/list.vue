@@ -121,8 +121,19 @@
       <el-table-column label="审核状态" width="120" align="center">
         <template #default="{ row }">
           <div v-if="row.ischeck === 0" class="flex flex-col">
-            <el-button type="success" plain>审核通过</el-button>
-            <el-button type="danger" class="mt-2 !ml-0" plain>
+            <el-button
+              type="success"
+              plain
+              @click="ifCheckGoodsEvent(row.id, 1)"
+            >
+              审核通过
+            </el-button>
+            <el-button
+              type="danger"
+              class="mt-2 !ml-0"
+              plain
+              @click="ifCheckGoodsEvent(row.id, 1)"
+            >
               审核拒绝
             </el-button>
           </div>
@@ -313,11 +324,14 @@ import banner from "./banner.vue";
 import content from "./content.vue";
 import skus from "./skus.vue";
 
+import { toast } from "~/composables/util.js";
+
 import { getCategoryList } from "~/api/category";
 
 import {
   getGoodsList,
   updateGoodsStatus,
+  ifCheckGoods,
   createGoods,
   updateGoods,
   deleteGoods,
@@ -412,6 +426,14 @@ const tabsBar = [
     name: "回收站",
   },
 ];
+
+// 审核功能
+const ifCheckGoodsEvent = (id, status) => {
+  ifCheckGoods(id, status).then(() => {
+    toast("操作成功");
+    getData();
+  });
+};
 
 // 高级搜索
 const categoryList = ref([]);
