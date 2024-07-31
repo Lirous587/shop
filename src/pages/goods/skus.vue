@@ -69,7 +69,10 @@ const form = reactive({
 
 import { goodsId, initSkuCardList } from "~/composables/useSku.js";
 
+let rowDeepCopy = {};
+
 const open = (row) => {
+  rowDeepCopy = row;
   goodsId.value = row.id;
   row.skusLoading = true;
   readGoods(goodsId.value)
@@ -91,6 +94,7 @@ const submit = () => {
     .then(() => {
       toast("设置商品规格成功");
       formDrawerRef.value.close();
+      rowDeepCopy.sku_value = form.sku_value;
     })
     .finally(() => {
       formDrawerRef.value.hideLoading();

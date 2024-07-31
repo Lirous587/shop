@@ -91,7 +91,6 @@ const ChooseSkuRef = ref(null);
 
 const openDialog = (id) => {
   ChooseSkuRef.value.open((data) => {
-    console.log(data);
     handelSetGoodsSkuCardAndValue(id, {
       name: data.name,
       value: data.list,

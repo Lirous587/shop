@@ -197,7 +197,16 @@ export function sortCard(index, action) {
 }
 
 export function handelSetGoodsSkuCardAndValue(id, data) {
+  let item = sku_cart_list.value.find((o) => o.id == id);
   setGoodsSkuCardAndValue(id, data).then((res) => {
+    item.name = res.goods_skus_card.name;
+    item.goodsSkusCardValue = res.goods_skus_card_value.map((o) => {
+      console.log(o);
+      return {
+        ...o,
+        text: o.name,
+      };
+    });
     toast("设置成功");
   });
 }
