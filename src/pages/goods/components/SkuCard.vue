@@ -19,7 +19,9 @@
             @change="updateGoodsSkuCardEvent(item)"
           >
             <template #append>
-              <el-icon class="hover:cursor-pointer"><More /></el-icon>
+              <el-icon @click="openDialog(item.id)" class="hover:cursor-pointer"
+                ><More
+              /></el-icon>
             </template>
           </el-input>
           <div class="ml-auto">
@@ -65,9 +67,12 @@
       添加规格
     </el-button>
   </el-form-item>
+
+  <ChooseSku ref="ChooseSkuRef"></ChooseSku>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import SkuCardItem from "./SkuCardItem.vue";
 import {
   sku_cart_list,
@@ -77,7 +82,22 @@ import {
   deleteGoodsSkuCardEvent,
   sortCard,
   bodyLoading,
+  handelSetGoodsSkuCardAndValue,
 } from "~/composables/useSku.js";
+
+import ChooseSku from "~/components/ChooseSku.vue";
+
+const ChooseSkuRef = ref(null);
+
+const openDialog = (id) => {
+  ChooseSkuRef.value.open((data) => {
+    console.log(data);
+    handelSetGoodsSkuCardAndValue(id, {
+      name: data.name,
+      value: data.list,
+    });
+  });
+};
 </script>
 
 <style>
@@ -85,6 +105,3 @@ import {
   @apply !p-2 bg-gray-100;
 }
 </style>
-<!-- 
-防止引用传值 
--->

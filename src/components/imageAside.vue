@@ -39,6 +39,7 @@
     </el-form>
   </FormDrawer>
 </template>
+
 <script setup>
 import AsideList from "~/components/AsideList.vue";
 import {
@@ -167,7 +168,7 @@ function getData(p = null) {
 getData();
 </script>
 
-<style>
+<style scoped>
 .image-aside {
   border-right: 1px solid #eeeeee;
   position: relative;

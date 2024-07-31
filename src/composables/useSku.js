@@ -7,6 +7,7 @@ import {
   addGoodsSkuCardValue,
   updateGoodsSkuCardValue,
   deleteGoodsSkuCardValue,
+  setGoodsSkuCardAndValue,
 } from "~/api/goods.js";
 
 import { toast, useArrMoveUp, useArrMoveDown } from "~/composables/util.js";
@@ -193,4 +194,10 @@ export function sortCard(index, action) {
     .finally(() => {
       bodyLoading.value = false;
     });
+}
+
+export function handelSetGoodsSkuCardAndValue(id, data) {
+  setGoodsSkuCardAndValue(id, data).then((res) => {
+    toast("设置成功");
+  });
 }

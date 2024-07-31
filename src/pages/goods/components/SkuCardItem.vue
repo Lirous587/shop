@@ -7,7 +7,7 @@
       :disable-transitions="false"
       @close="handleClose(tag)"
       effect="plain"
-      class="mr-3"
+      class="mr-3 mb-2"
     >
       <el-input
         v-model="tag.text"
@@ -26,11 +26,8 @@
       @keyup.enter="handleInputConfirm"
       @blur="handleInputConfirm"
     />
-    <el-button v-else class="button-new-tag" size="small" @click="showInput">
-      + 新增规格
-    </el-button>
+    <el-button v-else size="small" @click="showInput"> + 新增规格 </el-button>
   </div>
-  {{ props.skuCardId }}
 </template>
 
 <script setup>
