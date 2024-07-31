@@ -198,15 +198,17 @@ export function sortCard(index, action) {
 
 export function handelSetGoodsSkuCardAndValue(id, data) {
   let item = sku_cart_list.value.find((o) => o.id == id);
-  setGoodsSkuCardAndValue(id, data).then((res) => {
-    item.name = res.goods_skus_card.name;
-    item.goodsSkusCardValue = res.goods_skus_card_value.map((o) => {
-      console.log(o);
-      return {
-        ...o,
-        text: o.name,
-      };
+  item.loading = true;
+  setGoodsSkuCardAndValue(id, data)
+    .then((res) => {
+      item.name = item.text = res.goods_skus_card.name;
+      item.goodsSkusCardValue = res.goods_skus_card_value.map((o) => {
+        o.text = o.value || "属性值";
+        return o;
+      });
+      toast("设置成功");
+    })
+    .finally(() => {
+      item.loading = false;
     });
-    toast("设置成功");
-  });
 }

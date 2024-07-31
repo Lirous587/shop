@@ -97,6 +97,7 @@ const submit = () => {
   if (typeof callFunction.value === "function") {
     callFunction.value(form);
   }
+  dialogVisibleRef.value = false;
 };
 
 defineExpose({
