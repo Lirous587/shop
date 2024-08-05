@@ -67,6 +67,7 @@
       添加规格
     </el-button>
   </el-form-item>
+  <SkuTable></SkuTable>
 
   <ChooseSku ref="ChooseSkuRef"></ChooseSku>
 </template>
@@ -74,6 +75,8 @@
 <script setup>
 import { ref } from "vue";
 import SkuCardItem from "./SkuCardItem.vue";
+import SkuTable from "./SkuTable.vue";
+
 import {
   sku_cart_list,
   btnLoading,

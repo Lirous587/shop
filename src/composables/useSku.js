@@ -1,4 +1,4 @@
-import { ref, nextTick } from "vue";
+import { ref, nextTick, computed } from "vue";
 import {
   addGoodsSkuCard,
   updateGoodsSkuCard,
@@ -10,7 +10,12 @@ import {
   setGoodsSkuCardAndValue,
 } from "~/api/goods.js";
 
-import { toast, useArrMoveUp, useArrMoveDown } from "~/composables/util.js";
+import {
+  toast,
+  useArrMoveUp,
+  useArrMoveDown,
+  cartesianProductOf,
+} from "~/composables/util.js";
 
 export const goodsId = ref(0);
 
@@ -26,6 +31,7 @@ export function initSkuCardList(data) {
     });
     return item;
   });
+  getTableData();
 }
 
 export function initSkuCardItem(id) {
@@ -37,12 +43,15 @@ export function initSkuCardItem(id) {
 
   const handleClose = (tag) => {
     loading.value = true;
+    tableLoading.value = true;
+
     deleteGoodsSkuCardValue(tag.id)
       .then(() => {
         let i = item.goodsSkusCardValue.findIndex((o) => o.id === tag.id);
         if (i != -1) {
           item.goodsSkusCardValue.splice(i, 1);
         }
+        getTableData();
       })
       .finally(() => {
         loading.value = false;
@@ -63,6 +72,8 @@ export function initSkuCardItem(id) {
     }
 
     loading.value = true;
+    tableLoading.value = true;
+
     addGoodsSkuCardValue({
       goods_skus_card_id: id,
       name: item.name,
@@ -74,6 +85,7 @@ export function initSkuCardItem(id) {
           ...res,
           text: res.value,
         });
+        getTableData();
       })
       .finally(() => {
         inputValue.value = "";
@@ -84,6 +96,7 @@ export function initSkuCardItem(id) {
 
   const handelChange = (value, tag) => {
     loading.value = true;
+    tableLoading.value = true;
 
     updateGoodsSkuCardValue(tag.id, {
       goods_skus_card_id: id,
@@ -93,6 +106,7 @@ export function initSkuCardItem(id) {
     })
       .then((res) => {
         tag.value = value;
+        getTableData();
       })
       .catch(() => {
         tag.text = tag.value;
@@ -119,6 +133,8 @@ export const btnLoading = ref(false);
 
 export function addGoodsSkuCardEvent() {
   btnLoading.value = true;
+  tableLoading.value = true;
+
   addGoodsSkuCard({
     goods_id: goodsId.value,
     name: "规格名称",
@@ -132,6 +148,7 @@ export function addGoodsSkuCardEvent() {
         loading: false,
         goodsSkusCardValue: [],
       });
+      getTableData();
     })
     .finally(() => {
       btnLoading.value = false;
@@ -140,6 +157,8 @@ export function addGoodsSkuCardEvent() {
 
 export function updateGoodsSkuCardEvent(item) {
   item.loading = true;
+  tableLoading.value = true;
+
   updateGoodsSkuCard(item.id, {
     goods_id: item.goods_id,
     name: item.text,
@@ -148,6 +167,7 @@ export function updateGoodsSkuCardEvent(item) {
   })
     .then((res) => {
       item.name = item.text;
+      getTableData();
     })
     .catch(() => {
       item.text = item.name;
@@ -159,6 +179,7 @@ export function updateGoodsSkuCardEvent(item) {
 
 export function deleteGoodsSkuCardEvent(item) {
   item.loading = true;
+  tableLoading.value = true;
 
   deleteGoodsSkuCard(item.id)
     .then(() => {
@@ -167,6 +188,7 @@ export function deleteGoodsSkuCardEvent(item) {
         sku_cart_list.value.splice(i, 1);
         toast("删除商品该规格成功");
       }
+      getTableData();
     })
     .finally(() => {
       item.loading = false;
@@ -187,9 +209,12 @@ export function sortCard(index, action) {
   });
 
   bodyLoading.value = true;
+  tableLoading.value = true;
+
   sortGoodsSkuCard(sortData)
     .then(() => {
       func(sku_cart_list.value, index);
+      getTableData();
     })
     .finally(() => {
       bodyLoading.value = false;
@@ -198,7 +223,10 @@ export function sortCard(index, action) {
 
 export function handelSetGoodsSkuCardAndValue(id, data) {
   let item = sku_cart_list.value.find((o) => o.id == id);
+
   item.loading = true;
+  tableLoading.value = true;
+
   setGoodsSkuCardAndValue(id, data)
     .then((res) => {
       item.name = item.text = res.goods_skus_card.name;
@@ -206,9 +234,105 @@ export function handelSetGoodsSkuCardAndValue(id, data) {
         o.text = o.value || "属性值";
         return o;
       });
+      getTableData();
       toast("设置成功");
     })
     .finally(() => {
       item.loading = false;
     });
+}
+
+export const sku_list = ref([]);
+export const tableLoading = ref(false);
+export function initSkuTable() {
+  const skuLabels = computed(() =>
+    sku_cart_list.value.filter((v) => v.goodsSkusCardValue.length > 0)
+  );
+
+  const tableThs = computed(() => {
+    let length = skuLabels.value.length;
+    return [
+      {
+        name: "商品规格",
+        colspan: length,
+        width: "",
+        rowspan: length > 0 ? 2 : 1,
+      },
+      {
+        name: "销售价",
+        width: "100",
+        rowspan: 2,
+      },
+      {
+        name: "市场价",
+        width: "100",
+        rowspan: 2,
+      },
+      {
+        name: "成本价",
+        width: "100",
+        rowspan: 2,
+      },
+      {
+        name: "库存",
+        width: "100",
+        rowspan: 2,
+      },
+      {
+        name: "体积",
+        width: "100",
+        rowspan: 2,
+      },
+      {
+        name: "重量",
+        width: "100",
+        rowspan: 2,
+      },
+      {
+        name: "编码",
+        width: "100",
+        rowspan: 2,
+      },
+    ];
+  });
+
+  return {
+    skuLabels,
+    tableThs,
+    sku_list,
+    tableLoading,
+  };
+}
+
+export function getTableData() {
+  if (sku_cart_list.value.length == 0) return [];
+
+  let list = [];
+
+  sku_cart_list.value.forEach((o) => {
+    if (o.goodsSkusCardValue && o.goodsSkusCardValue.length > 0) {
+      list.push(o.goodsSkusCardValue);
+    }
+  });
+
+  if (list.length === 0) return [];
+
+  let arr = cartesianProductOf(...list);
+
+  sku_list.value = [];
+  sku_list.value = arr.map((o) => {
+    return {
+      code: "",
+      goods_id: goodsId.value,
+      image: "",
+      oprice: "0.00",
+      pprice: "0.00",
+      cprice: "0.00",
+      skus: o,
+      stock: 0,
+      volume: 0,
+      weight: 0,
+    };
+  });
+  tableLoading.value = false;
 }
