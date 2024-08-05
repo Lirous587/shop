@@ -80,6 +80,7 @@ const form = reactive({
   name: "",
   list: [],
 });
+
 const list = ref([]);
 const activeId = ref(0);
 const selectClassify = (id) => {
@@ -98,6 +99,7 @@ const submit = () => {
     callFunction.value(form);
   }
   dialogVisibleRef.value = false;
+  form.list = [];
 };
 
 defineExpose({
