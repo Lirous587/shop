@@ -11,21 +11,27 @@
     >
       <el-input
         v-model="tag.text"
-        placeholder=""
         size="small"
         @change="handelChange($event, tag)"
         class="w-20 ml-[-10px]"
       ></el-input>
     </el-tag>
-    <el-input
+
+    <el-tag
       v-if="inputVisible"
-      ref="InputRef"
-      v-model="inputValue"
-      class="w-20"
-      size="small"
-      @keyup.enter="handleInputConfirm"
-      @blur="handleInputConfirm"
-    />
+      :disable-transitions="false"
+      effect="plain"
+      class="mr-3 mb-2 pr-0"
+    >
+      <el-input
+        ref="InputRef"
+        v-model="inputValue"
+        size="small"
+        class="w-20 ml-[-10px] pr-0"
+        @keyup.enter="handleInputConfirm"
+        @blur="handleInputConfirm"
+      />
+    </el-tag>
     <el-button v-else size="small" @click="showInput"> + 新增规格 </el-button>
   </div>
 </template>
