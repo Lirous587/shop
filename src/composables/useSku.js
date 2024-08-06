@@ -305,6 +305,8 @@ export function initSkuTable() {
 }
 
 export function getTableData() {
+  sku_list.value = [];
+
   if (sku_cart_list.value.length == 0) return [];
 
   let list = [];
@@ -319,7 +321,6 @@ export function getTableData() {
 
   let arr = cartesianProductOf(...list);
 
-  sku_list.value = [];
   sku_list.value = arr.map((o) => {
     return {
       code: "",

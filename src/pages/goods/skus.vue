@@ -53,6 +53,7 @@ import formDrawer from "~/components/formDrawer.vue";
 import SkuCard from "./components/SkuCard.vue";
 import { toast } from "~/composables/util.js";
 import { readGoods, setGoodsSku } from "~/api/goods";
+import { goodsId, initSkuCardList, sku_list } from "~/composables/useSku.js";
 
 const formDrawerRef = ref(null);
 
@@ -66,8 +67,6 @@ const form = reactive({
     volume: 0,
   },
 });
-
-import { goodsId, initSkuCardList } from "~/composables/useSku.js";
 
 let rowDeepCopy = {};
 
@@ -89,8 +88,16 @@ const open = (row) => {
 };
 
 const submit = () => {
+  let data = {
+    sku_type: form.sku_type,
+    sku_value: form.sku_value,
+  };
+  if (form.sku_type == 1) {
+    data.goodsSkus = sku_list.value;
+  }
+
   formDrawerRef.value.showLoading();
-  setGoodsSku(goodsId.value, form.sku_type, form.sku_value)
+  setGoodsSku(goodsId.value, data)
     .then(() => {
       toast("设置商品规格成功");
       formDrawerRef.value.close();

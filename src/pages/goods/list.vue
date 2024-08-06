@@ -167,7 +167,12 @@
               size="small"
               text
               @click="handelSetGoodsSkus(scope.row)"
-              :type="scope.row.sku_value ? 'primary' : 'danger'"
+              :type="
+                (scope.row.sku_type == 0 && !scope.row.sku_value) ||
+                (scope.row.sku_type == 1 && !scope.row.goods_skus.length)
+                  ? 'danger'
+                  : 'primary'
+              "
               :loading="scope.row.skusLoading"
             >
               商品规格

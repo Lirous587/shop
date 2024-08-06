@@ -43,11 +43,8 @@ export function setGoodsBanner(id, banners) {
   });
 }
 
-export function setGoodsSku(id, sku_type, sku_value) {
-  return axios.post(`/admin/goods/updateskus/${id}`, {
-    sku_type,
-    sku_value,
-  });
+export function setGoodsSku(id, data) {
+  return axios.post(`/admin/goods/updateskus/${id}`, data);
 }
 
 export function addGoodsSkuCard(data) {
