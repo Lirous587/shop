@@ -210,7 +210,7 @@ export function sortCard(index, action) {
   });
 
   bodyLoading.value = true;
-
+  tableLoading.value = true;
   sortGoodsSkuCard(sortData)
     .then(() => {
       func(sku_cart_list.value, index);
