@@ -49,7 +49,7 @@
       @delete="handelMultipleDelete"
     >
       <el-popconfirm
-        title="是否要批量删除?"
+        title="是否要批量删除商品?"
         confirm-button-text="确定"
         cancel-button-text="取消"
         @confirm="handelMultipleDelete"
@@ -60,9 +60,31 @@
         </template>
       </el-popconfirm>
 
-      <el-button v-else size="small" @click="handelRecoverGoods" type="warning">
-        恢复商品
-      </el-button>
+      <span class="ml-3" v-else>
+        <el-popconfirm
+          title="是否恢复商品?"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          @confirm="handelMultipleRecoverGoods"
+        >
+          <template #reference>
+            <el-button size="small" type="warning">
+              恢复商品
+            </el-button></template
+          >
+        </el-popconfirm>
+
+        <el-popconfirm
+          title="是否彻底删除删除商品?"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          @confirm="handelMultipleDestoryGoods"
+        >
+          <template #reference>
+            <el-button size="small" type="danger"> 彻底删除 </el-button>
+          </template>
+        </el-popconfirm>
+      </span>
 
       <el-button
         v-if="searchForm.tab == 'all' || searchForm.tab == 'off'"
@@ -357,6 +379,7 @@ import {
   updateGoods,
   deleteGoods,
   recoverGoods,
+  destroyGoods,
 } from "~/api/goods";
 
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
@@ -485,16 +508,24 @@ const handelSetGoodsSkus = (row) => {
 };
 
 // 恢复商品
-const handelRecoverGoods = () => {
+const handelMultipleRecoverGoods = () => {
+  multipleAction(recoverGoods, "恢复商品");
+};
+
+const handelMultipleDestoryGoods = () => {
+  multipleAction(destroyGoods, "彻底删除商品");
+};
+
+function multipleAction(func, msg) {
   loading.value = true;
-  recoverGoods(multipleSelectionIds.value)
+  func(multipleSelectionIds.value)
     .then(async () => {
-      toast("恢复商品成功");
+      toast(msg + "成功");
       multipleTableRef.value.clearSelection();
       await getData();
     })
     .finally(() => {
       loading.value = false;
     });
-};
+}
 </script>
