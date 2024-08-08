@@ -43,11 +43,27 @@
 
     <!-- 新增 | 刷新 -->
     <ListHeader
-      layout="create,refresh,delete"
+      layout="create,refresh"
       @create="handelCreate"
       @refresh="getData"
       @delete="handelMultipleDelete"
     >
+      <el-popconfirm
+        title="是否要批量删除?"
+        confirm-button-text="确定"
+        cancel-button-text="取消"
+        @confirm="handelMultipleDelete"
+        v-if="searchForm.tab != 'delete'"
+      >
+        <template #reference>
+          <el-button size="small" type="danger"> 批量删除 </el-button>
+        </template>
+      </el-popconfirm>
+
+      <el-button v-else size="small" @click="handelRecoverGoods" type="warning">
+        恢复商品
+      </el-button>
+
       <el-button
         v-if="searchForm.tab == 'all' || searchForm.tab == 'off'"
         size="small"
@@ -201,10 +217,10 @@
             </el-button>
 
             <el-popconfirm
-              title="是否要删除该管理员?"
+              title="是否要删除该商品?"
               confirm-button-text="确定"
               cancel-button-text="取消"
-              @confirm="handelDelete(scope.row.id)"
+              @confirm="handelDelete([scope.row.id])"
             >
               <template #reference>
                 <el-button type="default" size="small" text>删除</el-button>
@@ -340,6 +356,7 @@ import {
   createGoods,
   updateGoods,
   deleteGoods,
+  recoverGoods,
 } from "~/api/goods";
 
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
@@ -357,6 +374,8 @@ const {
   handleSelectionChange,
   handelMultipleDelete,
   handelMultipleStatusChange,
+  multipleSelectionIds,
+  multipleTableRef,
 } = useInitTable({
   getList: getGoodsList,
   updateStatus: updateGoodsStatus,
@@ -463,5 +482,19 @@ const skusRef = ref(null);
 const handelSetGoodsSkus = (row) => {
   row.skusLoading = true;
   skusRef.value.open(row);
+};
+
+// 恢复商品
+const handelRecoverGoods = () => {
+  loading.value = true;
+  recoverGoods(multipleSelectionIds.value)
+    .then(async () => {
+      toast("恢复商品成功");
+      multipleTableRef.value.clearSelection();
+      await getData();
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 </script>

@@ -107,7 +107,7 @@ export function useInitTable(opt = {}) {
     if (multipleSelectionIds.value.length > 0) {
       loading.value = true;
       opt
-        .updateStatus(multipleSelectionIds.value,status)
+        .updateStatus(multipleSelectionIds.value, status)
         .then((res) => {
           toast("批量修改状态成功");
           getData();
@@ -137,7 +137,8 @@ export function useInitTable(opt = {}) {
     multipleTableRef,
     handleSelectionChange,
     handelMultipleDelete,
-    handelMultipleStatusChange
+    handelMultipleStatusChange,
+    multipleSelectionIds,
   };
 }
 
