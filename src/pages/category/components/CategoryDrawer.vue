@@ -1,18 +1,24 @@
 <template>
-  <FormDrawer ref="formDrawerRef" title="推荐商品" width="60%">
+  <FormDrawer
+    ref="formDrawerRef"
+    title="推荐商品"
+    width="60%"
+    confirmText="关联"
+    @submit="handelRelate"
+  >
     <el-table
       :data="tableData"
       border
       style="width: 100%"
       v-loading="tableLoading"
     >
-      <el-table-column prop="id" label="序号" width="80px" />
+      <el-table-column prop="id" label="序号" width="100px" />
       <el-table-column label="图片">
         <template #default="{ row }">
           <el-image
-            style="width: 85px; height: 85px"
+            style="width: 90px; height: 90px"
             :src="row.cover"
-            fit="fill"
+            fit="contain"
             :lazy="true"
           ></el-image>
         </template>
@@ -34,12 +40,20 @@
       </el-table-column>
     </el-table>
   </FormDrawer>
+
+  <ChooseGoods ref="ChooseGoodsRef"></ChooseGoods>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import FormDrawer from "~/components/FormDrawer.vue";
-import { getCategoryRelate, deleteCategoryRelate } from "~/api/category";
+import {
+  getCategoryRelate,
+  deleteCategoryRelate,
+  connectCategory,
+} from "~/api/category";
+import ChooseGoods from "~/components/ChooseGoods.vue";
+import { toast } from "~/composables/util.js";
 
 const formDrawerRef = ref(null);
 const tableData = ref([]);
@@ -71,6 +85,24 @@ const handelDelete = (row) => {
       getCategoryRelateData();
     })
     .finally(() => {});
+};
+
+const ChooseGoodsRef = ref(null);
+const handelRelate = () => {
+  ChooseGoodsRef.value.open((ids) => {
+    formDrawerRef.value.showLoading();
+    return connectCategory({
+      category_id: category_id.value,
+      goods_ids: ids,
+    })
+      .then(() => {
+        toast("关联成功");
+        getCategoryRelateData();
+      })
+      .finally(() => {
+        formDrawerRef.value.hideLoading();
+      });
+  });
 };
 
 defineExpose({
