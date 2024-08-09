@@ -22,7 +22,7 @@
 
             <span @click.stop="() => {}">
               <el-switch
-              v-loading="data.btnLoading"
+                v-loading="data.statusLoading"
                 :modelValue="data.status"
                 :active-value="1"
                 :inactive-value="0"
@@ -40,7 +40,7 @@
             >
             <span @click.stop="() => {}">
               <el-popconfirm
-                title="是否要删除该菜单?"
+                title="是否要删除该分类?"
                 confirm-button-text="确定"
                 cancel-button-text="取消"
                 @confirm="handelDelete(data.id)"
@@ -159,7 +159,7 @@ const { tableData, loading, getData, handelDelete, handelStatusChange } =
       tableData.value = tableData.value.map((o) => {
         return {
           ...o,
-          btnLoading: ref(false),
+          statusLoading: ref(false),
         };
       });
     },
