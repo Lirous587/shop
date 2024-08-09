@@ -16,7 +16,11 @@
           </div>
 
           <div class="ml-auto space-x-3">
-            <el-button type="primary" text size="small" @click=""
+            <el-button
+              type="primary"
+              text
+              size="small"
+              @click="opencategoryDrawer(data)"
               >推荐商品</el-button
             >
 
@@ -54,6 +58,8 @@
         </div>
       </template>
     </el-tree>
+
+    <CategoryDrawer ref="categoryDrawerRef"></CategoryDrawer>
   </el-card>
 
   <FormDrawer
@@ -73,6 +79,7 @@
 <script setup>
 import ListHeader from "~/components/ListHeader.vue";
 import FormDrawer from "~/components/FormDrawer.vue";
+import CategoryDrawer from "./components/CategoryDrawer.vue";
 
 import {
   getCategoryList,
@@ -82,7 +89,7 @@ import {
   deleteCategory,
 } from "~/api/category.js";
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 // table
 const { tableData, loading, getData, handelDelete, handelStatusChange } =
@@ -121,15 +128,9 @@ const {
   rules: {},
 });
 
-const iconSelectHandel = (icon) => {
-  form.icon = icon;
-};
+const categoryDrawerRef = ref(null);
 
-const addChild = (id) => {
-  handelCreate();
-  form.rule_id = id;
-  form.status = 1;
-};
+const opencategoryDrawer = (item) => categoryDrawerRef.value.open(item);
 </script>
 
 <style scoped>

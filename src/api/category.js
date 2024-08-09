@@ -21,3 +21,7 @@ export function updateCategory(id, data) {
 export function deleteCategory(id) {
   return axios.post(`/admin/category/${id}/delete`);
 }
+
+export function getCategoryRelateList(id) {
+  return axios.get(`/admin/app_category_item/list?category_id=${id}`);
+}
