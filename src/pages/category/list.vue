@@ -17,6 +17,7 @@
 
           <div class="ml-auto space-x-3">
             <el-button
+              :loading="data.btnLoading"
               type="primary"
               text
               size="small"
@@ -103,6 +104,7 @@ const { tableData, loading, getData, handelDelete, handelStatusChange } =
         return {
           ...o,
           statusLoading: false,
+          btnLoading: false,
         };
       });
     },
