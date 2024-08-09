@@ -62,72 +62,9 @@
     :title="drawerTitle"
     @submit="handelSubmit"
   >
-    <el-form
-      :model="form"
-      ref="formRef"
-      :rules="rules"
-      :inline="false"
-      label-width="80px"
-    >
-      <el-form-item label="上级菜单" prop="rule_id">
-        <el-cascader
-          v-model="form.rule_id"
-          :options="options"
-          :props="{
-            value: 'id',
-            label: 'name',
-            children: 'child',
-            checkStrictly: true,
-            emitPath: false,
-          }"
-          placeholder="请选择上级菜单"
-        />
-      </el-form-item>
-      <el-form-item label="菜单/规则" prop="menu">
-        <el-radio-group v-model="form.menu">
-          <el-radio :label="1" size="large" border>菜单</el-radio>
-          <el-radio :label="0" size="large" border>规则</el-radio>
-        </el-radio-group>
-      </el-form-item>
+    <el-form :model="form" ref="formRef" :rules="rules">
       <el-form-item label="名称" prop="name">
-        <el-input
-          v-model="form.name"
-          style="width: 40%"
-          placeholder="名称"
-        ></el-input>
-      </el-form-item>
-      <el-form-item v-if="form.menu == 1" label="菜单图标" prop="icon">
-        <IconSelect
-          @update:modelValue="iconSelectHandel"
-          :modelValue="form.icon"
-        ></IconSelect>
-      </el-form-item>
-      <el-form-item
-        v-if="form.menu == 1 && form.rule_id > 0"
-        label="前端路由"
-        prop="frontpath"
-      >
-        <el-input v-model="form.frontpath" placeholder="前端路由"></el-input>
-      </el-form-item>
-      <el-form-item v-if="form.menu == 0" label="后端规则" prop="condition">
-        <el-input v-model="form.condition" placeholder="后端规则"></el-input>
-      </el-form-item>
-      <el-form-item v-if="form.menu == 0" label="请求方式" prop="method">
-        <el-select
-          v-model="form.method"
-          placeholder="请求方式"
-          style="width: 240px"
-        >
-          <el-option
-            v-for="item in ['GET', 'POST', 'DELETE', 'PUT']"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="排序" prop="order">
-        <el-input-number :min="0" :max="1000" v-model="form.order" />
+        <el-input v-model="form.name" placeholder="分类名称"></el-input>
       </el-form-item>
     </el-form>
   </FormDrawer>
@@ -136,7 +73,6 @@
 <script setup>
 import ListHeader from "~/components/ListHeader.vue";
 import FormDrawer from "~/components/FormDrawer.vue";
-import IconSelect from "~/components/IconSelect.vue";
 
 import {
   getCategoryList,
@@ -146,7 +82,7 @@ import {
   deleteCategory,
 } from "~/api/category.js";
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 
 // table
 const { tableData, loading, getData, handelDelete, handelStatusChange } =
@@ -159,7 +95,7 @@ const { tableData, loading, getData, handelDelete, handelStatusChange } =
       tableData.value = tableData.value.map((o) => {
         return {
           ...o,
-          statusLoading: ref(false),
+          statusLoading: false,
         };
       });
     },
@@ -177,15 +113,7 @@ const {
   handelEdit,
 } = useInitForm({
   form: reactive({
-    rule_id: 0,
-    menu: 1,
     name: "",
-    condition: "",
-    method: "",
-    status: 1,
-    order: 0,
-    icon: "",
-    frontpath: "",
   }),
   getData,
   create: createCategory,

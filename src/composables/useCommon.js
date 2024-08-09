@@ -22,7 +22,6 @@ export function useInitTable(opt = {}) {
   //分页
   const currentPage = ref(1);
   const total = ref(0);
-  const limit = ref(10);
 
   // 获取数据
   function getData(p = null) {
