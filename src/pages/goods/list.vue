@@ -111,14 +111,12 @@
         <template #default="{ row }">
           <div class="flex justify-center items-center">
             <el-image
-              v-if="row.cover"
-              :src="'/public/' + row.cover.split('/')[4]"
+              :src="row.cover"
               fit="contain"
               :lazy="false"
               loading="eager"
               style="width: 50px; height: 50px"
             ></el-image>
-            <el-image v-else></el-image>
             <div class="flex-1 flex flex-col ml-2">
               <h5>{{ row.title }}</h5>
               <div>

@@ -125,7 +125,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import {
   getUserLevelList,
   createUserLevel,
@@ -136,7 +136,6 @@ import {
 
 import FormDrawer from "~/components/FormDrawer.vue";
 import ListHeader from "~/components/ListHeader.vue";
-import { toast } from "~/composables/util.js";
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
 
 // table
