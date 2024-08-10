@@ -53,7 +53,7 @@
 
       <el-table-column label="登录注册时间">
         <template #default="{ row }">
-          {{ row.create_time || "-" }}
+          注册时间 : {{ row.create_time || "-" }}
         </template>
       </el-table-column>
 
@@ -105,49 +105,56 @@
         :total="total"
       />
     </div>
-
-    <FormDrawer
-      ref="formDrawerRef"
-      :closeAble="true"
-      :title="drawerTitle"
-      @submit="handelSubmit"
-    >
-      <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="用户名"></el-input>
-        </el-form-item>
-
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="密码"></el-input>
-        </el-form-item>
-
-        <el-form-item label="头像" prop="avatar">
-          <ChooseImage v-model="form.avatar" />
-        </el-form-item>
-
-        <el-form-item label="所属角色" prop="role_id">
-          <el-select v-model="form.role_id" placeholder="选择所属角色">
-            <el-option
-              v-for="item in roles"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="状态" prop="status">
-          <el-switch
-            v-model="form.status"
-            :active-value="1"
-            :inactive-value="0"
-          >
-          </el-switch>
-        </el-form-item>
-      </el-form>
-    </FormDrawer>
   </el-card>
+  <FormDrawer
+    ref="formDrawerRef"
+    :closeAble="true"
+    :title="drawerTitle"
+    @submit="handelSubmit"
+  >
+    <el-form :model="form" ref="formRef" :rules="rules" label-width="80px">
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="form.username" placeholder="用户名"></el-input>
+      </el-form-item>
+
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" placeholder="密码"></el-input>
+      </el-form-item>
+
+      <el-form-item label="昵称" prop="nickname">
+        <el-input v-model="form.nickname" placeholder="昵称"></el-input>
+      </el-form-item>
+
+      <el-form-item label="头像" prop="avatar">
+        <ChooseImage v-model="form.avatar" />
+      </el-form-item>
+
+      <el-form-item label="会员等级" prop="role_id">
+        <el-select v-model="form.user_level_id" placeholder="选择会员等级">
+          <el-option
+            v-for="item in user_level"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="手机" prop="phone">
+        <el-input v-model="form.phone" placeholder="手机"></el-input>
+      </el-form-item>
+
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="邮箱"></el-input>
+      </el-form-item>
+
+      <el-form-item label="状态" prop="status">
+        <el-switch v-model="form.status" :active-value="1" :inactive-value="0">
+        </el-switch>
+      </el-form-item>
+    </el-form>
+  </FormDrawer>
 </template>
 
 <script setup>
@@ -212,9 +219,12 @@ const {
   form: reactive({
     username: "",
     password: "",
-    role_id: "",
     status: 1,
+    nickname: "",
+    phone: "",
+    email: "",
     avatar: "",
+    user_level_id: "",
   }),
   getData,
   create: createUser,
