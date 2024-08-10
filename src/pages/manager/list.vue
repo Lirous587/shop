@@ -29,7 +29,6 @@
 
       <el-table-column label="所属角色" width="380">
         <template #default="{ row }">
-          <!-- {{ row.role ? row.role.name : ""}} -->
           {{ row.role?.name || "-" }}
         </template>
       </el-table-column>

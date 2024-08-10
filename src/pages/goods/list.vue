@@ -13,8 +13,7 @@
     <Search @search="getData" @reset="resetSearchForm">
       <template #default>
         <SearchItem label="商品名称">
-          <el-input v-model="searchForm.title" size="small" clearable>
-          </el-input>
+          <el-input v-model="searchForm.title" clearable> </el-input>
         </SearchItem>
       </template>
 
