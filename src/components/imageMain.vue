@@ -15,29 +15,34 @@
             :class="{ 'border-red-500': item.checked }"
           >
             <el-image
-              :src="'/public/' + item.url.split('/')[4]"
+              :src="item.url"
               fit="cover"
               :lazy="false"
-              :preview-src-list="['/public/' + item.url.split('/')[4]]"
+              :preview-src-list="item.url"
               :initial-index="0"
               class="w-full h-[150px]"
             ></el-image>
             <div class="image-title">{{ item.name }}</div>
-            <div class="flex justify-center items-center py-2">
-              <el-checkbox
-                v-if="openChoose"
-                v-model="item.checked"
-                @change="handelChooseChange(item)"
-              >
-              </el-checkbox>
-              <el-button
-                type="primary"
-                size="small"
-                text
-                @click="handleEdit(item)"
-              >
-                重命名
-              </el-button>
+            <div class="flex justify-evenly items-center py-2">
+              <div class="flex justify-center items-center">
+                <el-checkbox
+                  class="ml-1"
+                  v-if="openChoose"
+                  v-model="item.checked"
+                  @change="handelChooseChange(item)"
+                >
+                </el-checkbox>
+                <el-button
+                  class="!px-0 ml-2"
+                  type="primary"
+                  size="small"
+                  text
+                  @click="handleEdit(item)"
+                >
+                  重命名
+                </el-button>
+              </div>
+
               <el-popconfirm
                 title="是否要删除该图片?"
                 confirm-button-text="确定"
@@ -45,7 +50,9 @@
                 @confirm="handleDelete(item.id)"
               >
                 <template #reference>
-                  <el-button type="primary" size="small" text> 删除 </el-button>
+                  <el-button class="!px-0" type="primary" size="small" text>
+                    删除
+                  </el-button>
                 </template>
               </el-popconfirm>
             </div>
