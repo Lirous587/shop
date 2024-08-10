@@ -64,15 +64,14 @@
       @submit="handelSubmit"
     >
       <el-form :model="form" ref="formRef" :rules="rules">
-        <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" placeholder="角色名称"></el-input>
+        <el-form-item label="等级名称" prop="name">
+          <el-input v-model="form.name" placeholder="等级名称"></el-input>
         </el-form-item>
-        <el-form-item label="角色描述" prop="desc">
+        <el-form-item label="等级权重" prop="desc">
           <el-input
-            v-model="form.desc"
-            placeholder="角色描述"
-            type="textarea"
-            :rows="5"
+            v-model="form.level"
+            placeholder="等级权重"
+            type="number"
           ></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="status">
@@ -82,6 +81,43 @@
             :inactive-value="0"
           >
           </el-switch>
+        </el-form-item>
+
+        <el-form-item label="升级条件">
+          <div class="flex justify-between items-cente gap-2">
+            <div>
+              <span class="text-xs text-gray-500">累计消费满</span>
+              <el-input
+                v-model="form.max_price"
+                type="number"
+                style="width: 200px"
+              >
+                <template #append> 元 </template>
+              </el-input>
+              <small class="inline-block"
+                >设置会员等级所需要的累计消费必须大于等于0,单位：元</small
+              >
+            </div>
+            <div>
+              <span class="text-xs text-gray-500">累计次数满</span>
+              <el-input
+                v-model="form.max_times"
+                type="number"
+                style="width: 200px"
+              >
+                <template #append> 次 </template>
+              </el-input>
+              <small class="inline-block"
+                >设置会员等级所需要的购买量必须大于等于0,单位：笔</small
+              >
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="折扣率(%)" prop="discount">
+          <el-input v-model="form.discount" placeholder="折扣率" type="number">
+            <template #append> % </template>
+          </el-input>
         </el-form-item>
       </el-form>
     </FormDrawer>
@@ -131,20 +167,14 @@ const {
 } = useInitForm({
   form: reactive({
     name: "",
-    desc: "",
+    level: 1,
     status: 1,
+    discount: 10,
+    max_price: 1000,
+    max_times: 500,
   }),
   getData,
   create: createUserLevel,
   update: updateUserLevel,
-  rules: {
-    name: [
-      {
-        required: true,
-        message: "角色名称不能为空",
-        tirgger: "blur",
-      },
-    ],
-  },
 });
 </script>
