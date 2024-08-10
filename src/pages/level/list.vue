@@ -5,7 +5,8 @@
 
     <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
       <el-table-column prop="name" label="角色名称" />
-      <el-table-column prop="desc" label="角色描述" />
+      <el-table-column prop="discount" label="折扣率" />
+      <el-table-column prop="level" label="等级序列" />
 
       <el-table-column label="状态">
         <template #default="{ row }">
@@ -23,13 +24,6 @@
 
       <el-table-column label="操作" width="250" align="center">
         <template #default="scope">
-          <el-button
-            type="primary"
-            size="small"
-            text
-            @click="openSetRole(scope.row)"
-            >配置权限</el-button
-          >
           <el-button
             type="primary"
             size="small"
@@ -91,56 +85,23 @@
         </el-form-item>
       </el-form>
     </FormDrawer>
-
-    <!-- 权限配置 -->
-    <FormDrawer
-      ref="setRoleformDrawerRef"
-      :closeAble="true"
-      title="权限配置"
-      @submit="handelSetRoleSubmit"
-    >
-      <!-- node-key是节点标识=> id  default-expanded-keys是节点标识数组 => 用来指定 哪些节点被展开  -->
-      <el-tree-v2
-        v-loading="treeLoading"
-        ref="elTreeRef"
-        node-key="id"
-        :default-expanded-keys="defaultExpandedKeys"
-        :data="ruleList"
-        :props="{ label: 'name', children: 'child' }"
-        show-checkbox
-        :height="treeHeight"
-        @check="handelCheck"
-        :checkStrictly
-      >
-        <template #default="{ node, data }">
-          <div class="flex items-center">
-            <el-tag :type="data.menu ? 'primary' : 'info'" size="small">
-              {{ data.menu ? "菜单" : " 权限" }}
-            </el-tag>
-            <span class="ml-2 text-sm"> {{ data.name }}</span>
-          </div>
-        </template>
-      </el-tree-v2>
-    </FormDrawer>
   </el-card>
 </template>
 
 <script setup>
 import { reactive, ref } from "vue";
 import {
-  getRoleList,
-  createRole,
-  updateRole,
-  deleteRole,
-  updateRoleStatus,
-} from "~/api/role";
-import { getRuleList } from "~/api/rule.js";
+  getUserLevelList,
+  createUserLevel,
+  updateUserLevel,
+  deleteUserLevel,
+  updateUserLevelStatus,
+} from "~/api/level";
 
 import FormDrawer from "~/components/FormDrawer.vue";
 import ListHeader from "~/components/ListHeader.vue";
 import { toast } from "~/composables/util.js";
 import { useInitTable, useInitForm } from "~/composables/useCommon.js";
-import { setRoleRules } from "~/api/role";
 
 // table
 const {
@@ -152,9 +113,9 @@ const {
   handelDelete,
   handelStatusChange,
 } = useInitTable({
-  getList: getRoleList,
-  delete: deleteRole,
-  updateStatus: updateRoleStatus,
+  getList: getUserLevelList,
+  delete: deleteUserLevel,
+  updateStatus: updateUserLevelStatus,
 });
 
 // form
@@ -174,8 +135,8 @@ const {
     status: 1,
   }),
   getData,
-  create: createRole,
-  update: updateRole,
+  create: createUserLevel,
+  update: updateUserLevel,
   rules: {
     name: [
       {
@@ -186,54 +147,4 @@ const {
     ],
   },
 });
-
-const setRoleformDrawerRef = ref(null);
-const elTreeRef = ref(null);
-const ruleList = ref([]);
-const treeHeight = ref(0);
-const roleId = ref(0);
-const defaultExpandedKeys = ref([]);
-// 获取当前角色拥有的权限id
-const ruleIds = ref([]);
-const treeLoading = ref(true);
-const checkStrictly = ref(false);
-
-const openSetRole = (row) => {
-  ruleIds.value = [];
-  treeLoading.value = true;
-  roleId.value = row.id;
-  treeHeight.value = window.innerHeight - 190;
-  checkStrictly.value = true;
-  getRuleList(1).then((res) => {
-    defaultExpandedKeys.value = res.list.map((o) => o.id);
-    ruleList.value = res.list;
-    setRoleformDrawerRef.value.open();
-
-    // 获取当前角色拥有的权限id
-    ruleIds.value = row.rules.map((o) => o.id);
-    setTimeout(() => {
-      elTreeRef.value.setCheckedKeys(ruleIds.value);
-      checkStrictly.value = false;
-      treeLoading.value = false;
-    }, 500);
-  });
-};
-
-const handelSetRoleSubmit = () => {
-  setRoleformDrawerRef.value.showLoading();
-  setRoleRules(roleId.value, ruleIds.value)
-    .then((res) => {
-      toast("配置成功");
-      getData();
-      setRoleformDrawerRef.value.close();
-    })
-    .finally(() => {
-      setRoleformDrawerRef.value.hideLoading();
-    });
-};
-
-const handelCheck = (...e) => {
-  const { checkedKeys, halfCheckedKeys } = e[1];
-  ruleIds.value = [...checkedKeys, ...halfCheckedKeys];
-};
 </script>
