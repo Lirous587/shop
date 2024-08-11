@@ -26,13 +26,21 @@
           <el-input size="small" v-model="searchForm.phone" clearable>
           </el-input>
         </SearchItem>
-        <SearchItem label="开始时间">
-          <el-input size="small" v-model="searchForm.starttime" clearable>
-          </el-input>
+        <SearchItem label="开始日期">
+          <el-date-picker
+            v-model="searchForm.starttime"
+            type="date"
+            placeholder="开始日期"
+            value-format="YYYY-MM-DD"
+          />
         </SearchItem>
-        <SearchItem label="结束时间">
-          <el-input size="small" v-model="searchForm.endtime" clearable>
-          </el-input>
+        <SearchItem label="结束日期">
+          <el-date-picker
+            v-model="searchForm.endtime"
+            type="date"
+            placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+          />
         </SearchItem>
       </template>
     </Search>
@@ -229,8 +237,6 @@ import SearchItem from "~/components/SearchItem.vue";
 
 import { toast } from "~/composables/util.js";
 
-import { getCategoryList } from "~/api/category";
-
 import { getOrderList, deleteOrder } from "~/api/order";
 
 import { useInitTable } from "~/composables/useCommon.js";
@@ -302,5 +308,4 @@ const tabsBar = [
 
 // 高级搜索
 const categoryList = ref([]);
-getCategoryList().then((res) => (categoryList.value = res));
 </script>
