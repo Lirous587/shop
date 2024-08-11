@@ -14,5 +14,11 @@ export function deleteOrder(ids) {
 
 export function exportOrderToExcel(query = {}) {
   let r = queryToUrl(query);
-  return axios.post(`/admin/order/excelexport${r}`);
+  return axios.post(
+    `/admin/order/excelexport${r}`,
+    {},
+    {
+      responseType: "blob",
+    }
+  );
 }

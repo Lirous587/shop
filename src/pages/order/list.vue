@@ -225,7 +225,7 @@
     </div>
   </el-card>
 
-  <ExcelDrawer ref="excelDrawerRef"></ExcelDrawer>
+  <ExcelDrawer ref="excelDrawerRef" :tabsBar="tabsBar"></ExcelDrawer>
 </template>
 
 <script setup>
