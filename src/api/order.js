@@ -11,3 +11,8 @@ export function deleteOrder(ids) {
     ids,
   });
 }
+
+export function exportOrderToExcel(query = {}) {
+  let r = queryToUrl(query);
+  return axios.post(`/admin/order/excelexport${r}`);
+}

@@ -21,7 +21,7 @@
           >
         </template>
       </el-popconfirm>
-      <slot/>
+      <slot />
     </div>
 
     <el-tooltip
@@ -30,19 +30,38 @@
       content="Top Right prompts info"
       placement="top-end"
     >
-      <el-button v-if="btns.includes('refresh')" text @click="emit('refresh')">
-        <el-icon :size="20">
-          <Refresh />
-        </el-icon>
-      </el-button>
+      <div>
+        <el-button
+          v-if="btns.includes('refresh')"
+          text
+          @click="emit('refresh')"
+          size="small"
+        >
+          <el-icon :size="15">
+            <Refresh />
+          </el-icon>
+        </el-button>
+
+        <el-button
+          v-if="btns.includes('download')"
+          text
+          @click="emit('download')"
+          size="small"
+        >
+          <el-icon :size="15">
+            <Download />
+          </el-icon>
+        </el-button>
+      </div>
     </el-tooltip>
   </div>
 </template>
 
 <script setup>
+import { Download } from "@element-plus/icons-vue";
 import { computed } from "vue";
 
-const emit = defineEmits(["create", "refresh", "delete"]);
+const emit = defineEmits(["create", "refresh", "delete", "download"]);
 
 const props = defineProps({
   layout: {

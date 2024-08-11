@@ -47,10 +47,10 @@
 
     <!-- 新增 | 刷新 -->
     <ListHeader
-      layout=""
-      @create="handelCreate"
+      layout="refresh,download"
       @refresh="getData"
       @delete="handelMultipleDelete"
+      @download="openDrawer"
     >
       <el-popconfirm
         title="是否要批量删除商品?"
@@ -224,16 +224,16 @@
       />
     </div>
   </el-card>
-  <banner ref="bannerRef" @reload="getData"> </banner>
-  <content ref="contentRef"></content>
-  <skus ref="skusRef"></skus>
+
+  <ExcelDrawer ref="excelDrawerRef"></ExcelDrawer>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import ListHeader from "~/components/ListHeader.vue";
 import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
+import ExcelDrawer from "./ExcelDrawer.vue";
 
 import { toast } from "~/composables/util.js";
 
@@ -256,14 +256,12 @@ const {
 } = useInitTable({
   getList: getOrderList,
   delete: deleteOrder,
-  onGetListSuccess: (res) => {
-    tableData.value = res.list.map((o) => {
-      o.bannnersLoading = false;
-      o.contentLoading = false;
-      return o;
-    });
-    total.value = res.totalCount;
-  },
+  //   onGetListSuccess: (res) => {
+  //     tableData.value = res.list.map((o) => {
+  //       return o;
+  //     });
+  //     total.value = res.totalCount;
+  //   },
   searchForm: {
     no: "",
     tab: "all",
@@ -306,6 +304,7 @@ const tabsBar = [
   },
 ];
 
-// 高级搜索
-const categoryList = ref([]);
+const excelDrawerRef = ref(null);
+
+const openDrawer = () => excelDrawerRef.value.open();
 </script>
