@@ -1,6 +1,12 @@
 <template>
   <el-card shadow="always" :body-style="{ padding: '20px' }">
-    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+    <el-table
+      :data="tableData"
+      default-expand-all
+      stripe
+      style="width: 100%"
+      v-loading="loading"
+    >
       <el-table-column width="80px" type="expand">
         <template #default="{ row }">
           <div class="pl-20">
@@ -37,24 +43,54 @@
                   </el-image>
                 </div>
 
+                <!-- 评论区 -->
                 <div
                   v-for="(item, index) in row.extra"
                   :key="index"
                   class="mt-4 p-3 bg-gray-100 flex flex-col rounded"
                 >
-                  <div class="font-bold flex mb-1">
-                    客服
-                    <el-button
-                      class="ml-auto"
-                      type="info"
-                      size="small"
-                      @click=""
-                    >
-                      回复
-                    </el-button>
+                  <!-- 回复  -->
+                  <div v-if="!row.isEdit">
+                    <div class="font-bold flex mb-1">
+                      客服
+                      <el-button
+                        class="ml-auto"
+                        type="info"
+                        size="small"
+                        @click="openEdit(row, item.data)"
+                      >
+                        {{ item.data ? "修改" : "回复" }}
+                      </el-button>
+                    </div>
+                    <p>{{ item.data }}</p>
                   </div>
 
-                  <p>{{ item.data }}</p>
+                  <!-- 修改评论 -->
+                  <div v-else>
+                    <div class="font-bold flex mb-1"></div>
+                    <el-input
+                      v-model="reviewTextarea"
+                      type="textarea"
+                      size="normal"
+                      clearable
+                    ></el-input>
+                    <div class="mt-2">
+                      <el-button
+                        type="primary"
+                        size="small"
+                        @click="handelReviewComment(row)"
+                      >
+                        回复
+                      </el-button>
+                      <el-button
+                        type="plain"
+                        size="small"
+                        @click="row.isEdit = false"
+                      >
+                        取消
+                      </el-button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -119,14 +155,54 @@
 </template>
 
 <script setup>
-import { getCommentList, updateCommentStatus } from "~/api/comment";
+import {
+  getCommentList,
+  updateCommentStatus,
+  reviewComment,
+} from "~/api/comment";
 import { toast } from "~/composables/util.js";
 import { useInitTable } from "~/composables/useCommon.js";
+import { ref } from "vue";
 
 // table
 const { tableData, loading, currentPage, total, getData, handelStatusChange } =
   useInitTable({
     getList: getCommentList,
     updateStatus: updateCommentStatus,
+    onGetListSuccess: (res) => {
+      total.value = res.totalCount;
+      tableData.value = res.list.map((o) => {
+        return {
+          ...o,
+          isEdit: false,
+        };
+      });
+    },
   });
+
+const reviewTextarea = ref("");
+
+const openEdit = (row, data = "") => {
+  row.isEdit = true;
+  reviewTextarea.value = data;
+};
+
+const handelReviewComment = (row) => {
+  if (reviewTextarea.value === "") {
+    toast("回复内容不能为空", "error");
+    return;
+  }
+
+  loading.value = true;
+
+  reviewComment(row.id, { data: reviewTextarea.value })
+    .then(() => {
+      toast("回复成功");
+      getData();
+    })
+    .finally(() => {
+      row.isEdit = false;
+      loading.value = false;
+    });
+};
 </script>

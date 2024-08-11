@@ -9,3 +9,7 @@ export function updateCommentStatus(id, status) {
     status,
   });
 }
+
+export function reviewComment(id, data) {
+  return axios.post(`/admin/goods_comment/review/${id}`, data);
+}
