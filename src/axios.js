@@ -28,7 +28,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
-    return response.data.data; //返回数据写起来更加优雅
+    return response.request.responseType === "blob"
+      ? response.data
+      : response.data.data; //返回数据写起来更加优雅
   },
   function (error) {
     const msg = error.response.data.msg || "请求失败";
