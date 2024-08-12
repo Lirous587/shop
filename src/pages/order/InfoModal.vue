@@ -8,11 +8,11 @@
     :show-close="true"
     :wrapperClosable="true"
   >
-    <!-- 支付信息 -->
+    <!-- 订单详情 -->
     <el-card class="mb-4" shadow="never">
       <template #header>
         <div class="p-2">
-          <b class="text-sm">支付信息</b>
+          <b class="text-sm">订单详情</b>
         </div>
       </template>
       <el-form label-width="80px" :inline="false">
@@ -23,10 +23,30 @@
           <p>{{ info.payment_method }}</p>
         </el-form-item>
         <el-form-item label="付款时间">
-          <p>{{ info.paid_time }}</p>
+          <p>{{ order_time }}</p>
         </el-form-item>
         <el-form-item label="创建时间">
           <p>{{ info.create_time }}</p>
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+    <!-- 发货信息 -->
+    <el-card v-if="info.ship_data" class="mb-4" shadow="never">
+      <template #header>
+        <div class="p-2">
+          <b class="text-sm">发货信息</b>
+        </div>
+      </template>
+      <el-form label-width="80px" :inline="false">
+        <el-form-item label="物流公司">
+          <p>{{ info.ship_data.express_company }}</p>
+        </el-form-item>
+        <el-form-item label="运单号">
+          <p>{{ info.ship_data.express_no }}</p>
+        </el-form-item>
+        <el-form-item label="发货时间">
+          <p>{{ sent_time }}</p>
         </el-form-item>
       </el-form>
     </el-card>
@@ -102,11 +122,30 @@
         </el-form-item>
       </el-form>
     </el-card>
+
+    <!-- 退款信息 -->
+    <el-card class="mb-4" shadow="never" v-if="info.refund_status != 'pending'">
+      <template #header>
+        <div class="p-2 flex justify-between items-center">
+          <b class="text-sm">退款信息</b>
+          <el-button text disabled>
+            {{ refund_status }}
+          </el-button>
+        </div>
+      </template>
+      <el-form label-width="80px" :inline="false">
+        <el-form-item label="退款理由">
+          <p>{{ info.extra.refund_reason }}</p>
+        </el-form-item>
+      </el-form>
+    </el-card>
   </el-drawer>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useDateFormat } from "@vueuse/core";
+
 const drawerVisiableRef = ref(false);
 
 const props = defineProps({
@@ -114,6 +153,32 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+});
+
+const order_time = computed(() => {
+  const s = useDateFormat(props.info.paid_time * 1000, "YYYY-MM-DD HH:mm:ss");
+  return s;
+});
+const sent_time = computed(() => {
+  if (props.info.ship_data) {
+    const s = useDateFormat(
+      props.info.ship_data.express_time * 1000,
+      "YYYY-MM-DD HH:mm:ss"
+    );
+    return s;
+  } else {
+    return "未收货";
+  }
+});
+const refund_status = computed(() => {
+  const opt = {
+    pending: "未退款",
+    applied: "已申请,等待审核",
+    processing: "退款中",
+    success: "退款成功",
+    failed: "退款失败",
+  };
+  return props.info.refund_status ? opt[props.info.refund_status] : "";
 });
 
 const open = () => (drawerVisiableRef.value = true);
