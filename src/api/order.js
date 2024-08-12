@@ -22,3 +22,7 @@ export function exportOrderToExcel(query = {}) {
     }
   );
 }
+
+// export function getShipInfo(id) {
+//   axios.get(`/admin/order/${id}/get_ship_info`);
+// }

@@ -50,7 +50,7 @@
       layout="refresh,download"
       @refresh="getData"
       @delete="handelMultipleDelete"
-      @download="openDrawer"
+      @download="openexcelDrawer"
     >
       <el-popconfirm
         title="是否要批量删除商品?"
@@ -89,11 +89,11 @@
               </div>
             </div>
 
-            <div class="mt-1">
+            <div>
               <div
                 v-for="(item, index) in row.order_items"
                 :key="index"
-                class="flex items-center"
+                class="flex items-center my-3"
               >
                 <el-image
                   :src="item.goods_item?.cover"
@@ -102,8 +102,13 @@
                   loading="eager"
                   style="width: 50px; height: 50px"
                 />
-                <div class="ml-2 text-blue-500">
-                  {{ item.goods_item?.title }}
+                <div
+                  class="ml-2"
+                  :class="
+                    item.goods_item?.title ? 'text-blue-500' : 'text-pink-500'
+                  "
+                >
+                  {{ item.goods_item?.title ?? "商品已被删除" }}
                 </div>
               </div>
             </div>
@@ -172,9 +177,15 @@
       </el-table-column>
 
       <el-table-column label="操作" width="350" align="center">
-        <template #default="scope">
+        <template #default="{ row }">
           <!-- 订单详细 -->
-          <el-button class="px-1" type="primary" size="small" text>
+          <el-button
+            class="px-1"
+            type="primary"
+            size="small"
+            text
+            @click="openInfoModalDrawer(row)"
+          >
             订单详细
           </el-button>
 
@@ -226,14 +237,16 @@
   </el-card>
 
   <ExcelDrawer ref="excelDrawerRef" :tabsBar="tabsBar"></ExcelDrawer>
+  <InfoModal ref="infoModalRef" :info="orderInfo"></InfoModal>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import ListHeader from "~/components/ListHeader.vue";
 import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
 import ExcelDrawer from "./ExcelDrawer.vue";
+import InfoModal from "./InfoModal.vue";
 
 import { toast } from "~/composables/util.js";
 
@@ -306,5 +319,25 @@ const tabsBar = [
 
 const excelDrawerRef = ref(null);
 
-const openDrawer = () => excelDrawerRef.value.open();
+const openexcelDrawer = () => excelDrawerRef.value.open();
+
+const infoModalRef = ref(null);
+
+const orderInfo = ref({});
+
+const openInfoModalDrawer = (row) => {
+  row.order_items = row.order_items.map((o) => {
+    if (o.skus_type == 1 && o.goods_skus) {
+      let s = [];
+      for (const k in o.goods_skus.skus) {
+        s.push(o.goods_skus.skus[k].value);
+      }
+      o.sku = s.join(",");
+    }
+    return o;
+  });
+
+  orderInfo.value = row;
+  infoModalRef.value.open();
+};
 </script>
