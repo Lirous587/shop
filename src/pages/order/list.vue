@@ -236,8 +236,8 @@
     </div>
   </el-card>
 
-  <ExcelDrawer ref="excelDrawerRef" :tabsBar="tabsBar"></ExcelDrawer>
-  <InfoModal ref="infoModalRef" :info="orderInfo"></InfoModal>
+  <ExcelDrawer ref="excelDrawerRef" :tabsBar="tabsBar" />
+  <InfoModal ref="infoModalRef" :info="orderInfo" />
 </template>
 
 <script setup>
