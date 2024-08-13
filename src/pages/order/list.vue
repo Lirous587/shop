@@ -207,6 +207,7 @@
             type="primary"
             size="small"
             text
+            @click="handelRefund(row.id, 1)"
           >
             同意退款
           </el-button>
@@ -218,6 +219,7 @@
             type="primary"
             size="small"
             text
+            @click="handelRefund(row.id, 0)"
           >
             拒绝退款
           </el-button>
@@ -248,9 +250,9 @@ import SearchItem from "~/components/SearchItem.vue";
 import ExcelDrawer from "./ExcelDrawer.vue";
 import InfoModal from "./InfoModal.vue";
 
-import { toast } from "~/composables/util.js";
+import { toast, showModal, showPrompt } from "~/composables/util.js";
 
-import { getOrderList, deleteOrder } from "~/api/order";
+import { getOrderList, deleteOrder, refund } from "~/api/order";
 
 import { useInitTable } from "~/composables/useCommon.js";
 
@@ -339,5 +341,20 @@ const openInfoModalDrawer = (row) => {
 
   orderInfo.value = row;
   infoModalRef.value.open();
+};
+
+const handelRefund = (id, agree) => {
+  (agree
+    ? showModal("是否要同意该订单退款?")
+    : showPrompt("请输入拒绝的理由")
+  ).then(({ value }) => {
+    let data = { agree };
+    if (!agree) data.disagree_reason = value;
+    // 拒绝退款
+    refund(id, data).then(() => {
+      toast("操作成功");
+      getData();
+    });
+  });
 };
 </script>
