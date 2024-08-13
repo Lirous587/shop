@@ -28,5 +28,13 @@ export function getShipInfo(id) {
 }
 
 export function refund(id, data) {
-  return axios.post(`/admin/order/${id}/handle_refund`,data);
+  return axios.post(`/admin/order/${id}/handle_refund`, data);
+}
+
+export function getCompanysList() {
+  return axios.get(`/admin/express_company/1`);
+}
+
+export function sent(id, data) {
+  return axios.post(`/admin/order/${id}/ship`, data);
 }

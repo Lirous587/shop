@@ -196,6 +196,7 @@
             type="primary"
             size="small"
             text
+            @click="openOrderSent(row.id)"
           >
             订单发货
           </el-button>
@@ -240,6 +241,7 @@
 
   <ExcelDrawer ref="excelDrawerRef" :tabsBar="tabsBar" />
   <InfoModal ref="infoModalRef" :info="orderInfo" />
+  <OrderSent ref="orderSentRef" />
 </template>
 
 <script setup>
@@ -249,6 +251,7 @@ import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
 import ExcelDrawer from "./ExcelDrawer.vue";
 import InfoModal from "./InfoModal.vue";
+import OrderSent from "./OrderSent.vue";
 
 import { toast, showModal, showPrompt } from "~/composables/util.js";
 
@@ -356,5 +359,10 @@ const handelRefund = (id, agree) => {
       getData();
     });
   });
+};
+
+const orderSentRef = ref(null);
+const openOrderSent = (id) => {
+  orderSentRef.value.open(id)
 };
 </script>
