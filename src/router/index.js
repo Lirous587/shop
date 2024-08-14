@@ -10,7 +10,8 @@ import OrderList from "~/pages/order/list.vue";
 import CommentList from "~/pages/comment/list.vue";
 import ImageList from "~/pages/image/list.vue";
 import NoticeList from "~/pages/notice/list.vue";
-import SettingList from "~/pages/setting/list.vue";
+import SettingBase from "~/pages/setting/base.vue";
+import SettingBuy from "~/pages/setting/buy.vue";
 import CouponList from "~/pages/coupon/list.vue";
 import ManagerList from "~/pages/manager/list.vue";
 import AccessList from "~/pages/access/list.vue";
@@ -109,9 +110,17 @@ const asyncRoutes = [
   {
     path: "/setting/base",
     name: "/setting/base",
-    component: SettingList,
+    component: SettingBase,
     meta: {
       title: "配置列表",
+    },
+  },
+  {
+    path: "/setting/buy",
+    name: "/setting/buy",
+    component: SettingBuy,
+    meta: {
+      title: "交易设置",
     },
   },
   {

@@ -116,6 +116,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { getSysconfig, setSysconfig } from "~/api/sysconfig.js";
+import { toast } from "~/composables/util";
 
 const activeName = ref("first");
 
@@ -133,14 +134,6 @@ const form = reactive({
   },
   api_safe: 1,
   api_secret: "",
-  close_order_minute: 0,
-  auto_received_day: 0,
-  after_sale_day: 0,
-  alipay: {
-    app_id: "",
-    ali_public_key: "",
-    private_key: "",
-  },
 });
 
 const loading = ref(false);
