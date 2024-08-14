@@ -21,7 +21,6 @@
 </template>
 
 <script setup>
-import { UploadFilled } from "@element-plus/icons-vue";
 import { uploadImageAction } from "~/api/image.js";
 import { toast } from "~/composables/util.js";
 import { getToken } from "~/composables/auth.js";

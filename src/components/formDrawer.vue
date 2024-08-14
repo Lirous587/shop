@@ -25,7 +25,10 @@
 import { ref } from "vue";
 const showDrawer = ref(false);
 const props = defineProps({
-  title: String,
+  title: {
+    type: String,
+    default: "新增",
+  },
   size: {
     type: String,
     default: "50%",

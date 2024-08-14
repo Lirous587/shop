@@ -7,3 +7,5 @@ export function getSysconfig() {
 export function setSysconfig(data) {
   return axios.post("/admin/sysconfig", data);
 }
+
+export const uploadAction = "api/admin/sysconfig/upload";
