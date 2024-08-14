@@ -10,14 +10,15 @@ import OrderList from "~/pages/order/list.vue";
 import CommentList from "~/pages/comment/list.vue";
 import ImageList from "~/pages/image/list.vue";
 import NoticeList from "~/pages/notice/list.vue";
-import SettingBase from "~/pages/setting/base.vue";
-import SettingBuy from "~/pages/setting/buy.vue";
 import CouponList from "~/pages/coupon/list.vue";
 import ManagerList from "~/pages/manager/list.vue";
 import AccessList from "~/pages/access/list.vue";
 import RoleList from "~/pages/role/list.vue";
 import SkusList from "~/pages/skus/list.vue";
 import LevelList from "~/pages/level/list.vue";
+import SettingBase from "~/pages/setting/base.vue";
+import SettingBuy from "~/pages/setting/buy.vue";
+import SettingShip from "~/pages/setting/ship.vue";
 
 //默认路由 所有用户共享
 const routes = [
@@ -108,22 +109,6 @@ const asyncRoutes = [
     },
   },
   {
-    path: "/setting/base",
-    name: "/setting/base",
-    component: SettingBase,
-    meta: {
-      title: "配置列表",
-    },
-  },
-  {
-    path: "/setting/buy",
-    name: "/setting/buy",
-    component: SettingBuy,
-    meta: {
-      title: "交易设置",
-    },
-  },
-  {
     path: "/coupon/list",
     name: "/coupon/list",
     component: CouponList,
@@ -169,6 +154,30 @@ const asyncRoutes = [
     component: LevelList,
     meta: {
       title: "会员等级",
+    },
+  },
+  {
+    path: "/setting/base",
+    name: "/setting/base",
+    component: SettingBase,
+    meta: {
+      title: "配置列表",
+    },
+  },
+  {
+    path: "/setting/buy",
+    name: "/setting/buy",
+    component: SettingBuy,
+    meta: {
+      title: "交易设置",
+    },
+  },
+  {
+    path: "/setting/ship",
+    name: "/setting/ship",
+    component: SettingShip,
+    meta: {
+      title: "物流设置",
     },
   },
 ];
