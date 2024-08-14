@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import { login, getinfo } from "~/api/manager";
 import { setToken, removeToken } from "~/composables/auth";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { getExpendAside, setExpendAside } from "~/composables/auth.js";
 
 // 创建一个新的 store 实例
