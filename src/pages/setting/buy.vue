@@ -211,6 +211,9 @@ const token = getToken();
 const activeName = ref("first");
 
 const form = reactive({
+  close_order_minute: 30,
+  auto_received_day: 7,
+  after_sale_day: 23,
   alipay: {
     app_id: "",
     ali_public_key: "",
