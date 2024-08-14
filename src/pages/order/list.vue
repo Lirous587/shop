@@ -363,6 +363,8 @@ const handelRefund = (id, agree) => {
 
 const orderSentRef = ref(null);
 const openOrderSent = (id) => {
-  orderSentRef.value.open(id)
+  orderSentRef.value.open(id, () => {
+    getData();
+  });
 };
 </script>

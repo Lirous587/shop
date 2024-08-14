@@ -3,18 +3,31 @@
     title="物流信息"
     destroyOnClose
     confirmText="发货"
-    ref="formDrawer"
+    ref="formDrawerRef"
+    @submit="submit"
   >
-    <el-form label-width="80px" :inline="false" size="normal">
+    <el-form label-width="80px" :inline="false">
       <el-form-item label="快递公司">
-        <el-input v-model="form.express_company"></el-input>
+        <el-select
+          v-model="form.express_company"
+          placeholder="选择快递公司"
+          style="width: 240px"
+        >
+          <el-option
+            v-for="item in companyList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.name"
+          />
+        </el-select>
       </el-form-item>
+
       <el-form-item label="快递单号">
-        <el-input v-model="form.express_no"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-input
+          type="number"
+          style="width: 240px"
+          v-model="form.express_no"
+        ></el-input>
       </el-form-item>
     </el-form>
   </FormDrawer>
@@ -33,23 +46,37 @@ const form = reactive({
   express_no: "",
 });
 
-const open = () => {
+const order_id = ref(0);
+
+const handleData = ref(null);
+const open = (id, func) => {
   formDrawerRef.value.open();
+  order_id.value = id;
+  if (typeof func == "function") {
+    handleData.value = func;
+  }
+  getCompanysListHandel();
 };
 
 const companyList = ref([]);
 
-const getCompanysListHandel = () => {
+function getCompanysListHandel() {
   getCompanysList().then((res) => {
     companyList.value = res.list;
   });
-};
-getCompanysListHandel();
+}
 
-const sumbit = () => {
-  sent(id, form).then((res) => {
-    toast("发货成功");
-  });
+const submit = () => {
+  formDrawerRef.value.showLoading();
+  sent(order_id.value, form)
+    .then((res) => {
+      toast("发货成功");
+      formDrawerRef.value.close();
+      handleData.value();
+    })
+    .finally(() => {
+      formDrawerRef.value.hideLoading();
+    });
 };
 
 defineExpose({
