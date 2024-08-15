@@ -9,7 +9,7 @@
     </el-tab-pane>
   </el-tabs>
 
-  <el-card shadow="always" :body-style="{ padding: '20px' }">
+  <el-card shadow="always">
     <Search @search="getData" @reset="resetSearchForm">
       <template #default>
         <SearchItem label="订单编号">
@@ -274,12 +274,6 @@ const {
 } = useInitTable({
   getList: getOrderList,
   delete: deleteOrder,
-  //   onGetListSuccess: (res) => {
-  //     tableData.value = res.list.map((o) => {
-  //       return o;
-  //     });
-  //     total.value = res.totalCount;
-  //   },
   searchForm: {
     no: "",
     tab: "all",
