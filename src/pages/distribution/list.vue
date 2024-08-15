@@ -9,7 +9,7 @@
             <el-radio-button
               v-for="item in searchRadioChooses"
               :label="item.label"
-              :key="key"
+              :key="item.key"
               :value="item.key"
               size="small"
             >
@@ -83,11 +83,17 @@
             type="primary"
             size="small"
             text
-            @click="openAgentDrawer(row)"
+            @click="openDataDrawer('user', row)"
           >
             推广人
           </el-button>
-          <el-button class="px-1" type="primary" size="small" text>
+          <el-button
+            class="px-1"
+            type="primary"
+            size="small"
+            text
+            @click="openDataDrawer('order', row)"
+          >
             推广订单
           </el-button>
         </template>
@@ -105,7 +111,8 @@
     </div>
   </el-card>
 
-  <AgentDrawer ref="agentDrawerRef" />
+  <DataDrawer ref="dataDrawerUserRef" type="user" />
+  <DataDrawer ref="dataDrawerOrderRef" type="order" />
 </template>
 
 <script setup>
@@ -116,7 +123,7 @@ import { getAgentData } from "~/api/distribution";
 import { useInitTable } from "~/composables/useCommon.js";
 
 import Panel from "./Panel.vue";
-import AgentDrawer from "./AgentDrawer.vue";
+import DataDrawer from "./DataDrawer.vue";
 // table
 const {
   searchForm,
@@ -155,8 +162,14 @@ const searchRadioChooses = [
   },
 ];
 
-const agentDrawerRef = ref(null);
-const openAgentDrawer = (row) => {
-  agentDrawerRef.value.open(row.id);
+const dataDrawerUserRef = ref(null);
+const dataDrawerOrderRef = ref(null);
+
+const openDataDrawer = (type, row) => {
+  if (type === "user") {
+    dataDrawerUserRef.value.open(row.id);
+  } else {
+    dataDrawerOrderRef.value.open(row.id);
+  }
 };
 </script>

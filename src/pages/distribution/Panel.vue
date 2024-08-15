@@ -75,7 +75,6 @@ const getData = () => {
   loading.value = true;
   getStatisticsData()
     .then((res) => {
-      console.log(res);
       list.value = res.panels;
     })
     .finally(() => {
