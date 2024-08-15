@@ -19,7 +19,8 @@ import LevelList from "~/pages/level/list.vue";
 import SettingBase from "~/pages/setting/base.vue";
 import SettingBuy from "~/pages/setting/buy.vue";
 import SettingShip from "~/pages/setting/ship.vue";
-import DistributionIndex from "~/pages/distribution/list.vue";
+import DistributionIndex from "~/pages/distribution/index.vue";
+import DistributionSetting from "~/pages/distribution/setting.vue";
 
 //默认路由 所有用户共享
 const routes = [
@@ -187,6 +188,14 @@ const asyncRoutes = [
     component: DistributionIndex,
     meta: {
       title: "分销员管理",
+    },
+  },
+  {
+    path: "/distribution/setting",
+    name: "/distribution/setting",
+    component: DistributionSetting,
+    meta: {
+      title: "分销设置",
     },
   },
 ];
