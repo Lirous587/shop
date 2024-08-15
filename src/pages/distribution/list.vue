@@ -43,20 +43,12 @@
       </template>
     </Search>
 
-    <el-table
-      ref="multipleTableRef"
-      @selection-change="handleSelectionChange"
-      :data="tableData"
-      stripe
-      style="width: 100%"
-      v-loading="loading"
-    >
+    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
       <el-table-column label="ID" width="80">
         <template #default="{ row }">
           {{ row.id }}
         </template>
       </el-table-column>
-
       <el-table-column label="头像" width="80" align="center">
         <template #default="{ row }">
           <el-avatar
@@ -67,7 +59,6 @@
           ></el-avatar>
         </template>
       </el-table-column>
-
       <el-table-column label="用户信息" width="200">
         <template #default="{ row }">
           <div class="text-xs">
@@ -78,7 +69,6 @@
           </div>
         </template>
       </el-table-column>
-
       <el-table-column label="推广用户数量" prop="share_num" />
       <el-table-column label="订单数量" prop="share_order_num" />
       <el-table-column label="订单金额" prop="order_price" />
@@ -88,7 +78,13 @@
       <el-table-column label="提现次数" prop="cash_out_time" />
       <el-table-column label="操作" width="200" align="center">
         <template #default="{ row }">
-          <el-button class="px-1" type="primary" size="small" text>
+          <el-button
+            class="px-1"
+            type="primary"
+            size="small"
+            text
+            @click="openAgentDrawer(row)"
+          >
             推广人
           </el-button>
           <el-button class="px-1" type="primary" size="small" text>
@@ -108,18 +104,19 @@
       />
     </div>
   </el-card>
+
+  <AgentDrawer ref="agentDrawerRef" />
 </template>
 
 <script setup>
-import Panel from "./Panel.vue";
-import { reactive, ref } from "vue";
-import ListHeader from "~/components/ListHeader.vue";
+import { ref } from "vue";
 import Search from "~/components/Search.vue";
 import SearchItem from "~/components/SearchItem.vue";
-import { toast, showModal, showPrompt } from "~/composables/util.js";
 import { getAgentData } from "~/api/distribution";
 import { useInitTable } from "~/composables/useCommon.js";
 
+import Panel from "./Panel.vue";
+import AgentDrawer from "./AgentDrawer.vue";
 // table
 const {
   searchForm,
@@ -129,24 +126,13 @@ const {
   currentPage,
   total,
   getData,
-  handleSelectionChange,
-  handelMultipleDelete,
-  multipleTableRef,
 } = useInitTable({
   getList: getAgentData,
-  //   onGetListSuccess: (res) => {
-  //     tableData.value = res.list.map((o) => {
-  //       return o;
-  //     });
-  //     total.value = res.totalCount;
-  //   },
   searchForm: {
     keyword: "",
     type: "all",
     starttime: "",
     endtime: "",
-    level: "",
-    user_id: 0,
   },
 });
 
@@ -168,4 +154,9 @@ const searchRadioChooses = [
     name: "最近七天",
   },
 ];
+
+const agentDrawerRef = ref(null);
+const openAgentDrawer = (row) => {
+  agentDrawerRef.value.open(row.id);
+};
 </script>
