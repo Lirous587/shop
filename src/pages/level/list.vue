@@ -45,6 +45,7 @@
           </span>
         </template>
       </el-table-column>
+      <template #append></template>
     </el-table>
 
     <div class="flex justify-center items-center mt-4">

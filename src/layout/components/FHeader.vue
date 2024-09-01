@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <form-drawer
+  <FormDrawer
     ref="formDrawerRef"
     title="修改密码"
     destroyOnClose
@@ -70,10 +70,10 @@
         </el-input>
       </el-form-item>
     </el-form>
-  </form-drawer>
+  </FormDrawer>
 </template>
 <script setup>
-import formDrawer from "~/components/formDrawer.vue";
+import FormDrawer from "~/components/FormDrawer.vue";
 import { useFullscreen } from "@vueuse/core";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
