@@ -13,7 +13,7 @@
       <template #default="{ data }">
         <div class="flex flex-1">
           <div class="flex items-center">
-            <el-tag :type="data.menu ? '' : 'info'">{{
+            <el-tag :type="data.menu ? 'primary' : 'info'">{{
               data.menu ? "菜单" : "权限"
             }}</el-tag>
           </div>

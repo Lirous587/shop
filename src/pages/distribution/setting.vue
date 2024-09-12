@@ -135,7 +135,7 @@ const getData = () => {
       for (const k in form) {
         form[k] = res[k];
       }
-      form.password_encrypt = res.password_encrypt.split(",");
+      form.password_encrypt = res.password_encrypt?.split(",");
     })
     .finally(() => {
       loading.value = false;

@@ -18,7 +18,6 @@
               :src="item.url"
               fit="cover"
               :lazy="false"
-              :preview-src-list="item.url"
               :initial-index="0"
               class="w-full h-[150px]"
             ></el-image>

@@ -4,7 +4,7 @@
     v-model="dialogVisiableRef"
     width="80%"
     align-center
-    draggable="false"
+    :draggable="false"
     destroy-on-close
   >
     <Search @search="getData" @reset="resetSearchForm">

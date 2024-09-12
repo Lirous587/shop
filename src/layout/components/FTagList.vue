@@ -3,7 +3,6 @@
     <el-tabs
       v-model="activeTab"
       type="card"
-      class="demo-tabs"
       style="min-width: 100px"
       @tab-change="changeTab"
       @tab-remove="removeTag"

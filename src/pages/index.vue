@@ -36,7 +36,10 @@
           <template #header>
             <div class="flex justify-between items-center">
               <span class="text-sm">{{ item.title }}</span>
-              <el-tag :type="item.unitColor" effect="plain">
+              <el-tag
+                :type="item.unitColor ? item.unitColor : 'info'"
+                effect="plain"
+              >
                 {{ item.unit }}
               </el-tag>
             </div>
