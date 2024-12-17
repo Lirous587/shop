@@ -77,7 +77,7 @@ import FormDrawer from "~/components/FormDrawer.vue";
 import { useFullscreen } from "@vueuse/core";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
-import { useLogout, useRepassword } from "~/components/useManager";
+import { useLogout, useRepassword } from "~/composables/useManager";
 const { formDrawerRef, form, rules, formRef, onSubmit, updatePasswordForm } =
   useRepassword();
 const store = useStore();

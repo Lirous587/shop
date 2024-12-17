@@ -6,14 +6,14 @@
     destroy-on-close
     size="70%"
   >
-    <Editor v-model="form.content"></Editor>
+    <Editor v-model:content="form.content"></Editor>
   </formDrawer>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
 import Editor from "~/components/Editor.vue";
-import formDrawer from "~/components/formDrawer.vue";
+import formDrawer from "~/components/FormDrawer.vue";
 import { toast } from "~/composables/util.js";
 
 import { readGoods, updateGoods } from "~/api/goods";
@@ -21,7 +21,7 @@ import { readGoods, updateGoods } from "~/api/goods";
 const formDrawerRef = ref(null);
 
 const form = reactive({
-  content: [],
+  content: "",
 });
 
 const goodsId = ref(0);
@@ -45,7 +45,6 @@ const submit = () => {
     .then(() => {
       toast("设置商品内容成功");
       formDrawerRef.value.close();
-      emits("reload");
     })
     .finally(() => {
       formDrawerRef.value.hideLoading();
