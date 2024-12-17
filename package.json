@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "@kangc/v-md-editor": "^1.7.12",
-    "@tinymce/tinymce-vue": "^5.0.0",
     "@vueuse/core": "^10.7.2",
     "@vueuse/integrations": "^10.7.2",
     "animejs": "^3.2.2",
@@ -21,7 +19,6 @@
     "gsap": "^3.10.4",
     "md-editor-v3": "^5.1.1",
     "nprogress": "^0.2.0",
-    "tinymce": "^6.0.3",
     "universal-cookie": "^7.0.2",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
