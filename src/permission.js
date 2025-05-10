@@ -32,7 +32,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   //设置页面标题
-  let title = (to.meta.title ? to.meta.title : "商城管理系统") + " —— 罹景偓佺";
+  let title = (to.meta.title ? to.meta.title : "商城管理系统") + " —— Lirous587";
   document.title = title;
 
   hasNewRoutes ? next(to.fullPath) : next();
