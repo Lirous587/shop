@@ -52,6 +52,12 @@
           >
         </el-form-item>
       </el-form>
+
+      <div>
+        <span class="line"></span>
+        <span class="text-blue-400 text-sm">账号:admin 密码:admin</span>
+        <span class="line"></span>
+      </div>
     </el-col>
   </el-row>
 </template>
@@ -123,7 +129,7 @@ const onSubmit = () => {
 }
 
 .right > div {
-  @apply flex justify-center items-center my-5 text-gray-300 space-x-2;
+  @apply flex justify-center items-center my-3 text-gray-300 space-x-2;
 }
 
 .right .line {
