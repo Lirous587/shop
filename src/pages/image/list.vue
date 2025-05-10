@@ -29,8 +29,8 @@
 
 <script setup>
 import { ref } from "vue";
-import ImageAside from "~/components/imageAside.vue";
-import ImageMain from "~/components/imageMain.vue";
+import ImageAside from "~/components/ImageAside.vue";
+import ImageMain from "~/components/ImageMain.vue";
 const windowHeight = window.innerHeight || document.body.clientHeight;
 const h = windowHeight - 64 - 44 - 40;
 

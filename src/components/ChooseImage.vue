@@ -73,8 +73,8 @@
 <script setup>
 import { ref } from "vue";
 import { toast } from "~/composables/util.js";
-import ImageAside from "~/components/imageAside.vue";
-import ImageMain from "~/components/imageMain.vue";
+import ImageAside from "~/components/ImageAside.vue";
+import ImageMain from "~/components/ImageMain.vue";
 const dialogVisable = ref(false);
 const ImageAsideRef = ref(null);
 const ImageMainRef = ref(null);
