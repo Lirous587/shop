@@ -1,5 +1,5 @@
 <template>
-  <formDrawer
+  <FormDrawer
     @submit="submit"
     ref="formDrawerRef"
     title="设置商品规格"
@@ -44,12 +44,12 @@
         <SkuCard></SkuCard>
       </template>
     </el-form>
-  </formDrawer>
+  </FormDrawer>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
-import formDrawer from "~/components/formDrawer.vue";
+import FormDrawer from "~/components/FormDrawer.vue";
 import SkuCard from "./components/SkuCard.vue";
 import { toast } from "~/composables/util.js";
 import { readGoods, setGoodsSku } from "~/api/goods";

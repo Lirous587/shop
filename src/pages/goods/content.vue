@@ -1,5 +1,5 @@
 <template>
-  <formDrawer
+  <FormDrawer
     @submit="submit"
     ref="formDrawerRef"
     title="修改商品内容"
@@ -7,13 +7,13 @@
     size="70%"
   >
     <Editor v-model:content="form.content"></Editor>
-  </formDrawer>
+  </FormDrawer>
 </template>
 
 <script setup>
 import { ref, reactive, defineAsyncComponent } from "vue";
 const Editor = defineAsyncComponent(() => import("~/components/Editor.vue"));
-import formDrawer from "~/components/FormDrawer.vue";
+import FormDrawer from "~/components/FormDrawer.vue";
 import { toast } from "~/composables/util.js";
 
 import { readGoods, updateGoods } from "~/api/goods";
