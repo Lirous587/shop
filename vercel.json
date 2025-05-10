@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://ceshi13.dishait.cn/:path*"
+    },
+    {
+      "source": "/public/:path*",
+      "destination": "http://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/public/:path*"
+    }
+  ]
+}
