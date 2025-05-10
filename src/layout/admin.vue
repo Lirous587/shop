@@ -7,7 +7,7 @@
       <el-aside :width="$store.state.asideWidth">
         <f-menu></f-menu>
       </el-aside>
-      <el-main>
+      <el-main style="min-width: 750px !important">
         <f-tag-list />
         <router-view v-slot="{ Component }">
           <keep-alive :max="10">
