@@ -16,7 +16,7 @@ importers:
         version: 10.11.1(vue@3.5.13)
       '@vueuse/integrations':
         specifier: 10.11.1
-        version: 10.11.1(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@7.2.2)(vue@3.5.13)
+        version: 10.11.1(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@6.1.3)(vue@3.5.13)
       animejs:
         specifier: 3.2.2
         version: 3.2.2
@@ -39,8 +39,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       universal-cookie:
-        specifier: 7.2.2
-        version: 7.2.2
+        specifier: ^6.1.3
+        version: 6.1.3
       vue:
         specifier: 3.5.13
         version: 3.5.13
@@ -671,8 +671,8 @@ packages:
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
-  cookie@0.7.2:
-    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
+  cookie@0.6.0:
+    resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
 
   crelt@1.0.6:
@@ -967,8 +967,8 @@ packages:
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
-  universal-cookie@7.2.2:
-    resolution: {integrity: sha512-fMiOcS3TmzP2x5QV26pIH3mvhexLIT0HmPa3V7Q7knRfT9HG6kTwq02HZGLPw0sAOXrAmotElGRvTLCMbJsvxQ==}
+  universal-cookie@6.1.3:
+    resolution: {integrity: sha512-AETYRrhpRgl9T1YtnODmQE32G81U3A+f3HO3ZeK7efbXqe3x+RNOW4RTpV0iff7zJWhGYJA6EI0Mm+w50aFTAw==}
 
   vite-plugin-windicss@1.9.4:
     resolution: {integrity: sha512-3t1AUVrs2XBXGc2BefRPRvy1CLy8qA/5A1J1Z73Ej1DIx+puXn39MQSWluxZ2FHEz8z9OEIvsoIIPc/s/P3OmQ==}
@@ -1671,7 +1671,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@10.11.1(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@7.2.2)(vue@3.5.13)':
+  '@vueuse/integrations@10.11.1(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@6.1.3)(vue@3.5.13)':
     dependencies:
       '@vueuse/core': 10.11.1(vue@3.5.13)
       '@vueuse/shared': 10.11.1(vue@3.5.13)
@@ -1680,7 +1680,7 @@ snapshots:
       async-validator: 4.2.5
       axios: 1.9.0
       nprogress: 0.2.0
-      universal-cookie: 7.2.2
+      universal-cookie: 6.1.3
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -1764,7 +1764,7 @@ snapshots:
 
   commander@2.20.3: {}
 
-  cookie@0.7.2: {}
+  cookie@0.6.0: {}
 
   crelt@1.0.6: {}
 
@@ -2085,10 +2085,10 @@ snapshots:
 
   uc.micro@2.1.0: {}
 
-  universal-cookie@7.2.2:
+  universal-cookie@6.1.3:
     dependencies:
       '@types/cookie': 0.6.0
-      cookie: 0.7.2
+      cookie: 0.6.0
 
   vite-plugin-windicss@1.9.4(vite@5.4.19):
     dependencies:

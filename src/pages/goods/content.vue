@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
-import Editor from "~/components/Editor.vue";
+import { ref, reactive, defineAsyncComponent } from "vue";
+const Editor = defineAsyncComponent(() => import("~/components/Editor.vue"));
 import formDrawer from "~/components/FormDrawer.vue";
 import { toast } from "~/composables/util.js";
 
