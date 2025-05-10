@@ -18,15 +18,15 @@
     "gsap": "3.13.0",
     "md-editor-v3": "5.5.1",
     "nprogress": "0.2.0",
-    "universal-cookie": "8.0.1",
+    "universal-cookie": "^7.1.0",
     "vue": "3.5.13",
     "vue-router": "4.5.1",
     "vuex": "4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "4.6.2",
+    "@vitejs/plugin-vue": "5.2.4",
     "vite": "6.3.5",
-    "vite-plugin-windicss": "1.9.4",
+    "vite-plugin-windicss": "^1.9.4",
     "windicss": "3.5.6"
   }
 }

@@ -16,7 +16,7 @@ importers:
         version: 10.11.1(vue@3.5.13)
       '@vueuse/integrations':
         specifier: 13.1.0
-        version: 13.1.0(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@8.0.1)(vue@3.5.13)
+        version: 13.1.0(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@7.2.2)(vue@3.5.13)
       animejs:
         specifier: 3.2.2
         version: 3.2.2
@@ -39,8 +39,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       universal-cookie:
-        specifier: 8.0.1
-        version: 8.0.1
+        specifier: ^7.1.0
+        version: 7.2.2
       vue:
         specifier: 3.5.13
         version: 3.5.13
@@ -52,13 +52,13 @@ importers:
         version: 4.0.2(vue@3.5.13)
     devDependencies:
       '@vitejs/plugin-vue':
-        specifier: 4.6.2
-        version: 4.6.2(vite@6.3.5(jiti@1.21.7))(vue@3.5.13)
+        specifier: 5.2.4
+        version: 5.2.4(vite@6.3.5(jiti@1.21.7))(vue@3.5.13)
       vite:
         specifier: 6.3.5
         version: 6.3.5(jiti@1.21.7)
       vite-plugin-windicss:
-        specifier: 1.9.4
+        specifier: ^1.9.4
         version: 1.9.4(vite@6.3.5(jiti@1.21.7))
       windicss:
         specifier: 3.5.6
@@ -513,6 +513,9 @@ packages:
   '@sxzz/popperjs-es@2.11.7':
     resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
 
+  '@types/cookie@0.6.0':
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
+
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
@@ -546,11 +549,11 @@ packages:
   '@vavt/util@2.1.0':
     resolution: {integrity: sha512-YIfAvArSFVXmWvoF+DEGD0FhkhVNcCtVWWkfYtj76eSrwHh/wuEEFhiEubg1XLNM3tChO8FH8xJCT/hnizjgFQ==}
 
-  '@vitejs/plugin-vue@4.6.2':
-    resolution: {integrity: sha512-kqf7SGFoG+80aZG6Pf+gsZIVvGSCKE98JbiWqcCV9cThtg91Jav0yvYFC9Zb+jKetNGF6ZKeoaxgZfND21fWKw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
+  '@vitejs/plugin-vue@5.2.4':
+    resolution: {integrity: sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==}
+    engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      vite: ^4.0.0 || ^5.0.0
+      vite: ^5.0.0 || ^6.0.0
       vue: ^3.2.25
 
   '@vue/compiler-core@3.5.13':
@@ -697,9 +700,9 @@ packages:
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
-  cookie@1.0.2:
-    resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
-    engines: {node: '>=18'}
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
+    engines: {node: '>= 0.6'}
 
   crelt@1.0.6:
     resolution: {integrity: sha512-VQ2MBenTq1fWZUH9DJNGti7kKv6EeAuYr3cLwxUWhIu1baTaXh4Ib5W2CqHVqib4/MqbYGJqiL3Zb8GJZr3l4g==}
@@ -1009,8 +1012,8 @@ packages:
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
-  universal-cookie@8.0.1:
-    resolution: {integrity: sha512-B6ks9FLLnP1UbPPcveOidfvB9pHjP+wekP2uRYB9YDfKVpvcjKgy1W5Zj+cEXJ9KTPnqOKGfVDQBmn8/YCQfRg==}
+  universal-cookie@7.2.2:
+    resolution: {integrity: sha512-fMiOcS3TmzP2x5QV26pIH3mvhexLIT0HmPa3V7Q7knRfT9HG6kTwq02HZGLPw0sAOXrAmotElGRvTLCMbJsvxQ==}
 
   vite-plugin-windicss@1.9.4:
     resolution: {integrity: sha512-3t1AUVrs2XBXGc2BefRPRvy1CLy8qA/5A1J1Z73Ej1DIx+puXn39MQSWluxZ2FHEz8z9OEIvsoIIPc/s/P3OmQ==}
@@ -1620,6 +1623,8 @@ snapshots:
 
   '@sxzz/popperjs-es@2.11.7': {}
 
+  '@types/cookie@0.6.0': {}
+
   '@types/estree@1.0.7': {}
 
   '@types/linkify-it@5.0.0': {}
@@ -1647,7 +1652,7 @@ snapshots:
 
   '@vavt/util@2.1.0': {}
 
-  '@vitejs/plugin-vue@4.6.2(vite@6.3.5(jiti@1.21.7))(vue@3.5.13)':
+  '@vitejs/plugin-vue@5.2.4(vite@6.3.5(jiti@1.21.7))(vue@3.5.13)':
     dependencies:
       vite: 6.3.5(jiti@1.21.7)
       vue: 3.5.13
@@ -1735,7 +1740,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@13.1.0(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@8.0.1)(vue@3.5.13)':
+  '@vueuse/integrations@13.1.0(async-validator@4.2.5)(axios@1.9.0)(nprogress@0.2.0)(universal-cookie@7.2.2)(vue@3.5.13)':
     dependencies:
       '@vueuse/core': 13.1.0(vue@3.5.13)
       '@vueuse/shared': 13.1.0(vue@3.5.13)
@@ -1744,7 +1749,7 @@ snapshots:
       async-validator: 4.2.5
       axios: 1.9.0
       nprogress: 0.2.0
-      universal-cookie: 8.0.1
+      universal-cookie: 7.2.2
 
   '@vueuse/metadata@10.11.1': {}
 
@@ -1831,7 +1836,7 @@ snapshots:
 
   commander@2.20.3: {}
 
-  cookie@1.0.2: {}
+  cookie@0.7.2: {}
 
   crelt@1.0.6: {}
 
@@ -2165,9 +2170,10 @@ snapshots:
 
   uc.micro@2.1.0: {}
 
-  universal-cookie@8.0.1:
+  universal-cookie@7.2.2:
     dependencies:
-      cookie: 1.0.2
+      '@types/cookie': 0.6.0
+      cookie: 0.7.2
 
   vite-plugin-windicss@1.9.4(vite@6.3.5(jiti@1.21.7)):
     dependencies:
