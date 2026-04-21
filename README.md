@@ -2,7 +2,7 @@
 
 > vue3 商城练手项目，只有前端代码
 
-[在线预览](https://shop.project.lirous.com/)
+[在线预览](https://shop.projects.lirous.com/)
 
 ## 技术栈
 
