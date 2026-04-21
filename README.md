@@ -93,16 +93,6 @@ pnpm preview
 
 ---
 
-## 部分截图
-
-> 在线地址：**https://shop.projects.lirous.com/**
-
-| 登录页 | 数据看板 | 商品管理 |
-|--------|----------|----------|
-| 账号密码登录，Token 持久化 | ECharts 图表 + 数字滚动 | SKU 规格矩阵 + 图片上传 |
-
----
-
 ## License
 
 MIT
